@@ -1,0 +1,25 @@
+:root {
+  --color-white: #FFFFFF;
+  --color-dark: #151515;
+  --color-dark-alt: #2C2C2C;
+  --color-accent: #AAFF7C;
+
+  --box-shadow-button: 0 0 10px #AAFF7C;
+  --box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.5);
+
+  --border-radius: 16px;
+  --border-radius-small: 8px;
+
+  --border-button: 1px solid var(--color-dark-alt);
+  --border-accent: 1px solid var(--color-accent);
+
+  --font-family: "Poppins", sans-serif;
+
+  --container-width: 1800px;
+  --container-padding-x: 16px;
+
+  --input-height: 45px;
+  --button-height: 50px;
+
+  --transition-duration: .2s;
+}

@@ -1,0 +1,38 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  row-gap: 6px;
+
+  &__input {
+    max-width: 394px;
+    width: 100%;
+    border-radius: var(--border-radius);
+    background: transparent;
+    border: var(--border-button);
+    outline: none;
+    height: var(--input-height);
+    color: var(--color-white);
+    padding-left: 16px;
+
+    &-wrapper {
+      position: relative;
+    }
+
+    &-icon {
+      opacity: .4;
+      position: absolute;
+      top: 50%;
+      left: 16px;
+      transform: translateY(-50%);
+    }
+
+    @include hover {
+      border-color: var(--color-accent);
+    }
+
+    &:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 12px rgba(170, 255, 124, 0.3);
+    }
+  }
+}

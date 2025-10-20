@@ -1,0 +1,10 @@
+@import 'normalize', 'mixins', 'fonts', 'variables', 'media', 'utils', 'globals';
+
+@import '../components/Button/ButtonLink',
+        '../components/Logo/Logo',
+        '../components/Input/Input',
+        '../components/Form/Form',
+        '../pages/Welcome/WelcomePage',
+        '../pages/Auth/SignIn/SignIn',
+        '../pages/Auth/SignUp/SignUp',
+        '../pages/Auth/ResetPassword/ResetPassword';

@@ -1,0 +1,140 @@
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+
+  @include desktop {
+    min-height: 60vh;
+    padding: 20px;
+  }
+
+  @include mobile {
+    min-height: auto;
+  }
+
+  &__logo {
+    width: 60px;
+
+    @include mobile {
+      display: none;
+    }
+  }
+
+  &__inner {
+    padding: 40px;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+
+    @include mobile {
+      box-shadow: none;
+      padding: 0;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 32px;
+  }
+
+  &__title {
+    font-weight: 600;
+  }
+
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+  }
+
+  &__forgot {
+    display: inline-block;
+    width: 100%;
+    padding-block: 16px;
+    text-align: end;
+
+  }
+
+  &__button {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    column-gap: 4px;
+
+    &--margin {
+      margin-top: 24px;
+    }
+
+    @include mobile {
+      max-width: 394px;
+      width: 100%;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 16px;
+  }
+
+  &__or {
+    width: 100%;
+    text-align: center;
+    color: var(--color-accent);
+    font-weight: 500;
+    position: relative;
+
+    &::before,
+    &::after {
+      content: "";
+      display: block;
+      height: 1px;
+      width: 40%;
+      background-color: var(--color-accent);
+      opacity: .2;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &::before {
+      right: 0;
+    }
+  }
+
+  &__google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 12px;
+    border-radius: var(--border-radius);
+    border: var(--border-button);
+    width: 100%;
+    height: 55px;
+
+    @include hover {
+      border: var(--border-accent);
+      color: var(--color-white);
+    }
+  }
+
+  &__notreg {
+    &-text {
+      opacity: .4;
+    }
+  }
+
+  &__text {
+    font-weight: 500;
+
+    &-sent {
+      @include mobile {
+        padding-top: 50px;
+      }
+    }
+  }
+
+}

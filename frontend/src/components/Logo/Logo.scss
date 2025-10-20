@@ -1,0 +1,11 @@
+.logo {
+  &__image {
+    @include desktop {
+      width: 70px;
+    }
+
+    @include mobile {
+      width: 50px;
+    }
+  }
+}
