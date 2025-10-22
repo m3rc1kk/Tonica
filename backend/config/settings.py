@@ -34,6 +34,8 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'corsheaders',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist'
 ]
 
 LOCAL_APPS = [
@@ -163,6 +165,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
+    'BLACKLIST_TOKEN_CHECKS': ['access', 'refresh'],
     'UPDATE_LAST_LOGIN': True,
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
@@ -173,3 +176,4 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
 }
 
+AUTH_USER_MODEL = 'accounts.User'
