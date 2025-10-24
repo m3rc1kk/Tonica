@@ -15,7 +15,7 @@ export default function Form({title, inputs=[], buttonText, buttonIcon, isLogin=
 
                 <div className="form__inputs">
                     {inputs.length > 0 ? (
-                        inputs.map(({ id, label, type, placeholder }) => (
+                        inputs.map(({ id, label, type, placeholder, value, onChange }) => (
                             <Input
                                 key={id}
                                 id={id}
@@ -23,6 +23,8 @@ export default function Form({title, inputs=[], buttonText, buttonIcon, isLogin=
                                 type={type}
                                 placeholder={placeholder}
                                 className="form__field auth__form-field"
+                                value={value}
+                                onChange={onChange}
                             />
                         ))
                     ) : (
@@ -39,7 +41,6 @@ export default function Form({title, inputs=[], buttonText, buttonIcon, isLogin=
                 <ButtonLink
                     type='submit'
                     className={`form__button login__form-button${!isLogin ? ' form__button--margin' : ''}`}
-                    onClick=""
                 >{buttonText} <img src={buttonIcon} width={16} height={16} loading="lazy" alt="Icon" className="form__button-icon login__form-button-icon"/></ButtonLink>
         </>
     )

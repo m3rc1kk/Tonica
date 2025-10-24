@@ -1,4 +1,4 @@
-export default function Input({className, id, placeholder, label, type = 'text', src}) {
+export default function Input({className, id, placeholder, label, type = 'text', value, onChange}) {
     return (
         <div className={`field ${className}`}>
             <label
@@ -11,6 +11,8 @@ export default function Input({className, id, placeholder, label, type = 'text',
                    placeholder={placeholder}
                    className="field__input"
                    autoComplete="off"
+                   value={value}
+                   onChange={onChange}
             />
         </div>
     )

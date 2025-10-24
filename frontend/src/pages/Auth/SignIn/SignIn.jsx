@@ -2,15 +2,53 @@ import Form from "../../../components/Form/Form.jsx";
 import ButtonLink from "../../../components/Button/ButtonLink.jsx";
 import googleIcon from '../../../assets/images/forms/google.svg'
 import signIcon from '../../../assets/images/forms/signicon.svg'
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../../api/auth.js";
 
 export default function SignInPage() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+
     const inputs = [
-        {id: "form__field-email", label: "Email", type: "email", placeholder: "example@gmail.com"},
-        {id: "form__field-password", label: "Password", type: "password", placeholder: "*********"},
+        {id: "form__field-email",
+            label: "Email",
+            type: "email",
+            placeholder: "example@gmail.com",
+            value: email,
+            onChange: (e) => setEmail(e.target.value),
+        },
+
+        {id: "form__field-password",
+            label: "Password",
+            type: "password",
+            placeholder: "*********",
+            value: password,
+            onChange: (e) => setPassword(e.target.value),
+        }
     ];
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setError("");
+
+        try {
+            const data = await loginUser(email, password);
+            localStorage.setItem("access", data.access);
+            localStorage.setItem("refresh", data.refresh);
+
+            console.log("User logged in: ", data.user);
+
+            navigate("/reset-password");
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
     return (
-        <form method='post' className="form login__form container">
+        <form method='post' className="form login__form container" onSubmit={handleLogin}>
             <div className="form__inner login__form-inner">
             <Form
                 title='Sign In'
@@ -19,6 +57,8 @@ export default function SignInPage() {
                 buttonText='Login'
                 isLogin={true}
             />
+
+                {error && <p>{error}</p>}
 
             <footer className="form__footer">
                 <div className="form__or login__form-or">
