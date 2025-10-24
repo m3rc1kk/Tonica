@@ -33,7 +33,7 @@ export default function Form({title, inputs=[], buttonText, buttonIcon, isLogin=
                 </div>
 
                 {isLogin && (
-                    <ButtonLink to={'/reset-password'} className="form__forgot login__form-forgot">
+                    <ButtonLink to={'/password/reset'} className="form__forgot login__form-forgot">
                         Forgot Password?
                     </ButtonLink>
                 )}

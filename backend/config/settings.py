@@ -179,6 +179,7 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = 'accounts.User'
 
+FRONTEND_URL = 'http://localhost:5173'
 
 DEFAULT_FROM_EMAIL = 'test@example.com'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -14,10 +14,10 @@ export default function AppRouter() {
                 <Route path="/" element={<WelcomePage />} />
                 <Route path="/login" element={<SignInPage />} />
                 <Route path="/register" element={<SignUpPage />} />
-                <Route path="/reset-password" element={<ResetPasswordForm />} />
-                <Route path="/reset-password-done" element={<ResetPasswordDone />} />
-                <Route path="/reset-password-confirm" element={<ResetPasswordConfirm />} />
-                <Route path="/reset-password-complete" element={<ResetPasswordComplete />} />
+                <Route path="/password/reset" element={<ResetPasswordForm />} />
+                <Route path="/password/reset/done" element={<ResetPasswordDone />} />
+                <Route path="/password/reset/confirm/:uid/:token" element={<ResetPasswordConfirm />} />
+                <Route path="/password/reset/complete" element={<ResetPasswordComplete />} />
             </Routes>
         </BrowserRouter>
     );

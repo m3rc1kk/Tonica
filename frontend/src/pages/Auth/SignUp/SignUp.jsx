@@ -2,17 +2,72 @@ import Form from "../../../components/Form/Form.jsx";
 import ButtonLink from "../../../components/Button/ButtonLink.jsx";
 import googleIcon from '../../../assets/images/forms/google.svg'
 import signIcon from '../../../assets/images/forms/signicon.svg'
-
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { registerUser } from "../../../api/auth.js";
 
 export default function SignUpPage() {
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+
     const inputs = [
-        {id: "form__field-username", label: "Username", type: "text", placeholder: "example"},
-        {id: "form__field-email", label: "Email", type: "email", placeholder: "example@gmail.com"},
-        {id: "form__field-password", label: "Password", type: "password", placeholder: "*********"},
-        {id: "form__field-password-confirm", label: "Password Confirm", type: "password", placeholder: "*********"},
+        {id: "form__field-username",
+            label: "Username",
+            type: "text",
+            placeholder: "example",
+            value: username,
+            onChange: (e) => setUsername(e.target.value),
+        },
+
+        {id: "form__field-email",
+            label: "Email",
+            type: "email",
+            placeholder: "example@gmail.com",
+            value: email,
+            onChange: (e) => setEmail(e.target.value),
+        },
+
+        {id: "form__field-password",
+            label: "Password",
+            type: "password",
+            placeholder: "*********",
+            value: password,
+            onChange: (e) => setPassword(e.target.value),
+        },
+
+        {id: "form__field-password-confirm",
+            label: "Password Confirm",
+            type: "password",
+            placeholder: "*********",
+            value: passwordConfirm,
+            onChange: (e) => setPasswordConfirm(e.target.value),
+        },
     ];
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        setError("");
+
+        try {
+            const data = await registerUser(username, email, password, passwordConfirm);
+            localStorage.setItem("access", data.access);
+            localStorage.setItem("refresh", data.refresh);
+
+            console.log('User registered: ', data.user)
+            navigate('reset-password/');
+        } catch (err) {
+            setError(err.message);
+        }
+    }
+
+
+
     return (
-        <form method='post' className="form login__form container">
+        <form method='post' onSubmit={handleRegister} className="form login__form container">
             <div className="form__inner login__form-inner">
                 <Form
                     title='Sign Up'
@@ -20,6 +75,8 @@ export default function SignUpPage() {
                     buttonIcon={signIcon}
                     buttonText='Register'
                 />
+
+                {error && <p>{error}</p>}
 
                 <footer className="form__footer">
                     <div className="form__or login__form-or">

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
@@ -88,7 +89,7 @@ class PasswordResetSerializer(serializers.Serializer):
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
 
-        reset_url = f'{request.scheme}://{request.get_host()}/password/reset/{uid}/{token}/'
+        reset_url = f'{settings.FRONTEND_URL}/password/reset/confirm/{uid}/{token}/'
 
         from django.core.mail import send_mail
         send_mail(
