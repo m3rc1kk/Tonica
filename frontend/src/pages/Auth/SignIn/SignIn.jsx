@@ -41,7 +41,7 @@ export default function SignInPage() {
 
             console.log("User logged in: ", data.user);
 
-            navigate("/reset-password");
+            navigate("/main");
         } catch (err) {
             setError(err.message);
         }
@@ -57,8 +57,7 @@ export default function SignInPage() {
                 buttonText='Login'
                 isLogin={true}
             />
-
-                {error && <p>{error}</p>}
+                {error && <div className="form__error"><p>{error}</p></div>}
 
             <footer className="form__footer">
                 <div className="form__or login__form-or">

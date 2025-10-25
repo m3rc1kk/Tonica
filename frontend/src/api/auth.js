@@ -8,9 +8,13 @@ export async function loginUser(email, password) {
         if (error.response) {
             const data = error.response.data;
 
-            const message =
-                data.message || data.non_field_errors?.[0] ||
-                JSON.stringify(data)
+            const firstKey = Object.keys(data)[0];
+            const message = Array.isArray(data[firstKey])
+                ? data[firstKey][0]
+                : data.message ||
+                data.non_field_errors?.[0] ||
+                data.password?.[0] ||
+                "Unknown error";
 
             throw new Error(message);
 
@@ -20,13 +24,13 @@ export async function loginUser(email, password) {
     }
 }
 
-export async function registerUser(username, email, password, passwordConfirm) {
+export async function registerUser(formData) {
     try {
-        const response = await api.post("auth/register/", {
-            username,
-            email,
-            password,
-            password_confirm: passwordConfirm})
+        const response = await api.post("auth/register/", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            }
+        });
 
         return response.data;
 
@@ -35,11 +39,13 @@ export async function registerUser(username, email, password, passwordConfirm) {
         if (error.response) {
             const data = error.response.data;
 
-            const message =
-                data.message ||
+            const firstKey = Object.keys(data)[0];
+            const message = Array.isArray(data[firstKey])
+                ? data[firstKey][0]
+                : data.message ||
                 data.non_field_errors?.[0] ||
                 data.password?.[0] ||
-                JSON.stringify(data)
+                "Unknown error";
 
             throw new Error(message);
     } else {

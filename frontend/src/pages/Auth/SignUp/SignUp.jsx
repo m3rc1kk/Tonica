@@ -11,10 +11,21 @@ export default function SignUpPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [avatar, setAvatar] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
     const inputs = [
+        {
+            id: "form__field-avatar",
+            label: "Avatar",
+            type: "file",
+            placeholder: "Avatar",
+            onChange: (e) => setAvatar(e.target.files[0]),
+        },
+
+
+
         {id: "form__field-username",
             label: "Username",
             type: "text",
@@ -46,6 +57,7 @@ export default function SignUpPage() {
             value: passwordConfirm,
             onChange: (e) => setPasswordConfirm(e.target.value),
         },
+
     ];
 
     const handleRegister = async (e) => {
@@ -53,12 +65,22 @@ export default function SignUpPage() {
         setError("");
 
         try {
-            const data = await registerUser(username, email, password, passwordConfirm);
+            const formData = new FormData();
+            formData.append("username", username);
+            formData.append("email", email);
+            formData.append("password", password);
+            formData.append("password_confirm", passwordConfirm);
+            if (avatar) {
+                formData.append("avatar", avatar);
+            }
+
+            const data = await registerUser(formData);
+
             localStorage.setItem("access", data.access);
             localStorage.setItem("refresh", data.refresh);
 
             console.log('User registered: ', data.user)
-            navigate('reset-password/');
+            navigate("/main");
         } catch (err) {
             setError(err.message);
         }
@@ -76,7 +98,7 @@ export default function SignUpPage() {
                     buttonText='Register'
                 />
 
-                {error && <p>{error}</p>}
+                {error && <div className="form__error"><p>{error}</p></div>}
 
                 <footer className="form__footer">
                     <div className="form__or login__form-or">

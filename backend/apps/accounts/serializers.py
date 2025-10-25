@@ -18,6 +18,21 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'email', 'avatar' , 'password', 'password_confirm']
 
+    def validate_avatar(self, value):
+        max_size = 5 * 1024 * 1024
+        if value.size > max_size:
+            raise serializers.ValidationError(
+                'Image size should be less than 5MB'
+            )
+
+        valid_extensions = ['.jpeg', 'png', 'jpg', 'webp']
+        ext = value.name.split('.')[-1].lower()
+        if ext not in valid_extensions:
+            raise serializers.ValidationError(
+                'This is not an image'
+            )
+        return value
+
     def validate(self, attrs):
         if attrs['password'] != attrs['password_confirm']:
             raise serializers.ValidationError('Passwords do not match')
@@ -46,7 +61,7 @@ class UserLoginSerializer(serializers.Serializer):
 
             if not user:
                 raise serializers.ValidationError(
-                    'User not found'
+                    'Invalid email or password'
                 )
             if not user.is_active:
                 raise serializers.ValidationError(

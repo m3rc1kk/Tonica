@@ -309,6 +309,31 @@ h3 {
   flex-direction: column;
   row-gap: 6px;
 }
+.field--file {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.field__label--file {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-dark-alt);
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  transition-duration: 0.2s;
+}
+@media (hover: hover) {
+  .field__label--file:hover {
+    box-shadow: var(--box-shadow);
+  }
+}
+@media (hover: none) {
+  .field__label--file:active {
+    box-shadow: var(--box-shadow);
+  }
+}
 .field__input {
   max-width: 394px;
   width: 100%;
@@ -475,6 +500,10 @@ h3 {
   .form__text-sent {
     padding-top: 50px;
   }
+}
+.form__error {
+  text-align: center;
+  max-width: 394px;
 }
 
 .welcome {

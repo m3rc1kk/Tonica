@@ -41,7 +41,7 @@ export default function ResetPasswordForm() {
                     buttonText='Send Mail'
                 />
 
-                {error && <p>{error}</p>}
+                {error && <div className="form__error"><p>{error}</p></div>}
 
             </div>
         </form>

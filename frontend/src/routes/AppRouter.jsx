@@ -5,7 +5,7 @@ import SignInPage from "../pages/Auth/SignIn/SignIn.jsx";
 import ResetPasswordForm from "../pages/Auth/ResetPassword/ResetPasswordForm.jsx";
 import ResetPasswordDone from "../pages/Auth/ResetPassword/ResetPasswordDone.jsx";
 import ResetPasswordConfirm from "../pages/Auth/ResetPassword/ResetPasswordConfirm.jsx";
-import ResetPasswordComplete from "../pages/Auth/ResetPassword/ResetPasswordComplete.jsx";
+import Home from "../pages/Main/Home.jsx";
 
 export default function AppRouter() {
     return (
@@ -17,7 +17,7 @@ export default function AppRouter() {
                 <Route path="/password/reset" element={<ResetPasswordForm />} />
                 <Route path="/password/reset/done" element={<ResetPasswordDone />} />
                 <Route path="/password/reset/confirm/:uid/:token" element={<ResetPasswordConfirm />} />
-                <Route path="/password/reset/complete" element={<ResetPasswordComplete />} />
+                <Route path="/home" element={<Home />} />
             </Routes>
         </BrowserRouter>
     );

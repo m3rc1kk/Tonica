@@ -23,7 +23,7 @@ export default function ResetPasswordConfirm() {
                 newPassword,
                 newPasswordConfirm
             );
-            navigate("/password/reset/complete");
+            navigate("/login");
         } catch (error) {
             setError(error.message)
         }
@@ -58,7 +58,7 @@ export default function ResetPasswordConfirm() {
                     buttonText='Change'
                 />
 
-                {error && <p>{error}</p>}
+                {error && <div className="form__error"><p>{error}</p></div>}
 
             </div>
         </form>

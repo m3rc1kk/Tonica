@@ -3,6 +3,29 @@
   flex-direction: column;
   row-gap: 6px;
 
+  &--file {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__label {
+    &--file {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-dark-alt);
+      border-radius: 50%;
+      width: 64px;
+      height: 64px;
+      transition-duration: .2s;
+
+      @include hover {
+        box-shadow: var(--box-shadow);
+      }
+    }
+  }
+
   &__input {
     max-width: 394px;
     width: 100%;

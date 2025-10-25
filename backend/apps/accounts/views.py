@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import login
 from rest_framework.views import APIView
+from rest_framework.throttling import UserRateThrottle
 
 from .models import User
 from .serializers import (
@@ -35,12 +36,13 @@ class UserRegistrationView(generics.CreateAPIView):
 class UserLoginView(generics.GenericAPIView):
     serializer_class = UserLoginSerializer
     permission_classes = (permissions.AllowAny,)
+    throttle_classes = (UserRateThrottle, )
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        login(request, user)
+
 
         refresh = RefreshToken.for_user(user)
         return Response({
@@ -87,6 +89,7 @@ class UserLogoutView(APIView):
 class PasswordResetView(generics.GenericAPIView):
     serializer_class = PasswordResetSerializer
     permission_classes = (permissions.AllowAny, )
+    throttle_classes = [UserRateThrottle]
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, context={'request': request})
