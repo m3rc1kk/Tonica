@@ -1,0 +1,8 @@
+.header {
+  &__back {
+    opacity: .6;
+    @include hover {
+      opacity: 1;
+    }
+  }
+}

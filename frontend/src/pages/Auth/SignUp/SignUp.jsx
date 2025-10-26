@@ -24,8 +24,6 @@ export default function SignUpPage() {
             onChange: (e) => setAvatar(e.target.files[0]),
         },
 
-
-
         {id: "form__field-username",
             label: "Username",
             type: "text",

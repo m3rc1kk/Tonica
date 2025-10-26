@@ -1,0 +1,155 @@
+.sidebar {
+  width: 255px;
+  position: fixed;
+  left: 60px;
+  top: 47px;
+
+  @include desktop {
+    left: 20px;
+    width: 220px;
+  }
+
+  @include tablet {
+    width: 44px;
+    top: 30px;
+  }
+
+  @include mobile {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    row-gap: 52px;
+
+    @include tablet {
+      align-items: center;
+    }
+
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 255px;
+      top: -46px;
+      background: var(--color-dark-alt);
+      width: 1px;
+      height: 100vh;
+
+      @include desktop {
+        left: 220px;
+      }
+
+      @include tablet {
+        left: 60px;
+      }
+
+      @include mobile {
+        display: none;
+      }
+
+    }
+  }
+
+  &__menu {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+    width: 100%;
+
+    &-title {
+      font-weight: 500;
+    }
+
+    &-list {
+      display: flex;
+      flex-direction: column;
+      row-gap: 20px;
+
+      @include tablet {
+        align-items: center;
+      }
+
+      @include mobile {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        background: var(--color-dark-alt);
+        padding-block: 12px;
+        
+      }
+    }
+
+    &-link {
+      display: flex;
+      align-items: center;
+      column-gap: 12px;
+
+      &-icon {
+        @include tablet {
+          width: 32px;
+          height: auto;
+        }
+
+        @include mobile {
+          width: 24px;
+        }
+      }
+
+      @include hover {
+        opacity: 1;
+      }
+
+      &--inactive {
+        opacity: .4;
+      }
+    }
+  }
+
+  &__playlist {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+
+    &-title {
+      font-weight: 500;
+    }
+
+    &-list {
+      display: flex;
+      flex-direction: column;
+      row-gap: 16px;
+    }
+
+    &-link {
+      display: flex;
+      align-items: center;
+      column-gap: 10px;
+
+      @include hover {
+        opacity: .8;
+      }
+    }
+
+    &-body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &-name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    &-count {
+      font-weight: 500;
+      opacity: .4;
+    }
+
+  }
+}

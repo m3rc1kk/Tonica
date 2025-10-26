@@ -1,0 +1,121 @@
+.profile {
+  position: relative;
+  height: 80vh;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+
+    padding: 32px;
+    box-shadow: var(--box-shadow);
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    width: 501px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -64px;
+      background: var(--color-accent);
+      width: 64px;
+      height: 100%;
+      border-top-right-radius: var(--border-radius);
+      border-bottom-right-radius: var(--border-radius);
+    }
+
+    &-title {
+      font-weight: 500;
+      opacity: .4;
+    }
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &-update {
+      opacity: .4;
+
+      @include hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+    padding-block: 16px 28px;
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__avatar {
+    border-radius: 50%;
+  }
+
+  &__username {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  &__subscribe {
+    font-weight: 500;
+    color: var(--color-accent);
+
+    &-opacity {
+      color: var(--color-white);
+      opacity: 0.4;
+    }
+  }
+
+  &__buttons {
+    &-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      row-gap: 16px;
+    }
+
+    &-item {
+      width: 100%;
+    }
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 4px;
+    width: 100%;
+    border: var(--border-button);
+    border-radius: var(--border-radius);
+    height: var(--button-height);
+
+    @include hover {
+      border: var(--border-accent);
+      color: var(--color-white);
+    }
+
+    &-logout {
+      background: var(--color-red);
+
+      @include hover {
+        border: var(--border-red);
+      }
+    }
+  }
+}
+

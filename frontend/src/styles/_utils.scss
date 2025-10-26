@@ -3,3 +3,21 @@
   margin-inline: auto;
   padding-inline: var(--container-padding-x);
 }
+
+.hidden-mobile {
+  @include mobile {
+    display: none !important;
+  }
+}
+
+.hidden-tablet {
+  @include tablet {
+    display: none !important;
+  }
+}
+
+.hidden-tablet-above {
+  @include tablet-above {
+    display: none !important;
+  }
+}

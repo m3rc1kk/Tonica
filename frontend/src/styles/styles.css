@@ -186,12 +186,14 @@ svg * {
   --color-dark: #151515;
   --color-dark-alt: #2C2C2C;
   --color-accent: #AAFF7C;
+  --color-red: #E33629;
   --box-shadow-button: 0 0 10px #AAFF7C;
   --box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.5);
   --border-radius: 16px;
   --border-radius-small: 8px;
   --border-button: 1px solid var(--color-dark-alt);
   --border-accent: 1px solid var(--color-accent);
+  --border-red: 1px solid var(--color-red);
   --font-family: "Poppins", sans-serif;
   --container-width: 1800px;
   --container-padding-x: 16px;
@@ -204,6 +206,24 @@ svg * {
   max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
   margin-inline: auto;
   padding-inline: var(--container-padding-x);
+}
+
+@media (max-width: 767px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .hidden-tablet {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hidden-tablet-above {
+    display: none !important;
+  }
 }
 
 body {
@@ -506,6 +526,178 @@ h3 {
   max-width: 394px;
 }
 
+.sidebar {
+  width: 255px;
+  position: fixed;
+  left: 60px;
+  top: 47px;
+}
+@media (max-width: 1280px) {
+  .sidebar {
+    left: 20px;
+    width: 220px;
+  }
+}
+@media (max-width: 1023px) {
+  .sidebar {
+    width: 44px;
+    top: 30px;
+  }
+}
+@media (max-width: 767px) {
+  .sidebar {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+.sidebar__inner {
+  display: flex;
+  flex-direction: column;
+  row-gap: 52px;
+}
+@media (max-width: 1023px) {
+  .sidebar__inner {
+    align-items: center;
+  }
+}
+.sidebar__inner::after {
+  content: "";
+  position: absolute;
+  left: 255px;
+  top: -46px;
+  background: var(--color-dark-alt);
+  width: 1px;
+  height: 100vh;
+}
+@media (max-width: 1280px) {
+  .sidebar__inner::after {
+    left: 220px;
+  }
+}
+@media (max-width: 1023px) {
+  .sidebar__inner::after {
+    left: 60px;
+  }
+}
+@media (max-width: 767px) {
+  .sidebar__inner::after {
+    display: none;
+  }
+}
+.sidebar__menu {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+  width: 100%;
+}
+.sidebar__menu-title {
+  font-weight: 500;
+}
+.sidebar__menu-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+@media (max-width: 1023px) {
+  .sidebar__menu-list {
+    align-items: center;
+  }
+}
+@media (max-width: 767px) {
+  .sidebar__menu-list {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    background: var(--color-dark-alt);
+    padding-block: 12px;
+  }
+}
+.sidebar__menu-link {
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+}
+@media (max-width: 1023px) {
+  .sidebar__menu-link-icon {
+    width: 32px;
+    height: auto;
+  }
+}
+@media (max-width: 767px) {
+  .sidebar__menu-link-icon {
+    width: 24px;
+  }
+}
+@media (hover: hover) {
+  .sidebar__menu-link:hover {
+    opacity: 1;
+  }
+}
+@media (hover: none) {
+  .sidebar__menu-link:active {
+    opacity: 1;
+  }
+}
+.sidebar__menu-link--inactive {
+  opacity: 0.4;
+}
+.sidebar__playlist {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+.sidebar__playlist-title {
+  font-weight: 500;
+}
+.sidebar__playlist-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+.sidebar__playlist-link {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+@media (hover: hover) {
+  .sidebar__playlist-link:hover {
+    opacity: 0.8;
+  }
+}
+@media (hover: none) {
+  .sidebar__playlist-link:active {
+    opacity: 0.8;
+  }
+}
+.sidebar__playlist-body {
+  display: flex;
+  flex-direction: column;
+}
+.sidebar__playlist-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+.sidebar__playlist-count {
+  font-weight: 500;
+  opacity: 0.4;
+}
+
+.header__back {
+  opacity: 0.6;
+}
+@media (hover: hover) {
+  .header__back:hover {
+    opacity: 1;
+  }
+}
+@media (hover: none) {
+  .header__back:active {
+    opacity: 1;
+  }
+}
+
 .welcome {
   padding-top: 36px;
 }
@@ -727,6 +919,126 @@ h3 {
   .welcome__button {
     height: 50px;
     width: 100%;
+  }
+}
+
+.profile {
+  position: relative;
+  height: 80vh;
+}
+.profile__body {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  box-shadow: var(--box-shadow);
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  width: 501px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.profile__body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -64px;
+  background: var(--color-accent);
+  width: 64px;
+  height: 100%;
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+}
+.profile__body-title {
+  font-weight: 500;
+  opacity: 0.4;
+}
+.profile__body-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.profile__body-update {
+  opacity: 0.4;
+}
+@media (hover: hover) {
+  .profile__body-update:hover {
+    opacity: 1;
+  }
+}
+@media (hover: none) {
+  .profile__body-update:active {
+    opacity: 1;
+  }
+}
+.profile__info {
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+  padding-block: 16px 28px;
+}
+.profile__info-text {
+  display: flex;
+  flex-direction: column;
+}
+.profile__avatar {
+  border-radius: 50%;
+}
+.profile__username {
+  font-size: 16px;
+  font-weight: 500;
+}
+.profile__subscribe {
+  font-weight: 500;
+  color: var(--color-accent);
+}
+.profile__subscribe-opacity {
+  color: var(--color-white);
+  opacity: 0.4;
+}
+.profile__buttons-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 16px;
+}
+.profile__buttons-item {
+  width: 100%;
+}
+.profile__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 4px;
+  width: 100%;
+  border: var(--border-button);
+  border-radius: var(--border-radius);
+  height: var(--button-height);
+}
+@media (hover: hover) {
+  .profile__button:hover {
+    border: var(--border-accent);
+    color: var(--color-white);
+  }
+}
+@media (hover: none) {
+  .profile__button:active {
+    border: var(--border-accent);
+    color: var(--color-white);
+  }
+}
+.profile__button-logout {
+  background: var(--color-red);
+}
+@media (hover: hover) {
+  .profile__button-logout:hover {
+    border: var(--border-red);
+  }
+}
+@media (hover: none) {
+  .profile__button-logout:active {
+    border: var(--border-red);
   }
 }
 
