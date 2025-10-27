@@ -14,9 +14,18 @@ class Artist(models.Model):
     def __str__(self):
         return self.stage_name
 
+    def delete(self, *args, **kwargs):
+        self.user.is_artist = False
+        self.user.save()
+        super().delete(*args, **kwargs)
+
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}".strip()
+
+    class Meta:
+        verbose_name = 'Artist'
+        verbose_name_plural = 'Artists'
 
 
 class ArtistApplication(models.Model):
@@ -36,16 +45,37 @@ class ArtistApplication(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):
-        return {f'Application from {self.user.username} - ({self.get_status_display()})'}
+        return f'Application from {self.user.username} - ({self.get_status_display()})'
+
+    class Meta:
+        verbose_name = 'Artist Application'
+        verbose_name_plural = 'Artist Applications'
 
     def approve(self):
-        if self.status != 'approved' and self.status != 'rejected':
-            Artist.objects.create(user=self.user,
+        if self.status != 'approved':
+
+            if hasattr(self.user, 'artist'):
+                self.user.is_artist = True
+                self.status = 'approved'
+                self.save()
+                return self.user.artist
+
+            artist = Artist.objects.create(user=self.user,
                                   stage_name=self.stage_name,
                                   first_name=self.first_name,
                                   last_name=self.last_name,
                                   )
             self.user.is_artist = True
-            self.user.save()
             self.status = 'approved'
             self.save()
+
+            return artist
+
+    def reject(self):
+        if hasattr(self.user, 'artist'):
+            artist =self.user.artist
+            artist.delete()
+        self.status = 'rejected'
+        self.save()
+
+
