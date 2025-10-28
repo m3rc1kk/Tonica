@@ -79,3 +79,46 @@ class ArtistApplication(models.Model):
         self.save()
 
 
+class Album(models.Model):
+    ALBUM_TYPE_CHOICES = [
+        ('album', 'Album'),
+        ('single', 'Single'),
+    ]
+
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='albums')
+    title = models.CharField(max_length=50)
+    cover = models.ImageField(upload_to='albums/', blank=True, null=True)
+    release_date = models.DateField()
+    album_type = models.CharField(max_length=20, choices=ALBUM_TYPE_CHOICES, default='single')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_published = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.title} ({self.artist.stage_name})'
+
+    @property
+    def track_counts(self):
+        return self.tracks.count()
+
+    class Meta:
+        verbose_name = 'Album'
+        verbose_name_plural = 'Albums'
+
+class Track(models.Model):
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='tracks')
+    title = models.CharField(max_length=50)
+    duration = models.DurationField()
+    audio_file = models.FileField(upload_to='tracks/')
+    order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return f'{self.title} - ({self.album}) - ({self.album.artist.stage_name})'
+
+    class Meta:
+        verbose_name = 'Track'
+        verbose_name_plural = 'Tracks'
+        ordering = ['order']
