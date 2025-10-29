@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.db.models import Count
 
 
 class Artist(models.Model):
@@ -79,6 +80,26 @@ class ArtistApplication(models.Model):
         self.save()
 
 
+
+class AlbumManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().select_related('artist').prefetch_related('tracks')
+
+    def published(self):
+        return self.get_queryset().filter(is_published=True)
+
+    def by_artist(self, artist):
+        return self.get_queryset().filter(artist=artist)
+
+    def for_artist_profile(self, artist, user=None):
+        qs = self.by_artist(artist)
+        if user and user.is_artist and user.artist == artist:
+            return qs
+        return qs.filter(is_published=True)
+
+
+
+
 class Album(models.Model):
     ALBUM_TYPE_CHOICES = [
         ('album', 'Album'),
@@ -94,23 +115,21 @@ class Album(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=False)
 
+    objects = AlbumManager()
+
     def __str__(self):
         return f'{self.title} ({self.artist.stage_name})'
-
-    @property
-    def track_counts(self):
-        return self.tracks.count()
 
     class Meta:
         verbose_name = 'Album'
         verbose_name_plural = 'Albums'
 
+
 class Track(models.Model):
     album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='tracks')
     title = models.CharField(max_length=50)
     duration = models.DurationField()
-    audio_file = models.FileField(upload_to='tracks/')
-    order = models.PositiveIntegerField(default=0)
+    audio_file = models.FileField(upload_to='tracks/', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -121,4 +140,3 @@ class Track(models.Model):
     class Meta:
         verbose_name = 'Track'
         verbose_name_plural = 'Tracks'
-        ordering = ['order']

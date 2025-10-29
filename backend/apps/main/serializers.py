@@ -23,6 +23,7 @@ class ArtistApplicationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 'You are already an artist.'
             )
+
         return ArtistApplication.objects.create(user=user, **validated_data)
 
 
@@ -31,8 +32,11 @@ class TrackSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Track
-        fields = ['id', 'title', 'album', 'duration', 'audio_file','created_at', 'updated_at']
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        fields = ['id', 'title', 'album',
+                  'album_name', 'duration', 'audio_file',
+                  'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at',
+                            'album', 'album_name', 'duration']
 
 class AlbumSerializer(serializers.ModelSerializer):
     tracks = TrackSerializer(many=True, read_only=True)
@@ -40,6 +44,34 @@ class AlbumSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Album
-        fields = ['id', 'title', 'artist_name', 'tracks' 'album', 'album_type', 'cover', 'is_published', 'release_date',
+        fields = ['id', 'title', 'artist_name', 'tracks', 'album_type', 'cover', 'is_published', 'release_date',
                   'created_at', 'updated_at']
-        read_only_fields = ['id', 'created_at', 'updated_at', 'is_published']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'is_published', 'artist_name', 'tracks_count']
+
+class TrackCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Track
+        fields = ['title', 'duration', 'audio_file']
+
+class AlbumCreateSerializer(serializers.ModelSerializer):
+    tracks = TrackCreateSerializer(many=True)
+
+    class Meta:
+        model = Album
+        fields = ['title', 'album_type', 'cover', 'release_date', 'tracks']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        if not user.is_artist:
+            raise serializers.ValidationError(
+                f'You are not an artist.'
+            )
+
+        tracks_data = validated_data.pop('tracks', [])
+
+        album = Album.objects.create(artist=user.artist, **validated_data)
+
+        for track_data in tracks_data:
+            Track.objects.create(album=album, **track_data)
+
+        return album
