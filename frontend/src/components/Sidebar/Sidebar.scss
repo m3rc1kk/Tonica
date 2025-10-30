@@ -4,9 +4,14 @@
   left: 60px;
   top: 47px;
 
+  @include full-screen {
+    left: 16px;
+  }
+
   @include desktop {
-    left: 20px;
+    left: 16px;
     width: 220px;
+    top: 30px;
   }
 
   @include tablet {

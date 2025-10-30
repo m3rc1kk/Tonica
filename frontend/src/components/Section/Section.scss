@@ -1,3 +1,41 @@
 .section {
+    width: calc(100% - 305px);
+    max-width: 1545px;
+    margin-left: 305px;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 40px 0 0 40px;
 
+    @include full-screen {
+        width: calc(100% - 261px);
+        margin-left: 261px;
+        padding-right: 16px;
+    }
+
+    @include desktop {
+        width: calc(100% - 236px);
+        margin-left: 236px;
+        padding-top: 20px;
+    }
+
+    @include tablet {
+        width: calc(100% - 74px);
+        margin-left: 74px;
+    }
+
+    @include mobile {
+        width: 100%;
+        margin: 0;
+        padding: 20px 16px 0 16px;
+    }
+
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        row-gap: 32px;
+
+        @include tablet {
+            row-gap: 24px;
+        }
+    }
 }

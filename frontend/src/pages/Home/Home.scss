@@ -1,0 +1,28 @@
+.home {
+  &__trend {
+    &-list {
+      display: grid;
+
+      gap: 24px;
+
+      @include full-screen {
+        display: flex;
+        flex-direction: column;
+      }
+
+      @include mobile {
+        display: flex;
+        flex-direction: column;
+        row-gap: 16px;
+      }
+    }
+
+    &-item {
+
+      &--album {
+        grid-column: 3;
+        grid-row: 1 / span 2;
+      }
+    }
+  }
+}

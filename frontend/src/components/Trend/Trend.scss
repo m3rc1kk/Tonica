@@ -1,0 +1,160 @@
+.trend {
+  max-width: 580px;
+  width: 100%;
+
+  @include full-screen {
+    max-width: 900px;
+  }
+
+  @include desktop {
+    max-width: 750px;
+  }
+
+  @include tablet {
+    max-width: 620px;
+  }
+
+
+  &__image {
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+
+
+    @include mobile {
+      display: none;
+    }
+
+    &--album {
+      width: 297px;
+      height: 284px;
+      border-radius: var(--border-radius);
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+
+
+  &--album {
+    max-width: 297px;
+    height: 456px;
+
+    @include full-screen {
+      display: none;
+    }
+  }
+
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--color-dark);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+
+    &--album {
+      flex-direction: column;
+      align-items: start;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    width: 330px;
+    padding: 24px;
+    position: relative;
+
+    @include full-screen {
+      width: 650px;
+    }
+
+    @include desktop {
+      width: 500px
+    }
+
+    @include tablet {
+      width: 370px;
+    }
+
+    @include mobile {
+      width: 250px;
+    }
+
+    &--album {
+      order: 1;
+      width: 270px;
+      padding-top: 12px;
+    }
+  }
+
+  &__author {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+
+    &-avatar {
+      border-radius: 50%;
+    }
+
+    &-name {
+      font-size: 16px;
+      font-weight: 500;
+      opacity: .4;
+
+      @include mobile {
+        font-size: 14px;
+      }
+    }
+  }
+
+  &__title {
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--color-accent);
+    padding-block: 4px;
+    text-shadow: 0 0 10px rgba(170, 255, 124, 0.5);
+
+    @include mobile {
+      font-size: 24px;
+    }
+
+    &--album {
+      padding-block: 0;
+    }
+  }
+
+  &__monthly-listeners {
+    padding-bottom: 24px;
+
+    @include mobile {
+      font-size: 12px;
+      padding-bottom: 16px;
+    }
+
+    &--album {
+      padding-bottom: 10px;
+    }
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+
+    &-icon {
+      filter: drop-shadow(0 0 8px rgba(170, 255, 124, 0.3));
+
+    }
+  }
+
+  &__favorite {
+    position: absolute;
+    right: 0;
+
+    @include hover {
+      opacity: .8;
+    }
+  }
+
+}

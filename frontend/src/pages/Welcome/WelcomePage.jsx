@@ -26,10 +26,7 @@ export default function WelcomePage() {
                         <ButtonLink to={'/login'} className={'welcome__button'}>Start listening</ButtonLink>
                         <ButtonLink to={'/login'} className={'welcome__button welcome__button--transparent button--transparent'}>View more</ButtonLink>
 
-                        {/*<ButtonLink to={'/reset-password'} className={'welcome__button welcome__button--transparent button--transparent'}>View more</ButtonLink>
-                        <ButtonLink to={'/reset-password-done'} className={'welcome__button welcome__button--transparent button--transparent'}>View more</ButtonLink>
-                        <ButtonLink to={'/reset-password-confirm'} className={'welcome__button welcome__button--transparent button--transparent'}>View more</ButtonLink>
-                        <ButtonLink to={'/reset-password-complete'} className={'welcome__button welcome__button--transparent button--transparent'}>View more</ButtonLink> */}
+                        
                     </div>
                 </div>
             </div>
