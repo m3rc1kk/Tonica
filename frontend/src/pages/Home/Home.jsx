@@ -7,6 +7,8 @@ import SectionBlock from "../../components/Section/SectionBlock.jsx";
 import Track from "../../components/Track/Track.jsx";
 import TrackList from "../../components/TrackList/TrackList.jsx";
 import AlbumList from "../../components/AlbumList/AlbumList.jsx";
+import GenreList from "../../components/GenreList/GenreList.jsx";
+import ArtistList from "../../components/ArtistList/ArtistList.jsx";
 
 export default function Home() {
     const trends = [
@@ -22,6 +24,22 @@ export default function Home() {
         { id: 3 },
         { id: 4 },
         { id: 5 },
+    ];
+
+    const genres = [
+        { id: 1 },
+        { id: 2 },
+        { id: 3 },
+        { id: 4 },
+        { id: 5 },
+    ];
+
+
+    const artists = [
+        { id: 1 },
+        { id: 2 },
+        { id: 3 },
+        { id: 4 },
     ];
 
     const tracks = [
@@ -88,6 +106,13 @@ export default function Home() {
                     <AlbumList albums={albums} className='new-releases__list' />
                 </SectionBlock>
 
+                <SectionBlock className='genres' title='Genres'>
+                    <GenreList genres={genres} className='genres__list' />
+                </SectionBlock>
+
+                <SectionBlock className='artists section__block-last' title='Trending Artists'>
+                    <ArtistList artists={artists} className='artists__list' />
+                </SectionBlock>
 
             </div>
         </section>

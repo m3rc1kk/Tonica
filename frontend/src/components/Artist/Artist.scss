@@ -1,15 +1,15 @@
-.album {
+.artist {
   position: relative;
-  max-width: 281px;
-  height: 281px;
+  max-width: 358px;
+  height: 383px;
   width: 100%;
 
   @include full-screen {
-    height: 230px;
+    height: 300px;
   }
 
-  @include desktop {
-    height: 180px;
+  @include mobile {
+    height: 230px;
   }
 
   &::before {
@@ -17,7 +17,7 @@
     position: absolute;
     inset: 0;
     border-radius: var(--border-radius);
-    background-image: url('../assets/images/album/album.jpg');
+    background-image: url('../assets/images/artist/pepel.webp');
     background-size: cover;
     background-position: center;
     z-index: 0;
@@ -30,16 +30,13 @@
     border-radius: var(--border-radius);
     background: linear-gradient(
                     to top,
-                    rgba(0, 0, 0, 0.9) 0%,   /* низ — черный, 90% */
-                    rgba(0, 0, 0, 0) 100%   /* верх — прозрачный */
+                    rgba(0, 0, 0, 0.8) 0%,
+                    rgba(0, 0, 0, 0) 100%
     );
     z-index: 1;
   }
 
   &__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     position: absolute;
     bottom: 20px;
     left: 20px;
@@ -50,34 +47,32 @@
   &__info {
     display: flex;
     flex-direction: column;
-
+    row-gap: 2px;
   }
 
-  &__title {
-    font-size: 20px;
+  &__name {
+    font-size: 24px;
     font-weight: 600;
+
+    @include tablet {
+      font-size: 20px;
+    }
 
     @include mobile {
       font-size: 16px;
     }
   }
 
-  &__author {
+  &__listeners {
     font-weight: 500;
     opacity: .8;
-  }
 
-  &__button {
-    &-icon {
-      filter: drop-shadow(0 0 8px rgba(170, 255, 124, 0.3));
-      transition-duration: .2s;
-      @include hover {
-        filter: drop-shadow(0 0 8px rgba(170, 255, 124, 0.8));
-      }
+    @include mobile {
+      font-size: 12px;
+    }
 
-      @include full-screen {
-        display: none;
-      }
+    &--accent {
+      color: var(--color-accent);
     }
   }
 }

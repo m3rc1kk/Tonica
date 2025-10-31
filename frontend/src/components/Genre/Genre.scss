@@ -1,0 +1,71 @@
+.genre {
+  max-width: 281px;
+  height: 281px;
+  width: 100%;
+  border-radius: var(--border-radius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 0 20px rgba(170, 255, 124, 0.4);
+
+  @include hover {
+    box-shadow: 0 0 20px rgba(170, 255, 124, 1);
+  }
+
+  @include full-screen {
+    height: 230px;
+  }
+
+  @include desktop {
+    height: 180px;
+  }
+
+  background: var(--color-accent);
+
+  &__title {
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--color-dark);
+
+    @include full-screen {
+      font-size: 28px;
+    }
+
+    @include desktop {
+      font-size: 24px;
+    }
+
+
+  }
+
+  &__button {
+    font-weight: 500;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    column-gap: 6px;
+    color: var(--color-dark);
+    opacity: .4;
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @include full-screen {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    @include desktop {
+      bottom: 20px;
+    }
+
+
+
+    @include hover {
+      opacity: 1;
+      color: var(--color-dark);
+    }
+  }
+}

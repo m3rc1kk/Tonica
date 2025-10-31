@@ -109,6 +109,10 @@
     padding-block: 4px;
     text-shadow: 0 0 10px rgba(170, 255, 124, 0.5);
 
+    @include hover {
+      text-shadow: 0 0 10px rgba(170, 255, 124, 1);
+    }
+
     @include mobile {
       font-size: 24px;
     }

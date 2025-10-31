@@ -42,8 +42,17 @@
     &__block {
         padding-top: 12px;
 
+        &-last {
+            padding-bottom: 80px;
+        }
+
         &-header {
+            display: inline-block;
             padding-bottom: 24px;
+
+            @include mobile {
+                padding-bottom: 16px;
+            }
         }
 
         &-link {
@@ -52,6 +61,16 @@
             display: flex;
             align-items: center;
             column-gap: 12px;
+
+            @include mobile {
+                font-size: 16px;
+                column-gap: 6px;
+            }
+
+            &-icon {
+                width: 10px;
+                height: auto;
+            }
         }
     }
 }

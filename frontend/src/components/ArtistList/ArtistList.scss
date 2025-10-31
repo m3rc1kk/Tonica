@@ -1,4 +1,4 @@
-.album {
+.artist {
   &__list {
     display: flex;
     align-items: center;
@@ -7,14 +7,12 @@
     @include desktop {
       column-gap: 16px;
     }
-
-
   }
 
 
 
   &__item {
-    width: 281px;
+    width: 358px;
 
     @include desktop {
       &:last-child,

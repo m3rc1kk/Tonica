@@ -3,6 +3,7 @@
   position: fixed;
   left: 60px;
   top: 47px;
+  z-index: 5;
 
   @include full-screen {
     left: 16px;
