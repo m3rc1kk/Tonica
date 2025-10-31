@@ -1,0 +1,28 @@
+.album {
+  &__list {
+    display: flex;
+    align-items: center;
+    column-gap: 24px;
+  }
+
+
+
+  &__item {
+    width: 281px;
+
+    @include desktop {
+      &:last-child,
+      {
+        display: none;
+      }
+    }
+
+    @include mobile {
+      &:nth-child(4),
+      &:nth-child(3) {
+        display: none;
+      }
+    }
+
+  }
+}

@@ -1,0 +1,32 @@
+.track {
+  &__list {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
+    column-gap: 24px;
+    row-gap: 20px;
+
+    @include desktop {
+      .track__item:nth-child(7),
+      .track__item:nth-child(8),
+      .track__item:nth-child(9) {
+        display: none;
+      }
+    }
+
+    @include mobile {
+      grid-template-rows: repeat(4, auto);
+
+      .track__item:nth-child(5),
+      .track__item:nth-child(6) {
+        display: none;
+      }
+    }
+
+  }
+
+  &__item {
+    max-width: 733px;
+    width: 100%;
+  }
+}

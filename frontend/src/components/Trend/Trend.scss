@@ -7,12 +7,9 @@
   }
 
   @include desktop {
-    max-width: 750px;
+    max-width: 100%;
   }
 
-  @include tablet {
-    max-width: 620px;
-  }
 
 
   &__image {
@@ -70,14 +67,6 @@
     }
 
     @include desktop {
-      width: 500px
-    }
-
-    @include tablet {
-      width: 370px;
-    }
-
-    @include mobile {
       width: 250px;
     }
 
@@ -101,6 +90,11 @@
       font-size: 16px;
       font-weight: 500;
       opacity: .4;
+
+      @include hover {
+        opacity: 1;
+        color: var(--color-white);
+      }
 
       @include mobile {
         font-size: 14px;
@@ -144,7 +138,6 @@
 
     &-icon {
       filter: drop-shadow(0 0 8px rgba(170, 255, 124, 0.3));
-
     }
   }
 

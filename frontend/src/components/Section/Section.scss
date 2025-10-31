@@ -2,7 +2,7 @@
     width: calc(100% - 305px);
     max-width: 1545px;
     margin-left: 305px;
-    height: 100vh;
+    min-height: 100vh;
     overflow-y: auto;
     padding: 40px 0 0 40px;
 
@@ -36,6 +36,22 @@
 
         @include tablet {
             row-gap: 24px;
+        }
+    }
+
+    &__block {
+        padding-top: 12px;
+
+        &-header {
+            padding-bottom: 24px;
+        }
+
+        &-link {
+            font-size: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            column-gap: 12px;
         }
     }
 }

@@ -2,7 +2,6 @@
   &__trend {
     &-list {
       display: grid;
-
       gap: 24px;
 
       @include full-screen {
@@ -18,8 +17,18 @@
     }
 
     &-item {
+      width: 580px;
+
+      @include full-screen {
+        width: 900px;
+      }
+
+      @include desktop {
+        width: 100%;
+      }
 
       &--album {
+        width: 297px;
         grid-column: 3;
         grid-row: 1 / span 2;
       }

@@ -11,7 +11,7 @@ export default function Trend({isAlbum=false}) {
             <div className={`trend__body ${isAlbum ? "trend__body--album" : ""}`}>
                 <div className="trend__author">
                     <img src={avatar} width={24} height={24} loading='lazy' alt="" className="trend__author-avatar"/>
-                    <span className={`trend__author-name ${isAlbum ? "trend__author-name--album" : ""}`}>NEWLIGHTCHILD</span>
+                    <ButtonLink to={'/'} className={`trend__author-name ${isAlbum ? "trend__author-name--album" : ""}`}>NEWLIGHTCHILD</ButtonLink>
                 </div>
                 <h1 className={`trend__title ${isAlbum ? "trend__title--album" : ""}`}>AGENT P</h1>
                 <div className={`trend__monthly-listeners ${isAlbum ? "trend__monthly-listeners--album" : ""}`}>

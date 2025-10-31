@@ -1,0 +1,67 @@
+.track {
+  max-width: 733px;
+  width: 100%;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+  }
+
+  &__image {
+    border-radius: var(--border-radius-small);
+
+    &-link {
+      @include hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+  }
+
+  &__chart {
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+
+  &__author {
+    opacity: .4;
+    font-weight: 500;
+
+    @include hover {
+      opacity: 1;
+      color: var(--color-white);
+    }
+  }
+
+  &__control {
+    display: flex;
+    align-items: center;
+    column-gap: 4px;
+
+    &-button {
+      opacity: 0.4;
+
+      @include hover {
+        opacity: 1;
+      }
+    }
+  }
+}

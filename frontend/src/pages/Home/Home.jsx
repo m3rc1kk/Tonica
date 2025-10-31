@@ -3,7 +3,10 @@ import Trend from "../../components/Trend/Trend.jsx";
 import Header from "../../components/Header/Header.jsx";
 import avatar from '../../assets/images/header/avatar.png'
 import home from '../../assets/images/header/home.svg'
-import ButtonLink from "../../components/Button/ButtonLink.jsx";
+import SectionBlock from "../../components/Section/SectionBlock.jsx";
+import Track from "../../components/Track/Track.jsx";
+import TrackList from "../../components/TrackList/TrackList.jsx";
+import AlbumList from "../../components/AlbumList/AlbumList.jsx";
 
 export default function Home() {
     const trends = [
@@ -12,6 +15,44 @@ export default function Home() {
         { id: 3 },
         { id: 4 },
     ];
+
+    const albums = [
+        { id: 1 },
+        { id: 2 },
+        { id: 3 },
+        { id: 4 },
+        { id: 5 },
+    ];
+
+    const tracks = [
+        { id: 1,
+            position: 1
+        },
+        { id: 2,
+            position: 2
+        },
+        { id: 3,
+            position: 3
+        },
+        { id: 4,
+            position: 4
+        },
+        { id: 5,
+            position: 5
+        },
+        { id: 6,
+            position: 6
+        },
+        { id: 7,
+            position: 7
+        },
+        { id: 8,
+            position: 8
+        },
+        { id: 9,
+            position: 9
+        }
+    ]
 
 
     return (
@@ -39,19 +80,15 @@ export default function Home() {
                     </ul>
                 </div>
 
+                <SectionBlock className='charts' title='Charts'>
+                    <TrackList tracks={tracks} className='charts__list' />
+                </SectionBlock>
 
-                {/*
-                <div className="section__block charts">
-                    <header className="section__block-header charts__header">
-                        <ButtonLink to={'/'} className="section__block-link">
-                            Charts
-                        </ButtonLink>
-                    </header>
-                    <div className="section__body charts__body">
+                <SectionBlock className='new-releases' title='New Releases'>
+                    <AlbumList albums={albums} className='new-releases__list' />
+                </SectionBlock>
 
-                    </div>
-                </div>
-                */}
+
             </div>
         </section>
     )
