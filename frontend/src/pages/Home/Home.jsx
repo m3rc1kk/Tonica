@@ -113,7 +113,6 @@ export default function Home() {
                 <SectionBlock className='artists section__block-last' title='Trending Artists'>
                     <ArtistList artists={artists} className='artists__list' />
                 </SectionBlock>
-
             </div>
         </section>
     )

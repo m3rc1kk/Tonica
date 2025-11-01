@@ -13,7 +13,7 @@ export default function Trend({isAlbum=false}) {
                     <img src={avatar} width={24} height={24} loading='lazy' alt="" className="trend__author-avatar"/>
                     <ButtonLink to={'/'} className={`trend__author-name ${isAlbum ? "trend__author-name--album" : ""}`}>NEWLIGHTCHILD</ButtonLink>
                 </div>
-                <ButtonLink to={'/'} className={`trend__title ${isAlbum ? "trend__title--album" : ""}`}>AGENT P</ButtonLink>
+                <ButtonLink to={'/'} className={`trend__title title--accent ${isAlbum ? "trend__title--album" : ""}`}>AGENT P</ButtonLink>
                 <div className={`trend__monthly-listeners ${isAlbum ? "trend__monthly-listeners--album" : ""}`}>
                     <p>564.034 monthly listeners </p>
                 </div>

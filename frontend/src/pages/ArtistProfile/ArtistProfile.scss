@@ -1,0 +1,147 @@
+.artist-profile {
+  &__button {
+
+    @include hover {
+      opacity: .8;
+    }
+    &-icon--play {
+      filter: drop-shadow(0 0 8px rgba(170, 255, 124, 0.3));
+    }
+  }
+
+  &__body {
+    display: flex;
+    align-items: center;
+    column-gap: 40px;
+    background: var(--color-dark);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    position: relative;
+
+    @include tablet {
+      column-gap: 24px;
+    }
+
+    @include mobile {
+      flex-direction: column;
+      column-gap: 16px;
+      background: transparent;
+      box-shadow: none;
+      row-gap: 16px;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--color-accent);
+      width: 74px;
+      height: 100%;
+      border-top-right-radius: var(--border-radius);
+      border-bottom-right-radius: var(--border-radius);
+
+      @include tablet {
+        display: none;
+      }
+    }
+  }
+
+  &__avatar {
+    border-radius: var(--border-radius);
+
+    @include desktop {
+      width: 250px;
+      height: 250px;
+    }
+
+
+
+
+  }
+
+  &__fullname {
+    font-weight: 500;
+    opacity: .4;
+    height: 5px;
+
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+
+    @include mobile {
+      align-items: center;
+    }
+  }
+
+  &__stage-name {
+    font-size: 64px;
+    padding-block: 4px;
+
+    @include desktop {
+      font-size: 40px;
+      padding-top: 12px;
+    }
+
+    @include mobile {
+      font-size: 32px;
+      padding-top: 12px;
+      padding-bottom: 4px;
+    }
+  }
+
+  &__listeners {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 310px;
+    column-gap: 6px;
+    padding: 8px 36px;
+    background: var(--color-dark);
+    border: 1px solid var(--color-dark-alt);
+    border-radius: var(--border-radius);
+    margin-bottom: 24px;
+
+    @include desktop {
+      width: 250px;
+    }
+
+    @include mobile {
+      width: 250px;
+      height: 32px;
+      font-size: 14px;
+      margin-top: 4px;
+      margin-bottom: 12px;
+    }
+
+    &--hidden {
+      @include desktop {
+        display: none;
+      }
+    }
+
+    &--accent {
+      color: var(--color-accent);
+      font-size: 16px;
+
+      @include desktop {
+        font-size: 14px;
+      }
+
+
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+
+    @include tablet {
+      column-gap: 12px;
+    }
+
+  }
+}

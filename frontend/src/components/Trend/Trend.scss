@@ -105,9 +105,7 @@
   &__title {
     font-size: 32px;
     font-weight: 600;
-    color: var(--color-accent);
     padding-block: 4px;
-    text-shadow: 0 0 10px rgba(170, 255, 124, 0.5);
 
     @include hover {
       text-shadow: 0 0 10px rgba(170, 255, 124, 1);

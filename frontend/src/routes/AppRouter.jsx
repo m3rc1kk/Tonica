@@ -7,6 +7,7 @@ import ResetPasswordDone from "../pages/Auth/ResetPassword/ResetPasswordDone.jsx
 import ResetPasswordConfirm from "../pages/Auth/ResetPassword/ResetPasswordConfirm.jsx";
 import Home from "../pages/Home/Home.jsx";
 import Profile from "../pages/Profile/Profile.jsx";
+import ArtistProfile from "../pages/ArtistProfile/ArtistProfile.jsx";
 
 export default function AppRouter() {
     return (
@@ -20,6 +21,7 @@ export default function AppRouter() {
                 <Route path="/password/reset/confirm/:uid/:token" element={<ResetPasswordConfirm />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="artist-profile/" element={<ArtistProfile />} />
             </Routes>
         </BrowserRouter>
     );

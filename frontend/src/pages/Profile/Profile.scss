@@ -16,6 +16,24 @@
     left: 50%;
     transform: translate(-50%, -50%);
 
+    @include full-screen {
+      top: 300px;
+    }
+
+    @include desktop {
+      width: 400px;
+    }
+
+    @include tablet {
+      top: 280px;
+      border-radius: var(--border-radius);
+    }
+
+    @include mobile {
+      width: 340px;
+      top: 260px;
+    }
+
 
 
     &::after {
@@ -28,6 +46,10 @@
       height: 100%;
       border-top-right-radius: var(--border-radius);
       border-bottom-right-radius: var(--border-radius);
+
+      @include tablet {
+        display: none;
+      }
     }
 
     &-title {
@@ -64,6 +86,7 @@
 
   &__avatar {
     border-radius: 50%;
+    aspect-ratio: 1;
   }
 
   &__username {
