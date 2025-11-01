@@ -36,7 +36,7 @@ class UserRegistrationView(generics.CreateAPIView):
 class UserLoginView(generics.GenericAPIView):
     serializer_class = UserLoginSerializer
     permission_classes = (permissions.AllowAny,)
-    throttle_classes = (UserRateThrottle, )
+    #throttle_classes = (UserRateThrottle, )
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -89,7 +89,7 @@ class UserLogoutView(APIView):
 class PasswordResetView(generics.GenericAPIView):
     serializer_class = PasswordResetSerializer
     permission_classes = (permissions.AllowAny, )
-    throttle_classes = [UserRateThrottle]
+    #throttle_classes = [UserRateThrottle]
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, context={'request': request})

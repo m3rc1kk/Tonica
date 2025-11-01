@@ -78,7 +78,7 @@ export default function SignUpPage() {
             localStorage.setItem("refresh", data.refresh);
 
             console.log('User registered: ', data.user)
-            navigate("/main");
+            navigate("/home");
         } catch (err) {
             setError(err.message);
         }

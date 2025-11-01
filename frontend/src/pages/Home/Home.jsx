@@ -4,26 +4,85 @@ import Header from "../../components/Header/Header.jsx";
 import avatar from '../../assets/images/header/avatar.png'
 import home from '../../assets/images/header/home.svg'
 import SectionBlock from "../../components/Section/SectionBlock.jsx";
-import Track from "../../components/Track/Track.jsx";
 import TrackList from "../../components/TrackList/TrackList.jsx";
 import AlbumList from "../../components/AlbumList/AlbumList.jsx";
 import GenreList from "../../components/GenreList/GenreList.jsx";
 import ArtistList from "../../components/ArtistList/ArtistList.jsx";
 
+import { useEffect, useState } from "react";
+import {fetchTrendingArtists, fetchChartTracks, fetchNewReleases} from "../../api/artists.js";
+
 export default function Home() {
+
+    const [artists, setArtists] = useState([]);
+    const [artistLoading, setArtistLoading] = useState(true);
+    const [artistError, setArtistError] = useState(null);
+
+    const [tracks, setTracks] = useState([]);
+    const [tracksLoading, setTracksLoading] = useState(true);
+    const [tracksError, setTracksError] = useState(null);
+
+    const [albums, setAlbums] = useState([]);
+    const [albumsLoading, setAlbumsLoading] = useState(true);
+    const [albumsError, setAlbumsError] = useState(null);
+
+    useEffect(() => {
+        async function loadArtists() {
+            try {
+                const data = await fetchTrendingArtists(5);
+                setArtists(data);
+            } catch(error) {
+                setArtistError(error.message);
+            } finally {
+                setArtistLoading(false);
+            }
+        }
+        loadArtists();
+    }, [])
+
+
+    useEffect(() => {
+        async function loadTracks() {
+            try {
+                const data = await fetchChartTracks(9);
+                setTracks(data);
+            } catch(error) {
+                setTracksError(error.message);
+            } finally {
+                setTracksLoading(false);
+            }
+        }
+        loadTracks();
+    }, [])
+
+    useEffect(() => {
+        async function loadNewReleases() {
+            try {
+                const data = await fetchNewReleases(9);
+                setAlbums(data);
+            } catch(error) {
+                setAlbumsError(error.message);
+            } finally {
+                setAlbumsLoading(false);
+            }
+        }
+        loadNewReleases();
+    }, [])
+
+    if (tracksLoading) return <p>Loading artists...</p>
+    if (tracksError) return <p>Error: {tracksError}</p>;
+
+    if (artistLoading) return <p>Loading artists...</p>
+    if (artistError) return <p>Error: {artistError}</p>;
+
+    if (albumsLoading) return <p>Loading artists...</p>
+    if (albumsError) return <p>Error: {albumsError}</p>;
+
     const trends = [
         { id: 1 },
         { id: 2 },
         { id: 3 },
         { id: 4 },
-    ];
-
-    const albums = [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-        { id: 5 },
     ];
 
     const genres = [
@@ -33,44 +92,6 @@ export default function Home() {
         { id: 4 },
         { id: 5 },
     ];
-
-
-    const artists = [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-    ];
-
-    const tracks = [
-        { id: 1,
-            position: 1
-        },
-        { id: 2,
-            position: 2
-        },
-        { id: 3,
-            position: 3
-        },
-        { id: 4,
-            position: 4
-        },
-        { id: 5,
-            position: 5
-        },
-        { id: 6,
-            position: 6
-        },
-        { id: 7,
-            position: 7
-        },
-        { id: 8,
-            position: 8
-        },
-        { id: 9,
-            position: 9
-        }
-    ]
 
 
     return (

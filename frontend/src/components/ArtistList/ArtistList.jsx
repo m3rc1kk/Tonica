@@ -6,7 +6,7 @@ export default function ArtistList({artists = [], className=''}) {
             {artists.map((artist) => (
                 <li key={artist.id} className="artist__item">
                     <Artist
-                        id={artist.id}
+                        {...artist}
                     />
                 </li>
             ))}

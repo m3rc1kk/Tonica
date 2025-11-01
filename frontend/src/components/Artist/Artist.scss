@@ -3,6 +3,11 @@
   max-width: 358px;
   height: 383px;
   width: 100%;
+  border-radius: var(--border-radius);
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
 
   @include full-screen {
     height: 300px;
@@ -10,17 +15,6 @@
 
   @include mobile {
     height: 230px;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: var(--border-radius);
-    background-image: url('../assets/images/artist/pepel.webp');
-    background-size: cover;
-    background-position: center;
-    z-index: 0;
   }
 
   &::after {

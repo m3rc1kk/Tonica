@@ -1121,6 +1121,10 @@ h3 {
   max-width: 281px;
   height: 281px;
   width: 100%;
+  inset: 0;
+  border-radius: var(--border-radius);
+  background-size: cover;
+  background-position: center;
 }
 @media (max-width: 1860px) {
   .album {
@@ -1131,16 +1135,6 @@ h3 {
   .album {
     height: 180px;
   }
-}
-.album::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: var(--border-radius);
-  background-image: url("../assets/images/album/album.jpg");
-  background-size: cover;
-  background-position: center;
-  z-index: 0;
 }
 .album::after {
   content: "";
@@ -1334,6 +1328,11 @@ h3 {
   max-width: 358px;
   height: 383px;
   width: 100%;
+  border-radius: var(--border-radius);
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
 }
 @media (max-width: 1860px) {
   .artist {
@@ -1344,16 +1343,6 @@ h3 {
   .artist {
     height: 230px;
   }
-}
-.artist::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: var(--border-radius);
-  background-image: url("../assets/images/artist/pepel.webp");
-  background-size: cover;
-  background-position: center;
-  z-index: 0;
 }
 .artist::after {
   content: "";

@@ -20,9 +20,6 @@ class Artist(models.Model):
         self.user.save()
         super().delete(*args, **kwargs)
 
-    @property
-    def full_name(self):
-        return f"{self.first_name} {self.last_name}".strip()
 
     class Meta:
         verbose_name = 'Artist'

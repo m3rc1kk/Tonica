@@ -29,22 +29,25 @@ class ArtistApplicationSerializer(serializers.ModelSerializer):
 
 class TrackSerializer(serializers.ModelSerializer):
     album_name = serializers.CharField(source='album.title', read_only=True)
+    album_cover = serializers.ImageField(source='album.cover', read_only=True)
+    artist_name = serializers.CharField(source='album.artist', read_only=True)
 
     class Meta:
         model = Track
         fields = ['id', 'title', 'album',
-                  'album_name', 'duration', 'audio_file',
+                  'album_name', 'duration', 'audio_file', 'album_cover', 'artist_name',
                   'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at',
                             'album', 'album_name', 'duration']
 
 class AlbumSerializer(serializers.ModelSerializer):
+    artist = ArtistSerializer(read_only=True)
     tracks = TrackSerializer(many=True, read_only=True)
     artist_name = serializers.CharField(source='artist.stage_name', read_only=True)
 
     class Meta:
         model = Album
-        fields = ['id', 'title', 'artist_name', 'tracks', 'album_type', 'cover', 'is_published', 'release_date',
+        fields = ['id', 'title', 'artist', 'artist_name', 'tracks', 'album_type', 'cover', 'is_published', 'release_date',
                   'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at', 'is_published', 'artist_name', 'tracks_count']
 

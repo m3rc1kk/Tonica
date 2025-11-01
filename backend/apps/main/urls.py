@@ -4,6 +4,8 @@ from . import views
 
 router = DefaultRouter()
 router.register('albums', views.AlbumViewSet, basename='albums')
+router.register('artists', views.ArtistViewSet, basename='artists')
+router.register('tracks', views.TrackViewSet, basename='track')
 
 admin_router = DefaultRouter()
 admin_router.register('applications', views.ArtistApplicationAdminViewSet, basename='artist-applications')

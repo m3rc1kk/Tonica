@@ -6,8 +6,7 @@ export default function TrackList({tracks = [], className=''}) {
                 {tracks.map((track) => (
                     <li key={track.id} className="track__item">
                         <Track
-                            id={track.id}
-                            chartPosition={track.position}
+                            {...track}
                         />
                     </li>
                 ))}

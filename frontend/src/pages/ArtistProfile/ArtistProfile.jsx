@@ -10,7 +10,35 @@ import favorite from '../../assets/images/artist-profile/favorite.svg'
 import pin from '../../assets/images/artist-profile/pin.svg'
 import settings from '../../assets/images/artist-profile/settings.svg'
 
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { fetchArtistDetail } from "../../api/artists.js";
+
 export default function ArtistProfile() {
+    const {id} = useParams();
+    const [artist, setArtist] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        async function loadArtistDetail() {
+            try {
+                const data = await fetchArtistDetail(id);
+                setArtist(data);
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadArtistDetail();
+    }, [id])
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+
+    const fullName = `${artist.first_name} ${artist.last_name}`.trim();
+
     const albums = [
         { id: 1 },
         { id: 2 },
@@ -55,10 +83,10 @@ export default function ArtistProfile() {
             <div className="artist-profile__inner section__inner">
                 <HeaderSmall />
                 <div className="artist-profile__body">
-                    <img src={avatar} width={300} height={300} loading='lazy' alt="" className="artist-profile__avatar"/>
+                    <img src={artist.avatar || avatar} width={300} height={300} loading='lazy' alt="" className="artist-profile__avatar"/>
                     <div className="artist-profile__info">
-                        <span className="artist-profile__fullname ">Dmitry Artemyev</span>
-                        <h1 className="artist-profile__stage-name title--accent">Pepel Nahudi</h1>
+                        <span className="artist-profile__fullname ">{fullName}</span>
+                        <h1 className="artist-profile__stage-name title--accent">{ artist.stage_name }</h1>
                         <span className="artist-profile__listeners"><span className="artist-profile__listeners--accent">22.542.342</span>  listeners <span className="artist-profile__listeners--hidden">per month</span> </span>
                         <div className="artist-profile__buttons">
                             <ButtonLink to={'/'} className="artist-profile__play artist-profile__button">

@@ -3,7 +3,8 @@ from rest_framework import generics, permissions
 from rest_framework.exceptions import PermissionDenied
 
 from .models import ArtistApplication, Artist, Album, Track
-from .serializers import ArtistApplicationSerializer, ArtistSerializer, AlbumSerializer, AlbumCreateSerializer
+from .serializers import ArtistApplicationSerializer, ArtistSerializer, AlbumSerializer, AlbumCreateSerializer, \
+    TrackSerializer
 
 
 class ArtistApplicationCreateView(generics.CreateAPIView):
@@ -47,6 +48,12 @@ class ArtistApplicationAdminViewSet(viewsets.ModelViewSet):
             }
         )
 
+class ArtistViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Artist.objects.all().order_by('id')
+    serializer_class = ArtistSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
 
 class AlbumViewSet(viewsets.ModelViewSet):
     queryset = Album.objects.all()
@@ -79,3 +86,10 @@ class AlbumViewSet(viewsets.ModelViewSet):
         if self.action in ['create', 'update', 'partial_update']:
             return AlbumCreateSerializer
         return AlbumSerializer
+
+class TrackViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Track.objects.all()
+    serializer_class = TrackSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+

@@ -41,7 +41,7 @@ export default function SignInPage() {
 
             console.log("User logged in: ", data.user);
 
-            navigate("/main");
+            navigate("/home");
         } catch (err) {
             setError(err.message);
         }

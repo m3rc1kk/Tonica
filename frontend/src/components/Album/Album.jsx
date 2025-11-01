@@ -1,14 +1,32 @@
 import play from "../../assets/images/trend/play.svg";
 import ButtonLink from "../Button/ButtonLink.jsx";
 
-export default function Album()  {
+
+export default function Album({
+    id,
+    title,
+    cover,
+    artist
+                              })  {
+
+    const bgStyle = {
+        backgroundImage: `url(${cover})`,
+    }
+
+    console.log(artist)
+    
     return (
-        <div className="album">
+        <div className="album" style={bgStyle}>
             <div className="album__inner">
-                <ButtonLink to={'/'} className="album__info">
-                    <h2 className="album__title">Want you</h2>
-                    <span className="album__author">lil Kidd</span>
-                </ButtonLink>
+                <div className="album__info">
+                    <ButtonLink to={'/'} className="album__title">{title}</ButtonLink>
+                    {artist && (
+                        <ButtonLink to={`/artist/${artist.id}`} className="album__author">
+                            {artist.stage_name}
+                        </ButtonLink>
+                    )}
+
+                </div>
                 <ButtonLink to={'/'} className="album__button"><img src={play} width={42} height={42} loading='lazy' alt="" className="album__button-icon"/></ButtonLink>
             </div>
         </div>
