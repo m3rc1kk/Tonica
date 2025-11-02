@@ -7,15 +7,18 @@ export default function Track({
     id,
     chartPosition=null,
     title,
-    album_cover,
-    artist_name,
+    album,
 }) {
+
+    const trackCover = album?.cover
+    const trackAuthor = album?.artist.stage_name
+
     return (
         <div className="track">
             <div className="track__inner">
                 <div className="track__info">
                     <ButtonLink to={'/'} className="track__image-link">
-                        <img src={album_cover} height={44} width={44} loading='lazy' alt="" className="track__image"/>
+                        <img src={trackCover} height={44} width={44} loading='lazy' alt="" className="track__image"/>
                     </ButtonLink>
                     <div className="track__body">
                         <h3 className="track__title">
@@ -24,7 +27,7 @@ export default function Track({
                                 <span className="track__chart">{chartPosition} place in charts</span>
                             )}
                         </h3>
-                        <ButtonLink to={'/'} className="track__author">{artist_name}</ButtonLink>
+                        <ButtonLink to={'/'} className="track__author">{trackAuthor}</ButtonLink>
                     </div>
                 </div>
                 <div className="track__control">

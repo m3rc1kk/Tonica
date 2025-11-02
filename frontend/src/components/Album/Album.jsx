@@ -13,7 +13,6 @@ export default function Album({
         backgroundImage: `url(${cover})`,
     }
 
-    console.log(artist)
     
     return (
         <div className="album" style={bgStyle}>

@@ -23,6 +23,7 @@
   }
 
   &__avatar {
+    border-radius: 50%;
     @include tablet {
       width: 24px;
       height: 24px;

@@ -4,16 +4,28 @@ import favorite from '../../assets/images/trend/favorite.svg'
 import album from '../../assets/images/trend/album.png'
 import play from '../../assets/images/trend/play.svg'
 
-export default function Trend({isAlbum=false}) {
+
+
+export default function Trend({
+    isAlbum = false,
+    title,
+    album,
+    cover,
+    artist
+}) {
+    const artistName = isAlbum ? artist.stage_name : album?.artist.stage_name
+    const artistAvatar = isAlbum ? artist.avatar : album?.artist.avatar
+    const cov = isAlbum ? cover : album?.cover
+
     return (
         <div className={`trend ${isAlbum ? "trend--album" : ""}`}>
             <div className={`trend__inner ${isAlbum ? "trend__inner--album" : ""}`}>
             <div className={`trend__body ${isAlbum ? "trend__body--album" : ""}`}>
                 <div className="trend__author">
-                    <img src={avatar} width={24} height={24} loading='lazy' alt="" className="trend__author-avatar"/>
-                    <ButtonLink to={'/'} className={`trend__author-name ${isAlbum ? "trend__author-name--album" : ""}`}>NEWLIGHTCHILD</ButtonLink>
+                    <img src={artistAvatar || avatar} width={24} height={24} loading='lazy' alt="" className="trend__author-avatar"/>
+                    <ButtonLink to={'/'} className={`trend__author-name ${isAlbum ? "trend__author-name--album" : ""}`}>{artistName}</ButtonLink>
                 </div>
-                <ButtonLink to={'/'} className={`trend__title title--accent ${isAlbum ? "trend__title--album" : ""}`}>AGENT P</ButtonLink>
+                <ButtonLink to={'/'} className={`trend__title title--accent ${isAlbum ? "trend__title--album" : ""}`}>{title}</ButtonLink>
                 <div className={`trend__monthly-listeners ${isAlbum ? "trend__monthly-listeners--album" : ""}`}>
                     <p>564.034 monthly listeners </p>
                 </div>
@@ -22,7 +34,7 @@ export default function Trend({isAlbum=false}) {
                     <img src={favorite} width={24} height={24} loading='lazy' alt="" className="trend__favorite-icon"/>
                 </ButtonLink>
             </div>
-            <img src={album} width={216} height={216} loading='lazy' alt="" className={`trend__image ${isAlbum ? "trend__image--album" : ""}`}/>
+            <img src={cov} width={216} height={216} loading='lazy' alt="" className={`trend__image ${isAlbum ? "trend__image--album" : ""}`}/>
             </div>
         </div>
     )

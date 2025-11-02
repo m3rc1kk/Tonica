@@ -82,3 +82,34 @@ export async function resetPasswordConfirm(uid, token, newPassword, newPasswordC
         throw new Error("Network error");
     }
 }
+
+export async function logoutUser() {
+    try {
+        const refresh = localStorage.getItem("refresh");
+        if (!refresh) throw new Error('We cannot perform this operation')
+
+        await api.post('auth/logout/', {refresh})
+
+        localStorage.removeItem('access')
+        localStorage.removeItem('refresh')
+
+        return true
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.error || "Failed to logout")
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function fetchUserProfile() {
+    try {
+        const response = await api.get('auth/profile/');
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load user profile");
+        }
+        throw new Error('Network Error')
+    }
+}

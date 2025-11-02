@@ -12,7 +12,7 @@ import settings from '../../assets/images/artist-profile/settings.svg'
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchArtistDetail } from "../../api/artists.js";
+import { fetchArtistDetail } from "../../api/musicAPI.js";
 
 export default function ArtistProfile() {
     const {id} = useParams();

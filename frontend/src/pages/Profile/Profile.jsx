@@ -6,13 +6,45 @@ import artistIcon from "../../assets/images/profile/artist.svg";
 import logoutIcon from "../../assets/images/profile/logout.svg";
 import settingsIcon from "../../assets/images/profile/settings.svg";
 import userAvatar from "../../assets/images/profile/user-avatar.png";
+import {useEffect, useState} from "react";
+import {fetchUserProfile, logoutUser} from "../../api/auth.js";
+import {useNavigate} from "react-router-dom";
 
 export default function Profile() {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        async function loadUser() {
+            try {
+                const data = await fetchUserProfile();
+                setUser(data);
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadUser();
+    }, [])
+
+    if (loading) return <p>Loading profile...</p>
+    if (error) return <p>Error: {error}</p>;
+
+
+    const handleLogout = async() => {
+        try {
+            await logoutUser();
+            navigate("/auth/login");
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
     return (
         <>
-
-
-
             <section className="profile container section">
                 <Sidebar />
                 <div className="profile__inner section__inner">
@@ -30,11 +62,11 @@ export default function Profile() {
 
                         <div className="profile__info">
                             <div className="profile__avatar">
-                                <img src={userAvatar} width={52} height={52} loading='lazy' alt="" className="profile__avatar-image"/>
+                                <img src={user.avatar} width={52} height={52} loading='lazy' alt="" className="profile__avatar-image"/>
                             </div>
 
                             <div className="profile__info-text">
-                                <h3 className="profile__username">m3rc1k</h3>
+                                <h3 className="profile__username">{user.username}</h3>
                                 <span className="profile__subscribe">
                                     Premium Subscribe <span className="profile__subscribe-opacity">(24 days left)</span>
                                 </span>
@@ -56,7 +88,7 @@ export default function Profile() {
                                     </ButtonLink>
                                 </li>
                                 <li className="profile__buttons-item">
-                                    <ButtonLink to={'/'} className='profile__button profile__button-logout'>
+                                    <ButtonLink onClick={handleLogout} className='profile__button profile__button-logout'>
                                         Logout
                                         <img src={logoutIcon} width={16} height={16} loading='lazy' alt="Logout" className="profile__button-icon"/>
                                     </ButtonLink>

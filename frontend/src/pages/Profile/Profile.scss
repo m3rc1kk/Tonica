@@ -2,6 +2,12 @@
   position: relative;
   height: 80vh;
 
+  &__avatar {
+    &-image {
+      border-radius: 50%;
+    }
+  }
+
   &__body {
     display: flex;
     flex-direction: column;
@@ -134,9 +140,12 @@
 
     &-logout {
       background: var(--color-red);
+      color: var(--color-white);
+      cursor: pointer;
 
       @include hover {
         border: var(--border-red);
+        box-shadow: none;
       }
     }
   }

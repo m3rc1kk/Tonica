@@ -10,7 +10,7 @@ import GenreList from "../../components/GenreList/GenreList.jsx";
 import ArtistList from "../../components/ArtistList/ArtistList.jsx";
 
 import { useEffect, useState } from "react";
-import {fetchTrendingArtists, fetchChartTracks, fetchNewReleases} from "../../api/artists.js";
+import {fetchTrendAlbum, fetchTrendTracks, fetchTrendingArtists, fetchChartTracks, fetchNewReleases} from "../../api/musicAPI.js";
 
 export default function Home() {
 
@@ -25,6 +25,31 @@ export default function Home() {
     const [albums, setAlbums] = useState([]);
     const [albumsLoading, setAlbumsLoading] = useState(true);
     const [albumsError, setAlbumsError] = useState(null);
+
+    const [trendTracks, setTrendTracks] = useState([]);
+    const [trendAlbum, setTrendAlbum] = useState(null);
+    const [trendError, setTrendError] = useState(null);
+    const [trendLoading, setTrendLoading] = useState(true);
+
+
+    useEffect(() => {
+        async function loadTrends() {
+            try {
+                const [tracks, album] = await Promise.all([
+                    fetchTrendTracks(4),
+                    fetchTrendAlbum()
+                ]);
+                setTrendTracks(tracks);
+                setTrendAlbum(album[0]);
+            } catch(error) {
+                setTrendError(error.message);
+            } finally {
+                setTrendLoading(false);
+            }
+        }
+        loadTrends();
+    }, [])
+
 
     useEffect(() => {
         async function loadArtists() {
@@ -69,21 +94,17 @@ export default function Home() {
         loadNewReleases();
     }, [])
 
-    if (tracksLoading) return <p>Loading artists...</p>
+    if (tracksLoading) return <p>Loading tracks...</p>
     if (tracksError) return <p>Error: {tracksError}</p>;
 
     if (artistLoading) return <p>Loading artists...</p>
     if (artistError) return <p>Error: {artistError}</p>;
 
-    if (albumsLoading) return <p>Loading artists...</p>
+    if (albumsLoading) return <p>Loading albums...</p>
     if (albumsError) return <p>Error: {albumsError}</p>;
 
-    const trends = [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-    ];
+    if (trendLoading) return <p>Loading trends...</p>
+    if (trendError) return <p>Error: {trendError}</p>;
 
     const genres = [
         { id: 1 },
@@ -106,14 +127,14 @@ export default function Home() {
                 />
                 <div className="home__trend">
                     <ul className="home__trend-list">
-                        {trends.map((trend) => (
+                        {trendTracks.map((trend) => (
                             <li key={trend.id} className="home__trend-item">
-                                <Trend />
+                                <Trend {...trend}/>
                             </li>
                         ))}
 
                         <li className="home__trend-item home__trend-item--album">
-                            <Trend isAlbum />
+                            <Trend {...trendAlbum} isAlbum={true} />
                         </li>
 
                     </ul>

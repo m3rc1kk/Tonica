@@ -27,15 +27,21 @@ class ArtistApplicationSerializer(serializers.ModelSerializer):
         return ArtistApplication.objects.create(user=user, **validated_data)
 
 
+class SimpleAlbumSerializer(serializers.ModelSerializer):
+    artist = ArtistSerializer(read_only=True)
+
+    class Meta:
+        model = Album
+        fields = ['id', 'title', 'artist', 'cover']
+        read_only_fields = ['id', 'artist']
+
 class TrackSerializer(serializers.ModelSerializer):
-    album_name = serializers.CharField(source='album.title', read_only=True)
-    album_cover = serializers.ImageField(source='album.cover', read_only=True)
-    artist_name = serializers.CharField(source='album.artist', read_only=True)
+    album = SimpleAlbumSerializer(read_only=True)
 
     class Meta:
         model = Track
         fields = ['id', 'title', 'album',
-                  'album_name', 'duration', 'audio_file', 'album_cover', 'artist_name',
+                 'duration', 'audio_file',
                   'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at',
                             'album', 'album_name', 'duration']

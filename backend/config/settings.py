@@ -149,7 +149,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
@@ -160,20 +160,19 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.FormParser',
     ],
 
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.UserRateThrottle',
-    ],
-    'DEFAULT_THROTTLE_RATES': {
-        'user': '10/min',
-    }
+    #'DEFAULT_THROTTLE_CLASSES': [
+    #    'rest_framework.throttling.UserRateThrottle',
+    #],
+    #'DEFAULT_THROTTLE_RATES': {
+    #    'user': '10/min',
+    #}
 }
 
 from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-    'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': True,
+    'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_TOKEN_CHECKS': ['access', 'refresh'],
     'UPDATE_LAST_LOGIN': True,
     'ALGORITHM': 'HS256',

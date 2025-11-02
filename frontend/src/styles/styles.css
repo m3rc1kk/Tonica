@@ -968,6 +968,9 @@ h3 {
     font-size: 14px;
   }
 }
+.header__avatar {
+  border-radius: 50%;
+}
 @media (max-width: 1023px) {
   .header__avatar {
     width: 24px;
@@ -1679,6 +1682,9 @@ h3 {
   position: relative;
   height: 80vh;
 }
+.profile__avatar-image {
+  border-radius: 50%;
+}
 .profile__body {
   display: flex;
   flex-direction: column;
@@ -1811,15 +1817,19 @@ h3 {
 }
 .profile__button-logout {
   background: var(--color-red);
+  color: var(--color-white);
+  cursor: pointer;
 }
 @media (hover: hover) {
   .profile__button-logout:hover {
     border: var(--border-red);
+    box-shadow: none;
   }
 }
 @media (hover: none) {
   .profile__button-logout:active {
     border: var(--border-red);
+    box-shadow: none;
   }
 }
 
