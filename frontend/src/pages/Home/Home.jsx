@@ -27,7 +27,7 @@ export default function Home() {
     const [albumsError, setAlbumsError] = useState(null);
 
     const [trendTracks, setTrendTracks] = useState([]);
-    const [trendAlbum, setTrendAlbum] = useState(null);
+    const [trendAlbum, setTrendAlbum] = useState([]);
     const [trendError, setTrendError] = useState(null);
     const [trendLoading, setTrendLoading] = useState(true);
 

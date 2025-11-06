@@ -15,7 +15,7 @@
     width: 358px;
 
     @include desktop {
-      &:last-child,
+      &:nth-child(5),
       {
         display: none;
       }

@@ -4,7 +4,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from .models import ArtistApplication, Artist, Album, Track
 from .serializers import ArtistApplicationSerializer, ArtistSerializer, AlbumSerializer, AlbumCreateSerializer, \
-    TrackSerializer
+    TrackSerializer, TrackCreateSerializer
 
 
 class ArtistApplicationCreateView(generics.CreateAPIView):
@@ -87,9 +87,48 @@ class AlbumViewSet(viewsets.ModelViewSet):
             return AlbumCreateSerializer
         return AlbumSerializer
 
-class TrackViewSet(viewsets.ReadOnlyModelViewSet):
+
+
+
+
+class TrackViewSet(viewsets.ModelViewSet):
     queryset = Track.objects.all()
     serializer_class = TrackSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        if self.action == 'list':
+            artist_id = self.request.query_params.get('artist_id')
+            qs = super().get_queryset().select_related('album', 'album__artist')
+            if artist_id:
+                artist = get_object_or_404(Artist, pk=artist_id)
+                qs = qs.filter(album__artist=artist)
+
+                if not (self.request.user.is_artist and self.request.user.artist == artist):
+                    qs = qs.filter(album__is_published=True)
+            else:
+                qs = qs.filter(album__is_published=True)
+            return qs
+
+        return super().get_queryset()
+
+    def get_object(self):
+        obj = super().get_object()
+
+        if not obj.album.is_published:
+            if not ((self.request.user.is_artist and self.request.user.artist == obj.album.artist) or self.request.user.is_staff):
+                raise PermissionDenied("You do not have permission to view this track.")
+
+        if self.action in ['update', 'partial_update', 'destroy']:
+            if not ((
+                            self.request.user.is_artist and self.request.user.artist == obj.album.artist) or self.request.user.is_staff):
+                raise PermissionDenied("You do not have permission to modify this track.")
+
+        return obj
+
+    def get_serializer_class(self):
+        if self.action in ['create', 'update', 'partial_update']:
+            return TrackCreateSerializer
+        return TrackSerializer
 
 

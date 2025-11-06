@@ -6,12 +6,9 @@ router = DefaultRouter()
 router.register('albums', views.AlbumViewSet, basename='albums')
 router.register('artists', views.ArtistViewSet, basename='artists')
 router.register('tracks', views.TrackViewSet, basename='track')
-
-admin_router = DefaultRouter()
-admin_router.register('applications', views.ArtistApplicationAdminViewSet, basename='artist-applications')
+router.register('applications/admin', views.ArtistApplicationAdminViewSet, basename='artist-applications')
 
 urlpatterns = [
-    path('apply/', views.ArtistApplicationCreateView.as_view(), name='artist-apply'),
-    path('admin/', include(admin_router.urls)),
+    path('application/apply/', views.ArtistApplicationCreateView.as_view(), name='artist-apply'),
     path('', include(router.urls)),
 ]

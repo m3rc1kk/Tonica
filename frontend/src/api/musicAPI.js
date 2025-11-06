@@ -71,3 +71,58 @@ export async function fetchTrendAlbum(limit=1) {
         throw new Error("Network error");
     }
 }
+
+
+export async function fetchArtistAlbums(artistId, limit=5) {
+    try {
+        const response = await api.get(`albums/?artist_id=${artistId}&limit=${limit}`);
+        return response.data.results;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load albums");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function fetchArtistTracks(artistId, limit=9) {
+    try {
+        const response = await api.get(`tracks/?artist_id=${artistId}&limit=${limit}`);
+        return response.data.results;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load tracks");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function submitArtistApplication(data) {
+    try {
+        const response = await api.post(`application/apply/`, data);
+        return response.data
+    } catch (error) {
+        let message = "Unknown error";
+
+        if (error.response?.data) {
+            const data = error.response.data;
+
+            if (data.detail) {
+                // DRF возвращает detail при PermissionDenied и некоторых ValidationError
+                message = data.detail;
+            } else if (data.non_field_errors) {
+                message = data.non_field_errors[0];
+            } else {
+                // любые поля
+                const firstKey = Object.keys(data)[0];
+                if (Array.isArray(data[firstKey])) {
+                    message = data[firstKey][0];
+                } else if (typeof data[firstKey] === "string") {
+                    message = data[firstKey];
+                }
+            }
+        }
+
+        throw new Error(message);
+    }
+}

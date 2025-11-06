@@ -7,6 +7,7 @@ export default function AlbumList({albums = [], className=''}) {
                 <li key={album.id} className="album__item">
                     <Album
                         {...album}
+
                     />
                 </li>
             ))}

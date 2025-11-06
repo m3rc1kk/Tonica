@@ -7,7 +7,7 @@ class ArtistAdmin(admin.ModelAdmin):
 
 @admin.register(ArtistApplication)
 class ArtistApplicationAdmin(admin.ModelAdmin):
-    list_display = ('user', 'stage_name', 'status', 'created_at')
+    list_display = ('id','user', 'stage_name', 'status', 'created_at')
 
 
 @admin.register(Album)

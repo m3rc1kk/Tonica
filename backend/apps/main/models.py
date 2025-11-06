@@ -51,7 +51,6 @@ class ArtistApplication(models.Model):
 
     def approve(self):
         if self.status != 'approved':
-
             if hasattr(self.user, 'artist'):
                 self.user.is_artist = True
                 self.status = 'approved'

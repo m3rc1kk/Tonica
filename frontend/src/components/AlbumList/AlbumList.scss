@@ -7,8 +7,6 @@
     @include desktop {
       column-gap: 16px;
     }
-
-
   }
 
 
@@ -17,7 +15,7 @@
     width: 281px;
 
     @include desktop {
-      &:last-child,
+      &:nth-child(5)
       {
         display: none;
       }

@@ -13,8 +13,8 @@ export default function Trend({
     cover,
     artist
 }) {
-    const artistName = isAlbum ? artist.stage_name : album?.artist.stage_name
-    const artistAvatar = isAlbum ? artist.avatar : album?.artist.avatar
+    const artistName = isAlbum ? artist?.stage_name : album?.artist.stage_name
+    const artistAvatar = isAlbum ? artist?.avatar : album?.artist.avatar
     const cov = isAlbum ? cover : album?.cover
 
     return (

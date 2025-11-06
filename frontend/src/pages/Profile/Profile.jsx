@@ -82,10 +82,16 @@ export default function Profile() {
                                     </ButtonLink>
                                 </li>
                                 <li className="profile__buttons-item">
-                                    <ButtonLink to={'/'} className='profile__button'>
+                                    {user.is_artist ?
+                                        <ButtonLink to={'/'} className='profile__button'>
+                                            Your Artist Profile
+                                            <img src={artistIcon} width={16} height={16} loading='lazy' alt="Artist" className="profile__button-icon"/>
+                                        </ButtonLink> :
+                                    <ButtonLink to={'/application/apply/'} className='profile__button'>
                                         Become Artist
                                         <img src={artistIcon} width={16} height={16} loading='lazy' alt="Artist" className="profile__button-icon"/>
                                     </ButtonLink>
+                                    }
                                 </li>
                                 <li className="profile__buttons-item">
                                     <ButtonLink onClick={handleLogout} className='profile__button profile__button-logout'>

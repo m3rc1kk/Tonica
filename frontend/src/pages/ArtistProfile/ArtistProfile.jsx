@@ -10,21 +10,29 @@ import favorite from '../../assets/images/artist-profile/favorite.svg'
 import pin from '../../assets/images/artist-profile/pin.svg'
 import settings from '../../assets/images/artist-profile/settings.svg'
 
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
-import { fetchArtistDetail } from "../../api/musicAPI.js";
+import {fetchArtistAlbums, fetchArtistDetail, fetchArtistTracks, fetchNewReleases} from "../../api/musicAPI.js";
 
 export default function ArtistProfile() {
     const {id} = useParams();
     const [artist, setArtist] = useState(null);
+    const [albums, setAlbums] = useState([]);
+    const [tracks, setTracks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         async function loadArtistDetail() {
             try {
-                const data = await fetchArtistDetail(id);
-                setArtist(data);
+                const artistData = await fetchArtistDetail(id);
+                setArtist(artistData);
+
+                const albumsData = await fetchArtistAlbums(id, 5)
+                setAlbums(albumsData)
+
+                const tracksData = await fetchArtistTracks(id, 9);
+                setTracks(tracksData)
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -38,44 +46,6 @@ export default function ArtistProfile() {
     if (error) return <p>Error: {error}</p>;
 
     const fullName = `${artist.first_name} ${artist.last_name}`.trim();
-
-    const albums = [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-        { id: 5 },
-    ];
-
-    const tracks = [
-        { id: 1,
-            position: 1
-        },
-        { id: 2,
-            position: 2
-        },
-        { id: 3,
-            position: 3
-        },
-        { id: 4,
-            position: 4
-        },
-        { id: 5,
-            position: 5
-        },
-        { id: 6,
-            position: 6
-        },
-        { id: 7,
-            position: 7
-        },
-        { id: 8,
-            position: 8
-        },
-        { id: 9,
-            position: 9
-        }
-    ]
 
     return (
         <section className="artist-profile section container">

@@ -32,7 +32,7 @@ class SimpleAlbumSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Album
-        fields = ['id', 'title', 'artist', 'cover']
+        fields = ['id', 'title', 'artist', 'cover', 'is_published']
         read_only_fields = ['id', 'artist']
 
 class TrackSerializer(serializers.ModelSerializer):
@@ -49,11 +49,10 @@ class TrackSerializer(serializers.ModelSerializer):
 class AlbumSerializer(serializers.ModelSerializer):
     artist = ArtistSerializer(read_only=True)
     tracks = TrackSerializer(many=True, read_only=True)
-    artist_name = serializers.CharField(source='artist.stage_name', read_only=True)
 
     class Meta:
         model = Album
-        fields = ['id', 'title', 'artist', 'artist_name', 'tracks', 'album_type', 'cover', 'is_published', 'release_date',
+        fields = ['id', 'title', 'artist', 'tracks', 'album_type', 'cover', 'is_published', 'release_date',
                   'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at', 'is_published', 'artist_name', 'tracks_count']
 

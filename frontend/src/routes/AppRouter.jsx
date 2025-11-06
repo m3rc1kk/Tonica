@@ -8,6 +8,7 @@ import ResetPasswordConfirm from "../pages/Auth/ResetPassword/ResetPasswordConfi
 import Home from "../pages/Home/Home.jsx";
 import Profile from "../pages/Profile/Profile.jsx";
 import ArtistProfile from "../pages/ArtistProfile/ArtistProfile.jsx";
+import ArtistApplicationForm from "../pages/ApplicationApply/ApplicationApply.jsx";
 
 export default function AppRouter() {
     return (
@@ -22,6 +23,7 @@ export default function AppRouter() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/artist/:id" element={<ArtistProfile />} />
+                <Route path="/application/apply/" element={<ArtistApplicationForm />} />
             </Routes>
         </BrowserRouter>
     );
