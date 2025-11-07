@@ -1,19 +1,24 @@
 .button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 500;
-  width: 394px;
-
-  height: var(--button-height);
-  background-color: var(--color-accent);
-  border-radius: var(--border-radius);
-  color: var(--color-dark);
   border: 0;
   padding: 0;
+  background-color: transparent;
+  &__form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    width: 394px;
 
-  @include hover {
-    box-shadow: var(--box-shadow-button);
+    height: var(--button-height);
+    background-color: var(--color-accent);
+    border-radius: var(--border-radius);
+    color: var(--color-dark);
+    border: 0;
+    padding: 0;
+
+    @include hover {
+      box-shadow: var(--box-shadow-button);
+    }
   }
 
   &--transparent {

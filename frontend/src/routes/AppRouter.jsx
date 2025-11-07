@@ -9,10 +9,11 @@ import Home from "../pages/Home/Home.jsx";
 import Profile from "../pages/Profile/Profile.jsx";
 import ArtistProfile from "../pages/ArtistProfile/ArtistProfile.jsx";
 import ArtistApplicationForm from "../pages/ApplicationApply/ApplicationApply.jsx";
+import AlbumPage from "../pages/AlbumPage/AlbumPage.jsx";
 
 export default function AppRouter() {
     return (
-        <BrowserRouter>
+        <>
             <Routes>
                 <Route path="/" element={<WelcomePage />} />
                 <Route path="auth/login" element={<SignInPage />} />
@@ -24,7 +25,8 @@ export default function AppRouter() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/artist/:id" element={<ArtistProfile />} />
                 <Route path="/application/apply/" element={<ArtistApplicationForm />} />
+                <Route path="/album/:id" element={<AlbumPage />} />
             </Routes>
-        </BrowserRouter>
+        </>
     );
 }

@@ -18,8 +18,14 @@
     border-radius: var(--border-radius-small);
 
     &-link {
+
+      background-color: transparent;
+      width: 44px;
+      height: 44px;
+
       @include hover {
         opacity: 0.8;
+        box-shadow: none;
       }
     }
   }

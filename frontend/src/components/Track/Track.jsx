@@ -1,23 +1,30 @@
 import ButtonLink from "../Button/ButtonLink.jsx";
-import trackImage from '../../assets/images/track/track-image.png'
 import favorite from '../../assets/images/track/favorite.svg'
 import settings from '../../assets/images/track/settings.svg'
+import { usePlayer } from '../../context/PlayerContext.jsx';
 
 export default function Track({
     id,
     chartPosition=null,
     title,
     album,
+    audio_file,
+    className=''
 }) {
+
+    const { currentTrack, isPlaying, playTrack } = usePlayer();
+
 
     const trackCover = album?.cover
     const trackAuthor = album?.artist.stage_name
 
     return (
-        <div className="track">
+        <div className={`track ${className}`}>
             <div className="track__inner">
                 <div className="track__info">
-                    <ButtonLink to={'/'} className="track__image-link">
+                    <ButtonLink
+                        onClick={() => playTrack({ id, title, album, audio_file })}
+                        className="track__image-link button__link">
                         <img src={trackCover} height={44} width={44} loading='lazy' alt="" className="track__image"/>
                     </ButtonLink>
                     <div className="track__body">

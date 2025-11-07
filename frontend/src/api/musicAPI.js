@@ -126,3 +126,17 @@ export async function submitArtistApplication(data) {
         throw new Error(message);
     }
 }
+
+export async function fetchAlbumDetail(albumId) {
+    try {
+        const response = await api.get(`albums/${albumId}/`);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load album");
+        }
+        throw new Error("Network error");
+    }
+}
+
+

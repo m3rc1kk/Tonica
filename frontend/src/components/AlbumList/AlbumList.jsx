@@ -6,7 +6,7 @@ export default function AlbumList({albums = [], className=''}) {
             {albums.map((album) => (
                 <li key={album.id} className="album__item">
                     <Album
-                        {...album}
+                        album={album}
 
                     />
                 </li>

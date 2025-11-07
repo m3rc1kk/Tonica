@@ -3,14 +3,11 @@ import ButtonLink from "../Button/ButtonLink.jsx";
 
 
 export default function Album({
-    id,
-    title,
-    cover,
-    artist
+    album,
                               })  {
 
     const bgStyle = {
-        backgroundImage: `url(${cover})`,
+        backgroundImage: `url(${album.cover})`,
     }
 
     
@@ -18,15 +15,15 @@ export default function Album({
         <div className="album" style={bgStyle}>
             <div className="album__inner">
                 <div className="album__info">
-                    <ButtonLink to={'/'} className="album__title">{title}</ButtonLink>
-                    {artist && (
-                        <ButtonLink to={`/artist/${artist.id}`} className="album__author">
-                            {artist.stage_name}
+                    <ButtonLink to={`/album/${album.id}`} className="album__title">{album.title}</ButtonLink>
+                    {album.artist && (
+                        <ButtonLink to={`/artist/${album.artist.id}`} className="album__author">
+                            {album.artist.stage_name}
                         </ButtonLink>
                     )}
 
                 </div>
-                <ButtonLink to={'/'} className="album__button"><img src={play} width={42} height={42} loading='lazy' alt="" className="album__button-icon"/></ButtonLink>
+                <ButtonLink to={`/`} className="album__button"><img src={play} width={42} height={42} loading='lazy' alt="" className="album__button-icon"/></ButtonLink>
             </div>
         </div>
     )

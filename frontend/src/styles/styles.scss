@@ -8,6 +8,7 @@
         '../components/Section/Section',
         '../components/HeaderSmall/HeaderSmall',
         '../components/Trend/Trend',
+        '../components/Card/Card',
         '../components/Header/Header',
         '../components/Track/Track',
         '../components/TrackList/TrackList',
@@ -17,6 +18,7 @@
         '../components/GenreList/GenreList',
         '../components/Artist/Artist',
         '../components/ArtistList/ArtistList',
+        '../components/Player/Player',
         '../pages/Welcome/WelcomePage',
         '../pages/Auth/SignIn/SignIn',
         '../pages/Auth/SignUp/SignUp',
@@ -24,4 +26,6 @@
         '../pages/Home/Home',
         '../pages/Profile/Profile',
         '../pages/ArtistProfile/ArtistProfile',
-        '../pages/ApplicationApply/ApplicationApply';
+        '../pages/ApplicationApply/ApplicationApply',
+        '../pages/AlbumPage/AlbumPage',
+        '../pages/TrackPage/TrackPage';
