@@ -2,18 +2,32 @@ import { usePlayer } from "../../context/PlayerContext";
 import ButtonLink from "../Button/ButtonLink.jsx";
 import favorite from '../../assets/images/artist-profile/favorite.svg'
 import play from '../../assets/images/Player/play.svg'
+import pause from '../../assets/images/Player/pause.svg'
 import prev from '../../assets/images/Player/prev.svg'
 import next from '../../assets/images/Player/next.svg'
 import settings from '../../assets/images/Player/settings.svg'
-import volume from '../../assets/images/Player/volume.svg'
+import volumeIcon from '../../assets/images/Player/volume.svg'
 import text from '../../assets/images/Player/text.svg'
-
+import { useState } from 'react'
 
 export default function Player() {
-    const { currentTrack, isPlaying, playTrack } = usePlayer();
+    const { currentTrack, isPlaying, playTrack, progress, duration, seekTo, changeVolume, volume } = usePlayer();
+    const [showVolumeControl, setShowVolumeControl] = useState(false);
+
+
+    const toggleVolumePopup = () => {
+        setShowVolumeControl(!showVolumeControl);
+    };
 
     if (!currentTrack) return null;
 
+
+    const formatTime = (time) => {
+        if (!time || isNaN(time)) return "0:00";
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60).toString().padStart(2, "0");
+        return `${minutes}:${seconds}`;
+    };
 
     return (
         <div className="player">
@@ -23,7 +37,9 @@ export default function Player() {
                         <img src={currentTrack.album.cover} width={60} height={60} loading='lazy' alt="" className="player__track-image"/>
                         <div className="player__track-info">
                             <h3 className="player__track-title">{currentTrack.title}</h3>
-                            <ButtonLink to={`/artist/${currentTrack.album.artist.id}`} className="player__track-artist">{currentTrack.album.artist.stage_name}</ButtonLink>
+                            <ButtonLink to={`/artist/${currentTrack.album.artist.id}`} className="player__track-artist">
+                                {currentTrack.album.artist.stage_name}
+                            </ButtonLink>
                         </div>
                     </div>
                     <ButtonLink className="player__track-favorite">
@@ -32,7 +48,7 @@ export default function Player() {
                 </div>
 
                 <div className="player__control">
-                    <span className="player__timing-now player__timing">1:43</span>
+                    <span className="player__timing-now player__timing">{formatTime(progress)}</span>
 
                     <div className="player__control-buttons">
                         <ButtonLink className="player__control-button player__control-prev">
@@ -40,7 +56,11 @@ export default function Player() {
                         </ButtonLink>
 
                         <ButtonLink onClick={() => playTrack(currentTrack)} className="player__control-button player__control-play">
-                            <img src={play} loading='lazy' width={52} height={52} alt="" className="player__control-icon"/>
+                            {isPlaying ? (
+                                <img src={pause} loading='lazy' width={52} height={52} alt="" className="player__control-icon player__control-icon--accent"/>
+                            ) : (
+                                <img src={play} loading='lazy' width={52} height={52} alt="" className="player__control-icon player__control-icon--accent"/>
+                            )}
                         </ButtonLink>
 
                         <ButtonLink className="player__control-next player__control-button">
@@ -48,8 +68,24 @@ export default function Player() {
                         </ButtonLink>
                     </div>
 
-                    <span className="player__timing-end player__timing">1:43</span>
+                    <span className="player__timing-end player__timing">{formatTime(duration)}</span>
                 </div>
+
+
+                <div className="player__progress-wrapper">
+                    <input
+                        type="range"
+                        min="0"
+                        max={duration || 0}
+                        value={progress}
+                        onChange={(e) => seekTo(Number(e.target.value))}
+                        className="player__progress"
+                        style={{
+                            background: `linear-gradient(to right, #AAFF7C ${(progress / duration) * 100 || 0}%, #333 ${(progress / duration) * 100 || 0}%)`
+                        }}
+                    />
+                </div>
+
 
                 <div className="player__settings">
                     <ButtonLink className="player__settings-button">
@@ -60,9 +96,27 @@ export default function Player() {
                         <img src={settings} alt="" className="player__settings-button-icon"/>
                     </ButtonLink>
 
-                    <ButtonLink className="player__settings-button">
-                        <img src={volume} alt="" className="player__settings-button-icon"/>
+                    <ButtonLink onClick={toggleVolumePopup} className="player__settings-button player__settings-button-volume">
+                        <img src={volumeIcon} alt="" className="player__settings-button-icon"/>
                     </ButtonLink>
+                    {showVolumeControl && (
+                        <div className="player__volume-popup">
+                            <input
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.01"
+                                value={volume}
+                                onChange={(e) => changeVolume(Number(e.target.value))}
+                                className="player__volume-slider"
+                                style={{
+                                    background: `linear-gradient(to right, #AAFF7C ${volume * 100}%, #333 ${volume * 100}%)`
+                                }}
+                            />
+                        </div>
+                    )}
+
+
                 </div>
             </div>
         </div>

@@ -20,6 +20,7 @@ export default function Profile() {
         async function loadUser() {
             try {
                 const data = await fetchUserProfile();
+                console.log(data);
                 setUser(data);
             } catch (error) {
                 setError(error.message);
@@ -83,7 +84,7 @@ export default function Profile() {
                                 </li>
                                 <li className="profile__buttons-item">
                                     {user.is_artist ?
-                                        <ButtonLink to={'/'} className='profile__button'>
+                                        <ButtonLink to={`/artist/${user.artist.id}`} className='profile__button'>
                                             Your Artist Profile
                                             <img src={artistIcon} width={16} height={16} loading='lazy' alt="Artist" className="profile__button-icon"/>
                                         </ButtonLink> :

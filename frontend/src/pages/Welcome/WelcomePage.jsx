@@ -8,8 +8,8 @@ export default function WelcomePage() {
             <div className="welcome__header">
                 <Logo/>
                 <div className="welcome__header-sign">
-                    <ButtonLink to={'/login'} className={'welcome__header-sign-in button--transparent'}>Sign In</ButtonLink>
-                    <ButtonLink to={'/register'} className={'welcome__header-sign-up'}>Sign Up</ButtonLink>
+                    <ButtonLink to={'auth/login'} className={'welcome__header-sign-in button--transparent'}>Sign In</ButtonLink>
+                    <ButtonLink to={'auth/register'} className={'welcome__header-sign-up'}>Sign Up</ButtonLink>
                 </div>
             </div>
 
@@ -23,10 +23,8 @@ export default function WelcomePage() {
                     </div>
 
                     <div className="welcome__buttons">
-                        <ButtonLink to={'/login'} className={'welcome__button'}>Start listening</ButtonLink>
-                        <ButtonLink to={'/login'} className={'welcome__button welcome__button--transparent button--transparent'}>View more</ButtonLink>
-
-                        
+                        <ButtonLink to={'auth/login'} className={'welcome__button'}>Start listening</ButtonLink>
+                        <ButtonLink to={'auth/login'} className={'welcome__button welcome__button--transparent button--transparent'}>View more</ButtonLink>
                     </div>
                 </div>
             </div>

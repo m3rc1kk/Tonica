@@ -15,7 +15,7 @@ export default function ResetPasswordForm() {
 
         try {
             await resetPasswordRequest(email);
-            navigate('/password/reset/done')
+            navigate('/auth/password/reset/done')
         } catch (error) {
             setError(error.message)
         }

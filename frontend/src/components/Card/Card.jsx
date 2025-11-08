@@ -16,6 +16,8 @@ export default function Card({
     className,
     fullName
                              }) {
+
+
     return (
         <div className="card__body">
             <img src={image} width={300} height={300} loading='lazy' alt="" className="card__avatar"/>
@@ -25,7 +27,7 @@ export default function Card({
                 }
 
                 { type === "album" &&
-                    <span className="card__artist card__subtitle"><img src={author.avatar} loading='lazy' width={24} height={24} alt="" className="card__artist-avatar"/> <ButtonLink to={'/'} className="card__artist-name">{author.stage_name}</ButtonLink> <span className="card__artist-type">• {albumType}</span> </span>
+                    <span className="card__artist card__subtitle"><img src={author.avatar} loading='lazy' width={24} height={24} alt="" className="card__artist-avatar"/> <ButtonLink to={'/'} className="card__artist-name">{author.stage_name}</ButtonLink> <span className="card__artist-type">• {albumType.charAt(0).toUpperCase() + albumType.slice(1)}</span> </span>
                 }
 
                 { type === "playlist" &&
@@ -40,7 +42,11 @@ export default function Card({
                 { type === 'artist' ?
                     <span className="card__listeners"><span className="card__listeners--accent">22.542.342</span>  listeners <span className="card__listeners--hidden">per month</span> </span> :
                     <div className="card__album-info">
-                        <span className="card__release-date">Release: {releaseDate}</span>
+                        <span className="card__release-date">{new Date(releaseDate).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        })}</span>
                         <span className="card__track-count">{trackCount} tracks</span>
                     </div>
                 }

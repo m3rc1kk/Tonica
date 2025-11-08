@@ -16,11 +16,11 @@ export default function AppRouter() {
         <>
             <Routes>
                 <Route path="/" element={<WelcomePage />} />
-                <Route path="auth/login" element={<SignInPage />} />
-                <Route path="auth/register" element={<SignUpPage />} />
-                <Route path="auth/password/reset" element={<ResetPasswordForm />} />
-                <Route path="auth/password/reset/done" element={<ResetPasswordDone />} />
-                <Route path="auth/password/reset/confirm/:uid/:token" element={<ResetPasswordConfirm />} />
+                <Route path="/auth/login" element={<SignInPage />} />
+                <Route path="/auth/register" element={<SignUpPage />} />
+                <Route path="/auth/password/reset" element={<ResetPasswordForm />} />
+                <Route path="/auth/password/reset/done" element={<ResetPasswordDone />} />
+                <Route path="/auth/password/reset/confirm/:uid/:token" element={<ResetPasswordConfirm />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/artist/:id" element={<ArtistProfile />} />

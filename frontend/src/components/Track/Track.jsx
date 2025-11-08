@@ -34,7 +34,7 @@ export default function Track({
                                 <span className="track__chart">{chartPosition} place in charts</span>
                             )}
                         </h3>
-                        <ButtonLink to={'/'} className="track__author">{trackAuthor}</ButtonLink>
+                        <ButtonLink to={`/artist/${album.artist.id}`} className="track__author">{trackAuthor}</ButtonLink>
                     </div>
                 </div>
                 <div className="track__control">

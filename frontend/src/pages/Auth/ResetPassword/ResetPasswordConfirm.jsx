@@ -23,7 +23,7 @@ export default function ResetPasswordConfirm() {
                 newPassword,
                 newPasswordConfirm
             );
-            navigate("/login");
+            navigate("/auth/login");
         } catch (error) {
             setError(error.message)
         }

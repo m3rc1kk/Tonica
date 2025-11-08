@@ -7,6 +7,7 @@ from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 
 from .models import User
+from ..main.serializers import ArtistSerializer
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -76,9 +77,11 @@ class UserLoginSerializer(serializers.Serializer):
             )
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    artist = ArtistSerializer(read_only=True)
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'avatar', 'is_artist', 'created_at', 'updated_at']
+        fields = ['id', 'username', 'email', 'avatar', 'artist', 'is_artist','created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at', 'is_artist']
 
 
@@ -104,7 +107,7 @@ class PasswordResetSerializer(serializers.Serializer):
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
 
-        reset_url = f'{settings.FRONTEND_URL}/password/reset/confirm/{uid}/{token}/'
+        reset_url = f'{settings.FRONTEND_URL}/auth/password/reset/confirm/{uid}/{token}/'
 
         from django.core.mail import send_mail
         send_mail(

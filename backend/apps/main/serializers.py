@@ -44,17 +44,21 @@ class TrackSerializer(serializers.ModelSerializer):
                  'duration', 'audio_file',
                   'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at',
-                            'album', 'album_name', 'duration']
+                            'album', 'duration']
 
 class AlbumSerializer(serializers.ModelSerializer):
     artist = ArtistSerializer(read_only=True)
     tracks = TrackSerializer(many=True, read_only=True)
+    tracks_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Album
-        fields = ['id', 'title', 'artist', 'tracks', 'album_type', 'cover', 'is_published', 'release_date',
+        fields = ['id', 'title', 'artist', 'tracks', 'album_type', 'cover', 'is_published', 'release_date', 'tracks_count',
                   'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at', 'is_published', 'artist_name', 'tracks_count']
+
+    def get_tracks_count(self, obj):
+        return obj.tracks.count()
 
 class TrackCreateSerializer(serializers.ModelSerializer):
     class Meta:

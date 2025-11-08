@@ -20,6 +20,7 @@ export default function AlbumPage() {
         async function loadAlbumDetail() {
             try {
                 const albumData = await fetchAlbumDetail(id);
+
                 setAlbum(albumData);
             } catch (error) {
                 setError(error.message);
@@ -33,6 +34,8 @@ export default function AlbumPage() {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
+
+
     return (
         <section className="album-page section container">
             <Sidebar />
@@ -44,7 +47,7 @@ export default function AlbumPage() {
                     image={album.cover}
                     author={album.artist}
                     releaseDate={album.release_date}
-                    trackCount={15}
+                    trackCount={album.tracks_count}
                     albumType={album.album_type}
                 />
 

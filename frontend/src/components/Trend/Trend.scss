@@ -10,6 +10,14 @@
     max-width: 100%;
   }
 
+  &__button {
+    color: var(--color-white);
+
+    @include hover {
+      color: var(--color-accent);
+    }
+  }
+
 
 
   &__image {

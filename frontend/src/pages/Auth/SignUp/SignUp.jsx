@@ -108,7 +108,7 @@ export default function SignUpPage() {
                     </ButtonLink>
 
                     <div className="form__notreg login__form-notreg">
-                        <span className="form__notreg-text login__form-notreg-text">Already have an account?</span> <ButtonLink to={'/login'} className="form__notreg-link login__form-notreg-link">Sign In</ButtonLink>
+                        <span className="form__notreg-text login__form-notreg-text">Already have an account?</span> <ButtonLink to={'/auth/login'} className="form__notreg-link login__form-notreg-link">Sign In</ButtonLink>
                     </div>
                 </footer>
             </div>
