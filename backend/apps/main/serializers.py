@@ -1,11 +1,25 @@
 from rest_framework import serializers
 from .models import Artist, ArtistApplication, Track, Album
+from ..favorites.models import FavoriteTrack, FavoriteArtist, FavoriteAlbum
+
 
 class ArtistSerializer(serializers.ModelSerializer):
+    is_favorite = serializers.SerializerMethodField()
+
     class Meta:
         model = Artist
-        fields = ['id', 'stage_name', 'avatar', 'first_name', 'last_name', 'user']
+        fields = ['id', 'stage_name', 'avatar', 'first_name', 'last_name', 'user', 'is_favorite']
         read_only_fields = ['id', 'user']
+
+
+    def get_is_favorite(self, obj):
+        request = self.context['request']
+        if request and request.user.is_authenticated:
+            return FavoriteArtist.objects.filter(
+                user=request.user,
+                artist=obj
+            ).exists()
+        return False
 
 class ArtistApplicationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,28 +51,48 @@ class SimpleAlbumSerializer(serializers.ModelSerializer):
 
 class TrackSerializer(serializers.ModelSerializer):
     album = SimpleAlbumSerializer(read_only=True)
+    is_favorite = serializers.SerializerMethodField()
 
     class Meta:
         model = Track
         fields = ['id', 'title', 'album',
-                 'duration', 'audio_file',
+                 'duration', 'audio_file', 'is_favorite',
                   'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at',
                             'album', 'duration']
+
+    def get_is_favorite(self, obj):
+        request = self.context['request']
+        if request and request.user.is_authenticated:
+            return FavoriteTrack.objects.filter(
+                user=request.user,
+                track=obj
+            ).exists()
+        return False
 
 class AlbumSerializer(serializers.ModelSerializer):
     artist = ArtistSerializer(read_only=True)
     tracks = TrackSerializer(many=True, read_only=True)
     tracks_count = serializers.SerializerMethodField()
+    is_favorite = serializers.SerializerMethodField()
 
     class Meta:
         model = Album
-        fields = ['id', 'title', 'artist', 'tracks', 'album_type', 'cover', 'is_published', 'release_date', 'tracks_count',
+        fields = ['id', 'title', 'artist', 'tracks', 'album_type', 'cover', 'is_published', 'release_date', 'tracks_count', 'is_favorite',
                   'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at', 'is_published', 'artist_name', 'tracks_count']
 
     def get_tracks_count(self, obj):
         return obj.tracks.count()
+
+    def get_is_favorite(self, obj):
+        request = self.context['request']
+        if request and request.user.is_authenticated:
+            return FavoriteAlbum.objects.filter(
+                user=request.user,
+                album=obj
+            ).exists()
+        return False
 
 class TrackCreateSerializer(serializers.ModelSerializer):
     class Meta:
