@@ -15,21 +15,17 @@ import {fetchTrendAlbum, fetchTrendTracks, fetchTrendingArtists, fetchChartTrack
 export default function Home() {
 
     const [artists, setArtists] = useState([]);
-    const [artistLoading, setArtistLoading] = useState(true);
     const [artistError, setArtistError] = useState(null);
 
     const [tracks, setTracks] = useState([]);
-    const [tracksLoading, setTracksLoading] = useState(true);
     const [tracksError, setTracksError] = useState(null);
 
     const [albums, setAlbums] = useState([]);
-    const [albumsLoading, setAlbumsLoading] = useState(true);
     const [albumsError, setAlbumsError] = useState(null);
 
     const [trendTracks, setTrendTracks] = useState([]);
     const [trendAlbum, setTrendAlbum] = useState([]);
     const [trendError, setTrendError] = useState(null);
-    const [trendLoading, setTrendLoading] = useState(true);
 
 
     useEffect(() => {
@@ -42,9 +38,8 @@ export default function Home() {
                 setTrendTracks(tracks);
                 setTrendAlbum(album[0]);
             } catch(error) {
+                console.error('Error loading trends:', error);
                 setTrendError(error.message);
-            } finally {
-                setTrendLoading(false);
             }
         }
         loadTrends();
@@ -57,9 +52,8 @@ export default function Home() {
                 const data = await fetchTrendingArtists(5);
                 setArtists(data);
             } catch(error) {
+                console.error('Error loading artists:', error);
                 setArtistError(error.message);
-            } finally {
-                setArtistLoading(false);
             }
         }
         loadArtists();
@@ -72,9 +66,8 @@ export default function Home() {
                 const data = await fetchChartTracks(9);
                 setTracks(data);
             } catch(error) {
+                console.error('Error loading tracks:', error);
                 setTracksError(error.message);
-            } finally {
-                setTracksLoading(false);
             }
         }
         loadTracks();
@@ -86,25 +79,19 @@ export default function Home() {
                 const data = await fetchNewReleases(9);
                 setAlbums(data);
             } catch(error) {
+                console.error('Error loading albums:', error);
                 setAlbumsError(error.message);
-            } finally {
-                setAlbumsLoading(false);
             }
         }
         loadNewReleases();
     }, [])
 
-    if (tracksLoading) return <p>Loading tracks...</p>
-    if (tracksError) return <p>Error: {tracksError}</p>;
-
-    if (artistLoading) return <p>Loading artists...</p>
-    if (artistError) return <p>Error: {artistError}</p>;
-
-    if (albumsLoading) return <p>Loading albums...</p>
-    if (albumsError) return <p>Error: {albumsError}</p>;
-
-    if (trendLoading) return <p>Loading trends...</p>
-    if (trendError) return <p>Error: {trendError}</p>;
+    useEffect(() => {
+        if (tracksError) console.error('Home tracks error:', tracksError);
+        if (artistError) console.error('Home artists error:', artistError);
+        if (albumsError) console.error('Home albums error:', albumsError);
+        if (trendError) console.error('Home trends error:', trendError);
+    }, [tracksError, artistError, albumsError, trendError]);
 
     const genres = [
         { id: 1 },

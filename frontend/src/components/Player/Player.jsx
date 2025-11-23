@@ -1,18 +1,37 @@
 import { usePlayer } from "../../context/PlayerContext";
 import ButtonLink from "../Button/ButtonLink.jsx";
-import favorite from '../../assets/images/artist-profile/favorite.svg'
-import play from '../../assets/images/Player/play.svg'
-import pause from '../../assets/images/Player/pause.svg'
-import prev from '../../assets/images/Player/prev.svg'
-import next from '../../assets/images/Player/next.svg'
-import settings from '../../assets/images/Player/settings.svg'
-import volumeIcon from '../../assets/images/Player/volume.svg'
-import text from '../../assets/images/Player/text.svg'
+import play from '../../assets/images/player/play.svg'
+import pause from '../../assets/images/player/pause.svg'
+import prev from '../../assets/images/player/prev.svg'
+import next from '../../assets/images/player/next.svg'
+import settings from '../../assets/images/player/settings.svg'
+import volumeIcon from '../../assets/images/player/volume.svg'
+import text from '../../assets/images/player/text.svg'
 import { useState } from 'react'
+import { addTrackToFavorites, removeTrackFromFavorites } from '../../api/musicAPI'
+import favoriteFullIcon from "../../assets/images/player/favorite-full.svg";
+import favoriteIcon from "../../assets/images/player/favorite.svg";
 
 export default function Player() {
-    const { currentTrack, isPlaying, playTrack, progress, duration, seekTo, changeVolume, volume } = usePlayer();
+    const { currentTrack, setCurrentTrack, isPlaying, playTrack, progress, duration, seekTo, changeVolume, volume } = usePlayer();
     const [showVolumeControl, setShowVolumeControl] = useState(false);
+
+    const handleFavorite = async (e) => {
+        e.preventDefault();
+        e.stopPropagation()
+
+        try {
+            if (currentTrack.is_favorite) {
+                await removeTrackFromFavorites(currentTrack.id);
+                setCurrentTrack({ ...currentTrack, is_favorite: false });
+            } else {
+                await addTrackToFavorites(currentTrack.id);
+                setCurrentTrack({ ...currentTrack, is_favorite: true });
+            }
+        } catch (error) {
+            console.error('Error toggling favorite:', error);
+        }
+    };
 
 
     const toggleVolumePopup = () => {
@@ -42,8 +61,11 @@ export default function Player() {
                             </ButtonLink>
                         </div>
                     </div>
-                    <ButtonLink className="player__track-favorite">
-                        <img src={favorite} width={36} height={36} loading='lazy' alt="" className="player__track-favorite-icon"/>
+                    <ButtonLink className="player__track-favorite" onClick={handleFavorite}>
+                        { currentTrack?.is_favorite ?
+                            <img src={favoriteFullIcon} width={36} height={36} loading='lazy' alt="" className="player__track-favorite-icon"/> :
+                            <img src={favoriteIcon} width={36} height={36} loading='lazy' alt="" className="player__track-favorite-icon"/>
+                        }
                     </ButtonLink>
                 </div>
 

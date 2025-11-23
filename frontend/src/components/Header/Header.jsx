@@ -4,7 +4,6 @@ import ButtonLink from "../Button/ButtonLink.jsx";
 
 export default function Header({icon, title}) {
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -13,16 +12,20 @@ export default function Header({icon, title}) {
                 const data = await fetchUserProfile();
                 setUser(data);
             } catch (error) {
+                console.error('Error loading user profile:', error);
                 setError(error.message);
-            } finally {
-                setLoading(false);
             }
         }
         loadUser();
     }, [])
 
-    if (loading) return <p>Loading profile...</p>
-    if (error) return <p>Error: {error}</p>;
+    useEffect(() => {
+        if (error) {
+            console.error('Header error:', error);
+        }
+    }, [error]);
+
+    if (!user) return null;
 
     return (
         <header className='header'>

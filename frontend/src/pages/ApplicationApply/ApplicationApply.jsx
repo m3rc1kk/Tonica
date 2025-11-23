@@ -8,7 +8,6 @@ export default function ArtistApplicationForm() {
     const [stageName, setStageName] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
 
@@ -41,7 +40,6 @@ export default function ArtistApplicationForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
         setError("");
         try {
             await submitArtistApplication({
@@ -52,11 +50,8 @@ export default function ArtistApplicationForm() {
             setSuccess(true);
         } catch (error) {
             setError(error.message);
-        } finally {
-            setLoading(false);
         }
     }
-    if (loading) return <p>Loading...</p>;
     if (success) {
         return (
         <form method='post' className="form success__form container">

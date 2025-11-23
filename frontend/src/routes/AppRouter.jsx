@@ -10,6 +10,7 @@ import Profile from "../pages/Profile/Profile.jsx";
 import ArtistProfile from "../pages/ArtistProfile/ArtistProfile.jsx";
 import ArtistApplicationForm from "../pages/ApplicationApply/ApplicationApply.jsx";
 import AlbumPage from "../pages/AlbumPage/AlbumPage.jsx";
+import Library from "../pages/Library/Library.jsx";
 
 export default function AppRouter() {
     return (
@@ -22,6 +23,7 @@ export default function AppRouter() {
                 <Route path="/auth/password/reset/done" element={<ResetPasswordDone />} />
                 <Route path="/auth/password/reset/confirm/:uid/:token" element={<ResetPasswordConfirm />} />
                 <Route path="/home" element={<Home />} />
+                <Route path="/library" element={<Library />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/artist/:id" element={<ArtistProfile />} />
                 <Route path="/application/apply/" element={<ArtistApplicationForm />} />

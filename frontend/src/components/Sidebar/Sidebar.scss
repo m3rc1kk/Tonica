@@ -122,6 +122,14 @@
     flex-direction: column;
     row-gap: 24px;
 
+    &-image {
+      border-radius: 50%;
+
+      &--album {
+        border-radius: var(--border-radius-small);
+      }
+    }
+
     &-title {
       font-weight: 500;
     }

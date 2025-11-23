@@ -139,4 +139,140 @@ export async function fetchAlbumDetail(albumId) {
     }
 }
 
+export async function fetchFavoriteTracks() {
+    try {
+        const response = await api.get('favorites/tracks/');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to load favorite tracks");
+    }
+}
+
+export async function addTrackToFavorites(trackId) {
+    try {
+        const response = await api.post(`favorites/tracks/${trackId}/add/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to add track to favorites");
+    }
+}
+
+export async function removeTrackFromFavorites(trackId) {
+    try {
+        const response = await api.delete(`favorites/tracks/${trackId}/remove/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to remove track from favorites");
+    }
+}
+
+export async function fetchFavoriteAlbums() {
+    try {
+        const response = await api.get('favorites/albums/');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to load favorite albums");
+    }
+}
+
+export async function addAlbumToFavorites(albumId) {
+    try {
+        const response = await api.post(`favorites/albums/${albumId}/add/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to add album to favorites");
+    }
+}
+
+export async function removeAlbumFromFavorites(albumId) {
+    try {
+        const response = await api.delete(`favorites/albums/${albumId}/remove/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to remove album from favorites");
+    }
+}
+
+export async function fetchFavoriteArtists() {
+    try {
+        const response = await api.get('favorites/artists/');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to load favorite artists");
+    }
+}
+
+export async function addArtistToFavorites(artistId) {
+    try {
+        const response = await api.post(`favorites/artists/${artistId}/add/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to add artist to favorites");
+    }
+}
+
+export async function removeArtistFromFavorites(artistId) {
+    try {
+        const response = await api.delete(`favorites/artists/${artistId}/remove/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to remove artist from favorites");
+    }
+}
+
+
+
+export async function fetchPinnedArtists() {
+    try {
+        const response = await api.get('pins/artists/');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to load pinned artists");
+    }
+}
+
+export async function pinArtist(artistId) {
+    try {
+        const response = await api.post(`pins/artists/${artistId}/add/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to pin artist");
+    }
+}
+
+export async function unpinArtist(artistId) {
+    try {
+        const response = await api.delete(`pins/artists/${artistId}/remove/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to unpin artist");
+    }
+}
+
+export async function fetchPinnedAlbums() {
+    try {
+        const response = await api.get('pins/albums/');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to load pinned albums");
+    }
+}
+
+export async function pinAlbum(albumId) {
+    try {
+        const response = await api.post(`pins/albums/${albumId}/add/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to pin album");
+    }
+}
+
+export async function unpinAlbum(albumId) {
+    try {
+        const response = await api.delete(`pins/albums/${albumId}/remove/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to unpin album");
+    }
+}
 

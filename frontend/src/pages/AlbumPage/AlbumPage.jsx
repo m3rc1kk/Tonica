@@ -13,7 +13,6 @@ import Track from "../../components/Track/Track.jsx";
 export default function AlbumPage() {
     const {id} = useParams();
     const [album, setAlbum] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -23,18 +22,20 @@ export default function AlbumPage() {
 
                 setAlbum(albumData);
             } catch (error) {
+                console.error('Error loading album detail:', error);
                 setError(error.message);
-            } finally {
-                setLoading(false);
             }
         }
         loadAlbumDetail();
     }, [id])
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+    useEffect(() => {
+        if (error) {
+            console.error('AlbumPage error:', error);
+        }
+    }, [error]);
 
-
+    if (!album) return null;
 
     return (
         <section className="album-page section container">
@@ -43,12 +44,14 @@ export default function AlbumPage() {
                 <HeaderSmall />
                 <Card
                     type="album"
+                    id={album.id}
                     title={album.title}
                     image={album.cover}
                     author={album.artist}
                     releaseDate={album.release_date}
                     trackCount={album.tracks_count}
                     albumType={album.album_type}
+                    is_favorite={album.is_favorite}
                 />
 
                 <div className="album-page__tracks section__block-last">

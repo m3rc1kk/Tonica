@@ -14,7 +14,6 @@ export default function ArtistProfile() {
     const [artist, setArtist] = useState(null);
     const [albums, setAlbums] = useState([]);
     const [tracks, setTracks] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -29,16 +28,20 @@ export default function ArtistProfile() {
                 const tracksData = await fetchArtistTracks(id, 9);
                 setTracks(tracksData)
             } catch (error) {
+                console.error('Error loading artist detail:', error);
                 setError(error.message);
-            } finally {
-                setLoading(false);
             }
         }
         loadArtistDetail();
     }, [id])
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+    useEffect(() => {
+        if (error) {
+            console.error('ArtistProfile error:', error);
+        }
+    }, [error]);
+
+    if (!artist) return null;
 
     const fullName = `${artist.first_name} ${artist.last_name}`.trim();
 

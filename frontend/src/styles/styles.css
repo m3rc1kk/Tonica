@@ -187,6 +187,7 @@ svg * {
   --color-dark-alt: #2C2C2C;
   --color-accent: #AAFF7C;
   --color-red: #E33629;
+  --color-yellow: #FBBF24;
   --box-shadow-button: 0 0 10px #AAFF7C;
   --box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.5);
   --border-radius: 16px;
@@ -673,6 +674,12 @@ h3 {
   display: flex;
   flex-direction: column;
   row-gap: 24px;
+}
+.sidebar__playlist-image {
+  border-radius: 50%;
+}
+.sidebar__playlist-image--album {
+  border-radius: var(--border-radius-small);
 }
 .sidebar__playlist-title {
   font-weight: 500;
@@ -1409,6 +1416,37 @@ h3 {
     height: 180px;
   }
 }
+.album__favorite, .album__pin {
+  position: absolute;
+  top: 20px;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+@media (max-width: 767px) {
+  .album__favorite, .album__pin {
+    display: none;
+  }
+}
+.album__favorite {
+  right: 20px;
+}
+.album__pin {
+  right: 70px;
+}
+@media (hover: hover) {
+  .album:hover .album__favorite,
+  .album:hover .album__pin {
+    opacity: 1;
+  }
+}
+@media (hover: none) {
+  .album:active .album__favorite,
+  .album:active .album__pin {
+    opacity: 1;
+  }
+}
 .album::after {
   content: "";
   position: absolute;
@@ -1617,6 +1655,37 @@ h3 {
 @media (max-width: 767px) {
   .artist {
     height: 230px;
+  }
+}
+.artist__favorite, .artist__pin {
+  position: absolute;
+  top: 20px;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+@media (max-width: 767px) {
+  .artist__favorite, .artist__pin {
+    display: none;
+  }
+}
+.artist__favorite {
+  right: 20px;
+}
+.artist__pin {
+  right: 70px;
+}
+@media (hover: hover) {
+  .artist:hover .artist__favorite,
+  .artist:hover .artist__pin {
+    opacity: 1;
+  }
+}
+@media (hover: none) {
+  .artist:active .artist__favorite,
+  .artist:active .artist__pin {
+    opacity: 1;
   }
 }
 .artist::after {
@@ -1959,6 +2028,139 @@ h3 {
   background: transparent;
 }
 
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+}
+@media (max-width: 767px) {
+  .toast-container {
+    top: 16px;
+    right: 16px;
+    left: 16px;
+  }
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 320px;
+  max-width: 400px;
+  padding: 16px 20px;
+  background: var(--color-dark);
+  border: 1px solid var(--color-dark-alt);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+  animation: slideIn 0.3s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+@media (max-width: 767px) {
+  .toast {
+    min-width: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+.toast::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--color-accent);
+}
+.toast--success::before {
+  background: var(--color-accent);
+}
+.toast--error::before {
+  background: var(--color-red);
+}
+.toast--warning::before {
+  background: var(--color-yellow);
+}
+.toast--info::before {
+  background: var(--color-accent);
+}
+
+.toast__content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.toast__message {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-white);
+  line-height: 1.5;
+}
+
+.toast__close {
+  background: transparent;
+  border: none;
+  color: var(--color-white);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+@media (hover: hover) {
+  .toast__close:hover {
+    opacity: 1;
+  }
+}
+@media (hover: none) {
+  .toast__close:active {
+    opacity: 1;
+  }
+}
+.toast__close:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.toast.toast--removing {
+  animation: slideOut 0.3s ease-in forwards;
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
 .welcome {
   padding-top: 36px;
 }

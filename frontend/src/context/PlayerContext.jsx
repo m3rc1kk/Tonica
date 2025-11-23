@@ -8,11 +8,11 @@ export function PlayerProvider({ children }) {
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
     const audioRef = useRef(null);
-    const [volume, setVolume] = useState(1); // 1 = 100% громкости
+    const [volume, setVolume] = useState(1); 
 
 
     const changeVolume = (value) => {
-        const v = Math.min(Math.max(value, 0), 1); // ограничиваем от 0 до 1
+        const v = Math.min(Math.max(value, 0), 1); 
         setVolume(v);
         if (audioRef.current) {
             audioRef.current.volume = v;
@@ -28,6 +28,7 @@ export function PlayerProvider({ children }) {
             setIsPlaying(true);
             setTimeout(() => audioRef.current?.play(), 100);
         } else {
+            setCurrentTrack(track);
             if (isPlaying) {
                 audioRef.current?.pause();
             } else {
@@ -82,9 +83,21 @@ export function PlayerProvider({ children }) {
         }
     };
 
+    const resetPlayer = () => {
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+        }
+        setCurrentTrack(null);
+        setIsPlaying(false);
+        setProgress(0);
+        setDuration(0);
+    }
+
     return (
         <PlayerContext.Provider value={{
             currentTrack,
+            setCurrentTrack,
             isPlaying,
             playTrack,
             progress,
@@ -92,7 +105,8 @@ export function PlayerProvider({ children }) {
             seekTo,
             audioRef,
             changeVolume,
-            volume
+            volume,
+            resetPlayer
         }}>
             {children}
             <audio ref={audioRef} src={currentTrack?.audio_file || ""} />

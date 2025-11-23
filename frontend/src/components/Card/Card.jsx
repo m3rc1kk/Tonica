@@ -1,9 +1,25 @@
-import avatar from "../../assets/images/artist/pepel.webp";
 import ButtonLink from "../Button/ButtonLink.jsx";
 import play from "../../assets/images/artist-profile/play.svg";
-import favorite from "../../assets/images/artist-profile/favorite.svg";
-import pin from "../../assets/images/artist-profile/pin.svg";
+import favoriteIcon from "../../assets/images/artist-profile/favorite.svg";
+import favoriteFullIcon from "../../assets/images/artist-profile/favorite-full.svg";
+import pinIcon from '../../assets/images/artist-profile/pin.svg';
+import pinFullIcon from '../../assets/images/artist-profile/pin-full.svg';
 import settings from "../../assets/images/artist-profile/settings.svg";
+import { useState, useEffect } from "react";
+import {
+    addArtistToFavorites,
+    removeArtistFromFavorites,
+    addAlbumToFavorites,
+    removeAlbumFromFavorites,
+    pinArtist,
+    unpinArtist,
+    pinAlbum,
+    unpinAlbum,
+} from "../../api/musicAPI.js";
+
+import { usePinned } from "../../context/PinnedContext.jsx";
+import { useToast } from "../../context/ToastContext.jsx";
+
 
 export default function Card({
     type = 'artist', // artist | playlist | album
@@ -14,9 +30,104 @@ export default function Card({
     releaseDate,
     trackCount,
     className,
-    fullName
+    fullName,
+    id,
+    is_favorite
                              }) {
 
+    const [favorite, setFavorite] = useState(
+        type === 'artist' ? (author?.is_favorite || false) : (is_favorite || false)
+    );
+    const [isPinned, setIsPinned] = useState(false);
+    const { refreshPinned, pinnedArtists, pinnedAlbums } = usePinned();
+    const { showError } = useToast();
+
+    useEffect(() => {
+        if (type === 'artist' && author?.id) {
+            setIsPinned(pinnedArtists.some(a => a.id === author.id));
+        } else if (type === 'album' && id) {
+            setIsPinned(pinnedAlbums.some(a => a.id === id));
+        }
+    }, [type, author?.id, id, pinnedArtists, pinnedAlbums]);
+
+    useEffect(() => {
+        if (type === 'artist') {
+            setFavorite(author?.is_favorite || false);
+        } else if (type === 'album') {
+            setFavorite(is_favorite || false);
+        }
+    }, [author?.is_favorite, is_favorite, type]);
+
+    const handleFavorite = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (type === 'artist') {
+            if (!author?.id) return;
+            try {
+                if (favorite) {
+                    await removeArtistFromFavorites(author.id);
+                    setFavorite(false);
+                } else {
+                    await addArtistToFavorites(author.id);
+                    setFavorite(true);
+                }
+            } catch (error) {
+                console.error('Error toggling favorite:', error);
+            }
+        } else if (type === 'album') {
+            if (!id) return;
+            try {
+                if (favorite) {
+                    await removeAlbumFromFavorites(id);
+                    setFavorite(false);
+                } else {
+                    await addAlbumToFavorites(id);
+                    setFavorite(true);
+                }
+            } catch (error) {
+                console.error('Error toggling favorite:', error);
+            }
+        }
+    };
+
+    const handlePin = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (type === 'artist') {
+            if (!author?.id) return;
+            try {
+                if (isPinned) {
+                    await unpinArtist(author.id);
+                    setIsPinned(false);
+                } else {
+                    await pinArtist(author.id);
+                    setIsPinned(true);
+                }
+                refreshPinned();
+            } catch (error) {
+                console.error('Error toggling pin:', error);
+                // Показываем красивое уведомление вместо alert
+                showError(error.message || 'Не удалось закрепить артиста');
+            }
+        } else if (type === 'album') {
+            if (!id) return;
+            try {
+                if (isPinned) {
+                    await unpinAlbum(id);
+                    setIsPinned(false);
+                } else {
+                    await pinAlbum(id);
+                    setIsPinned(true);
+                }
+                refreshPinned();
+            } catch (error) {
+                console.error('Error toggling pin:', error);
+                showError(error.message || 'Error');
+            }
+        }
+    };
 
     return (
         <div className="card__body">
@@ -55,12 +166,32 @@ export default function Card({
                     <ButtonLink to={'/'} className="card__play card__button">
                         <img src={play} width={52} height={52} loading='lazy' alt="" className="card__button-icon card__button-icon--play"/>
                     </ButtonLink>
-                    <ButtonLink to={'/'} className="card__favorite card__button">
-                        <img src={favorite} width={52} height={52} loading='lazy' alt="" className="card__button-icon"/>
-                    </ButtonLink>
-                    <ButtonLink to={'/'} className="card__pin card__button">
-                        <img src={pin} width={52} height={52} loading='lazy' alt="" className="card__button-icon"/>
-                    </ButtonLink>
+                    {(type === 'artist' || type === 'album') && (
+                        <ButtonLink onClick={handleFavorite} className="card__favorite card__button">
+                            {favorite ?
+                                <img src={favoriteFullIcon} width={52} height={52} loading='lazy' alt="" className="card__button-icon"/> :
+                                <img src={favoriteIcon} width={52} height={52} loading='lazy' alt="" className="card__button-icon"/>
+                            }
+                        </ButtonLink>
+                    )}
+                    {type === 'playlist' && (
+                        <ButtonLink to={'/'} className="card__favorite card__button">
+                            <img src={favoriteIcon} width={52} height={52} loading='lazy' alt="" className="card__button-icon"/>
+                        </ButtonLink>
+                    )}
+                    {(type === 'artist' || type === 'album') && (
+                        <ButtonLink onClick={handlePin} className="card__pin card__button">
+                            { isPinned ?
+                                <img src={pinFullIcon} width={52} height={52} loading='lazy' alt="" className="card__button-icon"/> :
+                                <img src={pinIcon} width={52} height={52} loading='lazy' alt="" className="card__button-icon"/>
+                            }
+                        </ButtonLink>
+                    )}
+                    {type === 'playlist' && (
+                        <ButtonLink to={'/'} className="card__pin card__button">
+                            <img src={pinIcon} width={52} height={52} loading='lazy' alt="" className="card__button-icon"/>
+                        </ButtonLink>
+                    )}
                     <ButtonLink to={'/'} className="card__settings card__button">
                         <img src={settings} width={52} height={52} loading='lazy' alt="" className="card__button-icon"/>
                     </ButtonLink>

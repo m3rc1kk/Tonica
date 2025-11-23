@@ -3,11 +3,12 @@ import shortLogo from '../../assets/images/short-logo.svg'
 import homeIcon from '../../assets/images/sidebar/home.svg'
 import searchIcon from '../../assets/images/sidebar/search.svg'
 import libraryIcon from '../../assets/images/sidebar/library.svg'
-import playlistIcon from '../../assets/images/sidebar/playlist.png'
 import { Link, NavLink } from "react-router-dom";
-
+import { usePinned } from "../../context/PinnedContext.jsx";
 
 export default function Sidebar() {
+    const { pinnedArtists, pinnedAlbums } = usePinned();
+
     return (
         <aside className='sidebar'>
             <div className="sidebar__inner">
@@ -32,7 +33,7 @@ export default function Sidebar() {
                             </NavLink>
                         </li>
                         <li className="sidebar__menu-item">
-                            <NavLink to={'/'} className={({ isActive }) =>
+                            <NavLink to={'/search'} className={({ isActive }) =>
                                 `sidebar__menu-link ${isActive ? '' : 'sidebar__menu-link--inactive'}`
                             }>
                                 <img width={16} height={16} loading='lazy' src={searchIcon} alt=""
@@ -41,7 +42,7 @@ export default function Sidebar() {
                             </NavLink>
                         </li>
                         <li className="sidebar__menu-item">
-                            <NavLink to={'/'} className={({ isActive }) =>
+                            <NavLink to={'/library'} className={({ isActive }) =>
                                 `sidebar__menu-link ${isActive ? '' : 'sidebar__menu-link--inactive'}`
                             }>
                                 <img width={16} height={16} loading='lazy' src={libraryIcon} alt=""
@@ -55,39 +56,44 @@ export default function Sidebar() {
                 <div className="sidebar__playlist hidden-mobile">
                     <h2 className="sidebar__playlist-title hidden-tablet">Pinned</h2>
                     <ul className="sidebar__playlist-list">
-                        <li className="sidebar__playlist-item">
-                            <Link to={'/'} className="sidebar__playlist-link">
-                                <img width={44} height={44} loading='lazy' src={playlistIcon} alt=""
-                                     className="sidebar__playlist-image"/>
-
-                                <div className="sidebar__playlist-body hidden-tablet">
-                                    <h3 className="sidebar__playlist-name">My Music</h3>
-                                    <span className="sidebar__playlist-count">32 tracks</span>
-                                </div>
-                            </Link>
-                        </li>
-                        <li className="sidebar__playlist-item">
-                            <Link to={'/'} className="sidebar__playlist-link">
-                                <img width={44} height={44} loading='lazy' src={playlistIcon} alt=""
-                                     className="sidebar__playlist-image"/>
-
-                                <div className="sidebar__playlist-body hidden-tablet">
-                                    <h3 className="sidebar__playlist-name">My Music</h3>
-                                    <span className="sidebar__playlist-count">32 tracks</span>
-                                </div>
-                            </Link>
-                        </li>
-                        <li className="sidebar__playlist-item">
-                            <Link to={'/'} className="sidebar__playlist-link">
-                                <img width={44} height={44} loading='lazy' src={playlistIcon} alt=""
-                                     className="sidebar__playlist-image"/>
-
-                                <div className="sidebar__playlist-body hidden-tablet">
-                                    <h3 className="sidebar__playlist-name">My Music</h3>
-                                    <span className="sidebar__playlist-count">32 tracks</span>
-                                </div>
-                            </Link>
-                        </li>
+                        {pinnedArtists.map((artist) => (
+                            <li key={artist.id} className="sidebar__playlist-item">
+                                <Link to={`/artist/${artist.id}`} className="sidebar__playlist-link">
+                                    <img
+                                        width={44}
+                                        height={44}
+                                        loading='lazy'
+                                        src={artist.avatar}
+                                        alt={artist.stage_name}
+                                        className="sidebar__playlist-image"
+                                    />
+                                    <div className="sidebar__playlist-body hidden-tablet">
+                                        <h3 className="sidebar__playlist-name">{artist.stage_name}</h3>
+                                        <span className="sidebar__playlist-count">Artist</span>
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
+                        {pinnedAlbums.map((album) => (
+                            <li key={album.id} className="sidebar__playlist-item">
+                                <Link to={`/album/${album.id}`} className="sidebar__playlist-link">
+                                    <img
+                                        width={44}
+                                        height={44}
+                                        loading='lazy'
+                                        src={album.cover}
+                                        alt={album.title}
+                                        className="sidebar__playlist-image sidebar__playlist-image--album"
+                                    />
+                                    <div className="sidebar__playlist-body hidden-tablet">
+                                        <h3 className="sidebar__playlist-name">{album.title}</h3>
+                                        <span className="sidebar__playlist-count">
+                                            {album.artist?.stage_name || 'Album'}
+                                        </span>
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </div>

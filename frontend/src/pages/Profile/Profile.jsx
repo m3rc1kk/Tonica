@@ -5,38 +5,43 @@ import subscribeIcon from "../../assets/images/profile/subscribe.svg";
 import artistIcon from "../../assets/images/profile/artist.svg";
 import logoutIcon from "../../assets/images/profile/logout.svg";
 import settingsIcon from "../../assets/images/profile/settings.svg";
-import userAvatar from "../../assets/images/profile/user-avatar.png";
 import {useEffect, useState} from "react";
 import {fetchUserProfile, logoutUser} from "../../api/auth.js";
 import {useNavigate} from "react-router-dom";
+import { usePlayer } from "../../context/PlayerContext.jsx";
 
 export default function Profile() {
+    const { resetPlayer } = usePlayer();
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         async function loadUser() {
             try {
+
                 const data = await fetchUserProfile();
                 console.log(data);
                 setUser(data);
             } catch (error) {
+                console.error('Error loading user profile:', error);
                 setError(error.message);
-            } finally {
-                setLoading(false);
             }
         }
         loadUser();
     }, [])
 
-    if (loading) return <p>Loading profile...</p>
-    if (error) return <p>Error: {error}</p>;
+    useEffect(() => {
+        if (error) {
+            console.error('Profile error:', error);
+        }
+    }, [error]);
 
+    if (!user) return null;
 
     const handleLogout = async() => {
         try {
+            resetPlayer()
             await logoutUser();
             navigate("/auth/login");
         } catch (error) {
