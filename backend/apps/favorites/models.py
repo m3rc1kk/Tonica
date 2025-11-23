@@ -15,7 +15,6 @@ class FavoriteTrack(models.Model):
         verbose_name_plural = 'Favorite Tracks'
 
 
-
 class FavoriteAlbum(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favorite_albums')
     album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='favorited_by_albums')

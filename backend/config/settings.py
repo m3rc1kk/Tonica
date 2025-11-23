@@ -42,6 +42,7 @@ LOCAL_APPS = [
     'apps.accounts.apps.AccountsConfig',
     'apps.main.apps.MainConfig',
     'apps.favorites.apps.FavoritesConfig',
+    'apps.pins.apps.PinsConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
