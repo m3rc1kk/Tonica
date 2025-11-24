@@ -10,6 +10,7 @@ urlpatterns = [
     path('api/v1/', include('apps.main.urls')),
     path('api/v1/favorites/', include('apps.favorites.urls')),
     path('api/v1/pins/', include('apps.pins.urls')),
+    path('api/v1/', include('apps.playlists.urls')),
 ]
 
 if settings.DEBUG:
