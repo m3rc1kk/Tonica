@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {Routes, Route} from 'react-router-dom'
 import WelcomePage from "../pages/Welcome/WelcomePage";
 import SignUpPage from "../pages/Auth/SignUp/SignUp.jsx";
 import SignInPage from "../pages/Auth/SignIn/SignIn.jsx";
@@ -11,6 +11,7 @@ import ArtistProfile from "../pages/ArtistProfile/ArtistProfile.jsx";
 import ArtistApplicationForm from "../pages/ApplicationApply/ApplicationApply.jsx";
 import AlbumPage from "../pages/AlbumPage/AlbumPage.jsx";
 import Library from "../pages/Library/Library.jsx";
+import PlaylistPage from "../pages/PlaylistPage/PlaylistPage.jsx";
 
 export default function AppRouter() {
     return (
@@ -28,6 +29,7 @@ export default function AppRouter() {
                 <Route path="/artist/:id" element={<ArtistProfile />} />
                 <Route path="/application/apply/" element={<ArtistApplicationForm />} />
                 <Route path="/album/:id" element={<AlbumPage />} />
+                <Route path="/playlist/:id" element={<PlaylistPage />} />
             </Routes>
         </>
     );

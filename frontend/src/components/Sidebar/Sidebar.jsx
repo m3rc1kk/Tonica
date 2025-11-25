@@ -7,7 +7,7 @@ import { Link, NavLink } from "react-router-dom";
 import { usePinned } from "../../context/PinnedContext.jsx";
 
 export default function Sidebar() {
-    const { pinnedArtists, pinnedAlbums } = usePinned();
+    const { pinnedArtists, pinnedAlbums, pinnedPlaylists } = usePinned();
 
     return (
         <aside className='sidebar'>
@@ -89,6 +89,26 @@ export default function Sidebar() {
                                         <h3 className="sidebar__playlist-name">{album.title}</h3>
                                         <span className="sidebar__playlist-count">
                                             {album.artist?.stage_name || 'Album'}
+                                        </span>
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
+                        {pinnedPlaylists.map((playlist) => (
+                            <li key={playlist.id} className="sidebar__playlist-item">
+                                <Link to={`/album/${playlist.id}`} className="sidebar__playlist-link">
+                                    <img
+                                        width={44}
+                                        height={44}
+                                        loading='lazy'
+                                        src={playlist.cover}
+                                        alt={playlist.title}
+                                        className="sidebar__playlist-image sidebar__playlist-image--album"
+                                    />
+                                    <div className="sidebar__playlist-body hidden-tablet">
+                                        <h3 className="sidebar__playlist-name">{playlist.title}</h3>
+                                        <span className="sidebar__playlist-count">
+                                            {playlist.tracks_count} tracks
                                         </span>
                                     </div>
                                 </Link>

@@ -6,30 +6,35 @@ import TrackList from "../../components/TrackList/TrackList.jsx";
 import AlbumList from "../../components/AlbumList/AlbumList.jsx";
 import ArtistList from "../../components/ArtistList/ArtistList.jsx";
 import library from '../../assets/images/sidebar/library.svg'
-import { fetchFavoriteTracks, fetchFavoriteAlbums, fetchFavoriteArtists } from "../../api/musicAPI.js";
+import { fetchFavoriteTracks, fetchFavoriteAlbums, fetchFavoriteArtists, fetchPlaylists } from "../../api/musicAPI.js";
+import PlaylistList from "../../components/PlaylistList/PlaylistList.jsx";
 
 
 export default function Library() {
     const [tracks, setTracks] = useState([]);
     const [albums, setAlbums] = useState([]);
     const [artists, setArtists] = useState([]);
+    const [playlists, setPlaylists] = useState([]);
 
     useEffect(() => {
         const loadFavorites = async () => {
             try {
-                const [tracksData, albumsData, artistsData] = await Promise.all([
+                const [tracksData, albumsData, artistsData, playlistsData] = await Promise.all([
                     fetchFavoriteTracks(),
                     fetchFavoriteAlbums(),
-                    fetchFavoriteArtists()
+                    fetchFavoriteArtists(),
+                    fetchPlaylists()
                 ]);
                 setTracks(tracksData || []);
                 setAlbums(albumsData || []);
                 setArtists(artistsData || []);
+                setPlaylists(playlistsData || []);
             } catch (error) {
                 console.error('Error loading favorites:', error);
                 setTracks([]);
                 setAlbums([]);
                 setArtists([]);
+                setPlaylists([]);
             }
         };
 
@@ -46,8 +51,12 @@ export default function Library() {
                     title='Library'
                 />
 
-                <SectionBlock className='Favorites' title="Favorites">
+                <SectionBlock className='favorites' title="Favorites">
                     <TrackList tracks={tracks} className='favorites__list' />
+                </SectionBlock>
+
+                <SectionBlock className='playlists' title='Playlists'>
+                    <PlaylistList playlists={playlists} className='playlists__list' />
                 </SectionBlock>
 
                 <SectionBlock className='liked-albums' title='Liked Albums'>

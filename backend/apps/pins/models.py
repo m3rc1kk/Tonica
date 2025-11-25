@@ -3,6 +3,9 @@ from django.conf import settings
 from ..main.models import Artist, Album
 from django.core.exceptions import ValidationError
 
+from ..playlists.models import Playlist
+
+
 class PinnedArtist(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, 
                     on_delete=models.CASCADE, 
@@ -58,3 +61,28 @@ class PinnedAlbum(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.album.title}"
+
+class PinnedPlaylist(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                    on_delete=models.CASCADE,
+                    related_name='pinned_playlists')
+    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name='pinned_by_playlists')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = (('user', 'playlist'),)
+        verbose_name = 'Pinned Playlist'
+        verbose_name_plural = 'Pinned Playlists'
+
+    def clean(self):
+        if not self.pk:
+            existing_count = PinnedPlaylist.objects.filter(user=self.user).count()
+            if existing_count >= 3:
+                raise ValidationError("Cannot pin more than 3 playlists")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.playlist.title}"

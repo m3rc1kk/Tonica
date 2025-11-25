@@ -17,23 +17,15 @@ class PlaylistSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
     tracks_count = serializers.SerializerMethodField()
     playlist_tracks = PlaylistTrackSerializer(many=True, read_only=True)
-    is_favorite = serializers.SerializerMethodField()
 
     class Meta:
         model = Playlist
         fields = ['id', 'title', 'cover', 'tracks_count', 'user',
-                  'playlist_tracks', 'is_favorite', 'created_at', 'updated_at']
+                  'playlist_tracks', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at', 'user', 'tracks_count', 'is_favorite']
 
     def get_tracks_count(self, obj):
         return obj.playlist_tracks.count()
-
-    def get_is_favorite(self, obj):
-        request = self.context['request']
-        if request and request.user.is_authenticated:
-            return False
-        return False
-
 
 class PlaylistCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,7 +36,7 @@ class PlaylistCreateSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         return Playlist.objects.create(user=user, **validated_data)
 
-class PlaylistTrackAddSerializer(serializers.ModelSerializer):
+class PlaylistTrackAddSerializer(serializers.Serializer):
     track_id = serializers.IntegerField()
     order = serializers.IntegerField(required=False, default=0)
 

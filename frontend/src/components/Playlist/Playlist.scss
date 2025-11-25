@@ -1,0 +1,95 @@
+.playlist {
+  position: relative;
+  max-width: 281px;
+  height: 281px;
+  width: 100%;
+  inset: 0;
+  border-radius: var(--border-radius);
+  background-size: cover;
+  background-position: center;
+
+  @include full-screen {
+    height: 230px;
+  }
+
+  @include desktop {
+    height: 180px;
+  }
+
+  &__favorite {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.2s;
+    cursor: pointer;
+    @include mobile {
+      display: none;
+    }
+  }
+
+  @include hover {
+    .album__favorite {
+      opacity: 1;
+    }
+  }
+
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--border-radius);
+    background: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0.9) 0%,   /* низ — черный, 90% */
+                    rgba(0, 0, 0, 0) 100%   /* верх — прозрачный */
+    );
+    z-index: 1;
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 2;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 600;
+
+    @include mobile {
+      font-size: 16px;
+    }
+  }
+
+  &__button {
+    &-icon {
+      filter: drop-shadow(0 0 8px rgba(170, 255, 124, 0.3));
+      transition-duration: .2s;
+      @include hover {
+        filter: drop-shadow(0 0 8px rgba(170, 255, 124, 0.8));
+      }
+
+      @include full-screen {
+        display: none;
+      }
+    }
+  }
+
+  &__tracks-count {
+    opacity: .8;
+  }
+}

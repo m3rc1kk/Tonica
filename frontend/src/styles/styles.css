@@ -1526,6 +1526,128 @@ h3 {
   }
 }
 
+.playlist {
+  position: relative;
+  max-width: 281px;
+  height: 281px;
+  width: 100%;
+  inset: 0;
+  border-radius: var(--border-radius);
+  background-size: cover;
+  background-position: center;
+}
+@media (max-width: 1860px) {
+  .playlist {
+    height: 230px;
+  }
+}
+@media (max-width: 1280px) {
+  .playlist {
+    height: 180px;
+  }
+}
+.playlist__favorite {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+@media (max-width: 767px) {
+  .playlist__favorite {
+    display: none;
+  }
+}
+@media (hover: hover) {
+  .playlist:hover .album__favorite {
+    opacity: 1;
+  }
+}
+@media (hover: none) {
+  .playlist:active .album__favorite {
+    opacity: 1;
+  }
+}
+.playlist::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--border-radius);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+  z-index: 1;
+}
+.playlist__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 2;
+}
+.playlist__info {
+  display: flex;
+  flex-direction: column;
+}
+.playlist__title {
+  font-size: 20px;
+  font-weight: 600;
+}
+@media (max-width: 767px) {
+  .playlist__title {
+    font-size: 16px;
+  }
+}
+.playlist__button-icon {
+  filter: drop-shadow(0 0 8px rgba(170, 255, 124, 0.3));
+  transition-duration: 0.2s;
+}
+@media (hover: hover) {
+  .playlist__button-icon:hover {
+    filter: drop-shadow(0 0 8px rgba(170, 255, 124, 0.8));
+  }
+}
+@media (hover: none) {
+  .playlist__button-icon:active {
+    filter: drop-shadow(0 0 8px rgba(170, 255, 124, 0.8));
+  }
+}
+@media (max-width: 1860px) {
+  .playlist__button-icon {
+    display: none;
+  }
+}
+.playlist__tracks-count {
+  opacity: 0.8;
+}
+
+.playlist__list {
+  display: flex;
+  align-items: center;
+  column-gap: 24px;
+}
+@media (max-width: 1280px) {
+  .playlist__list {
+    column-gap: 16px;
+  }
+}
+.playlist__item {
+  width: 281px;
+}
+@media (max-width: 1280px) {
+  .playlist__item:nth-child(5) {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .playlist__item:nth-child(4), .playlist__item:nth-child(3) {
+    display: none;
+  }
+}
+
 .genre {
   max-width: 281px;
   height: 281px;

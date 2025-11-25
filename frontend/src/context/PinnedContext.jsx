@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { fetchPinnedArtists, fetchPinnedAlbums } from "../api/musicAPI.js";
+import { fetchPinnedArtists, fetchPinnedAlbums, fetchPinnedPlaylists } from "../api/musicAPI.js";
 
 
 const PinnedContext = createContext(null);
@@ -8,17 +8,20 @@ export function PinnedProvider({ children }) {
 
     const [pinnedArtists, setPinnedArtists] = useState([]);
     const [pinnedAlbums, setPinnedAlbums] = useState([]);
+    const [pinnedPlaylists, setPinnedPlaylists] = useState([]);
 
     const [loading, setLoading] = useState(true);
 
     const loadPinned = async () => {
         try {
-            const [artists, albums] = await Promise.all([
+            const [artists, albums, playlists] = await Promise.all([
                 fetchPinnedArtists(),
-                fetchPinnedAlbums()
+                fetchPinnedAlbums(),
+                fetchPinnedPlaylists()
             ]);
             setPinnedArtists(artists);
             setPinnedAlbums(albums);
+            setPinnedPlaylists(playlists);
         } catch (error) {
             console.error('Error loading pinned items:', error);
         } finally {
@@ -39,6 +42,7 @@ export function PinnedProvider({ children }) {
         <PinnedContext.Provider value={{
             pinnedArtists,
             pinnedAlbums,
+            pinnedPlaylists,
             loading,
             refreshPinned
         }}>

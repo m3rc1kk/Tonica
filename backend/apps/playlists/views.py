@@ -6,12 +6,13 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 
 from .models import Playlist, PlaylistTrack
-from .serializers import PlaylistTrackAddSerializer
+from .serializers import PlaylistTrackAddSerializer, PlaylistSerializer
 from ..main.models import Track
 
 
 class PlaylistViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
+    serializer_class = PlaylistSerializer
 
     def get_queryset(self):
         return Playlist.objects.filter(user=self.request.user)
@@ -51,7 +52,7 @@ class PlaylistViewSet(viewsets.ModelViewSet):
             return Response({'error': 'Track already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
         if order == 0:
-            max_order = PlaylistTrack.object.filter(playlist=playlist).aggregate(Max('order'))['order__max'] or 0
+            max_order = PlaylistTrack.objects.filter(playlist=playlist).aggregate(Max('order'))['order__max'] or 0
             order = max_order + 1
 
         PlaylistTrack.objects.create(playlist=playlist, track=track, order=order)
@@ -69,16 +70,16 @@ class PlaylistViewSet(viewsets.ModelViewSet):
         PlaylistTrack.objects.filter(playlist=playlist, track=track).delete()
         return Response({'status': 'Track removed'}, status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['post'])
-    def reorder_track(self, request, pk=None):
-        playlist = self.get_object()
-        track_orders = request.data.get('track_orders', [])
-
-        for item in track_orders:
-            track_id = item.get('track_id')
-            order = item.get('order')
-
-            PlaylistTrack.objects.filter(playlist=playlist, track=track_id).update(order=order)
-
-        return Response({'status': 'Track reordered'}, status=status.HTTP_200_OK)
+    # @action(detail=True, methods=['post'])
+    # def reorder_track(self, request, pk=None):
+    #     playlist = self.get_object()
+    #     track_orders = request.data.get('track_orders', [])
+    #
+    #     for item in track_orders:
+    #         track_id = item.get('track_id')
+    #         order = item.get('order')
+    #
+    #         PlaylistTrack.objects.filter(playlist=playlist, track=track_id).update(order=order)
+    #
+    #     return Response({'status': 'Track reordered'}, status=status.HTTP_200_OK)
 

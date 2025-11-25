@@ -276,3 +276,133 @@ export async function unpinAlbum(albumId) {
     }
 }
 
+
+export async function fetchPinnedPlaylists() {
+    try {
+        const response = await api.get('pins/playlists/');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to load pinned playlists");
+    }
+}
+
+export async function pinPlaylist(playlistId) {
+    try {
+        const response = await api.post(`pins/playlists/${playlistId}/add/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to pin playlist");
+    }
+}
+
+export async function unpinPlaylist(playlistId) {
+    try {
+        const response = await api.delete(`pins/playlists/${playlistId}/remove/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to unpin playlist");
+    }
+}
+
+
+export async function fetchPlaylists() {
+    try {
+        const response = await api.get('playlists/');
+        return response.data.results || response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load playlists");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function fetchPlaylistDetail(playlistId) {
+    try {
+        const response = await api.get(`playlists/${playlistId}/`);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load playlist");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function createPlaylist(data) {
+    try {
+        const response = await api.post('playlists/', data);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            const errorData = error.response.data;
+            if (errorData.detail) {
+                throw new Error(errorData.detail);
+            } else if (errorData.non_field_errors) {
+                throw new Error(errorData.non_field_errors[0]);
+            } else {
+                const firstKey = Object.keys(errorData)[0];
+                if (Array.isArray(errorData[firstKey])) {
+                    throw new Error(errorData[firstKey][0]);
+                } else if (typeof errorData[firstKey] === "string") {
+                    throw new Error(errorData[firstKey]);
+                }
+            }
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function updatePlaylist(playlistId, data) {
+    try {
+        const response = await api.patch(`playlists/${playlistId}/`, data);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to update playlist");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function deletePlaylist(playlistId) {
+    try {
+        const response = await api.delete(`playlists/${playlistId}/`);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to delete playlist");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function addTrackToPlaylist(playlistId, trackId, order = null) {
+    try {
+        const data = { track_id: trackId };
+        if (order !== null) {
+            data.order = order;
+        }
+        const response = await api.post(`playlists/${playlistId}/add_track/`, data);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.error || error.response.data?.detail || "Failed to add track to playlist");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function removeTrackFromPlaylist(playlistId, trackId) {
+    try {
+        const response = await api.delete(`playlists/${playlistId}/remove_track/?track_id=${trackId}`);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.error || error.response.data?.detail || "Failed to remove track from playlist");
+        }
+        throw new Error("Network error");
+    }
+}
+
+

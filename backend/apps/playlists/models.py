@@ -9,7 +9,7 @@ class Playlist(models.Model):
                              on_delete=models.CASCADE,
                              related_name='playlists')
     title = models.CharField(max_length=100)
-    cover = models.ImageField(upload_to='playlists/')
+    cover = models.ImageField(upload_to='playlists/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -25,7 +25,7 @@ class Playlist(models.Model):
 class PlaylistTrack(models.Model):
     playlist = models.ForeignKey(Playlist,
                                  on_delete=models.CASCADE,
-                                 related_name='tracks')
+                                 related_name='playlist_tracks')
     track = models.ForeignKey(Track,
                               on_delete=models.CASCADE,
                               related_name='in_playlists')
