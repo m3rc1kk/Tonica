@@ -113,3 +113,32 @@ export async function fetchUserProfile() {
         throw new Error('Network Error')
     }
 }
+
+export async function updateUserProfile(formData) {
+    try {
+        const response = await api.patch("auth/profile/", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            }
+        });
+
+        return response.data;
+
+    } catch (error) {
+        if (error.response) {
+            const data = error.response.data;
+
+            const firstKey = Object.keys(data)[0];
+            const message = Array.isArray(data[firstKey])
+                ? data[firstKey][0]
+                : data.message ||
+                data.non_field_errors?.[0] ||
+                data.password?.[0] ||
+                "Unknown error";
+
+            throw new Error(message);
+    } else {
+        throw new Error("Network error");
+        }
+    }
+}

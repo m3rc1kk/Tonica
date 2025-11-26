@@ -96,7 +96,7 @@ export default function Sidebar() {
                         ))}
                         {pinnedPlaylists.map((playlist) => (
                             <li key={playlist.id} className="sidebar__playlist-item">
-                                <Link to={`/album/${playlist.id}`} className="sidebar__playlist-link">
+                                <Link to={`/playlist/${playlist.id}`} className="sidebar__playlist-link">
                                     <img
                                         width={44}
                                         height={44}

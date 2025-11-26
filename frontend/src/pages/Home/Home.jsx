@@ -31,15 +31,17 @@ export default function Home() {
     useEffect(() => {
         async function loadTrends() {
             try {
-                const [tracks, album] = await Promise.all([
+                const [tracks, albums] = await Promise.all([
                     fetchTrendTracks(4),
-                    fetchTrendAlbum()
+                    fetchTrendAlbum(1)
                 ]);
-                setTrendTracks(tracks);
-                setTrendAlbum(album[0]);
+                setTrendTracks(Array.isArray(tracks) ? tracks : []);
+                setTrendAlbum(Array.isArray(albums) && albums.length > 0 ? albums[0] : null);
             } catch(error) {
                 console.error('Error loading trends:', error);
                 setTrendError(error.message);
+                setTrendTracks([]);
+                setTrendAlbum(null);
             }
         }
         loadTrends();
@@ -49,7 +51,7 @@ export default function Home() {
     useEffect(() => {
         async function loadArtists() {
             try {
-                const data = await fetchTrendingArtists(5);
+                const data = await fetchTrendingArtists(4);
                 setArtists(data);
             } catch(error) {
                 console.error('Error loading artists:', error);
@@ -76,7 +78,7 @@ export default function Home() {
     useEffect(() => {
         async function loadNewReleases() {
             try {
-                const data = await fetchNewReleases(9);
+                const data = await fetchNewReleases(5);
                 setAlbums(data);
             } catch(error) {
                 console.error('Error loading albums:', error);
@@ -114,15 +116,17 @@ export default function Home() {
                 />
                 <div className="home__trend">
                     <ul className="home__trend-list">
-                        {trendTracks.map((trend) => (
+                        {trendTracks && trendTracks.map((trend) => (
                             <li key={trend.id} className="home__trend-item">
                                 <Trend {...trend}/>
                             </li>
                         ))}
 
-                        <li className="home__trend-item home__trend-item--album">
-                            <Trend {...trendAlbum} isAlbum={true} />
-                        </li>
+                        {trendAlbum && (
+                            <li className="home__trend-item home__trend-item--album">
+                                <Trend {...trendAlbum} isAlbum={true} />
+                            </li>
+                        )}
 
                     </ul>
                 </div>
@@ -131,7 +135,7 @@ export default function Home() {
                     <TrackList tracks={tracks} className='charts__list' />
                 </SectionBlock>
 
-                <SectionBlock className='new-releases' title='New Releases'>
+                <SectionBlock className='new-releases' title='New Releases' link={'/new-releases'}>
                     <AlbumList albums={albums} className='new-releases__list' />
                 </SectionBlock>
 
@@ -139,7 +143,7 @@ export default function Home() {
                     <GenreList genres={genres} className='genres__list' />
                 </SectionBlock>
 
-                <SectionBlock className='artists section__block-last' title='Trending Artists'>
+                <SectionBlock className='artists section__block-last' title='Trending Artists' isLink={false}>
                     <ArtistList artists={artists} className='artists__list' />
                 </SectionBlock>
             </div>

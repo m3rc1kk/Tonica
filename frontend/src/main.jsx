@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { PlayerProvider } from "./context/PlayerContext.jsx";
 import { PinnedProvider } from "./context/PinnedContext.jsx";
 import { ToastProvider } from "./context/ToastContext.jsx";
+import { TrackSettingsProvider } from "./context/TrackSettingsContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
@@ -12,7 +13,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <PlayerProvider>
                 <PinnedProvider>
                     <ToastProvider>
-                        <App />
+                        <TrackSettingsProvider>
+                            <App />
+                        </TrackSettingsProvider>
                     </ToastProvider>
                 </PinnedProvider>
             </PlayerProvider>

@@ -21,10 +21,18 @@ function Toast({ id, message, type = 'info', onClose }) {
 
 export function ToastProvider({ children }) {
     const [toasts, setToasts] = useState([]);
+    const MAX_TOASTS = 5;
+    
     const showToast = useCallback((message, type = 'info', duration = 4000) => {
         const id = Date.now() + Math.random();
 
-        setToasts(prev => [...prev, { id, message, type }]);
+        setToasts(prev => {
+            // Если уже достигнут максимум, удаляем самый старый (первый)
+            const newToasts = prev.length >= MAX_TOASTS 
+                ? [...prev.slice(1), { id, message, type }]
+                : [...prev, { id, message, type }];
+            return newToasts;
+        });
 
         if (duration > 0) {
             setTimeout(() => {
@@ -56,7 +64,7 @@ export function ToastProvider({ children }) {
         }}>
             {children}
             <div className="toast-container">
-                {toasts.map(toast => (
+                {toasts.slice(-MAX_TOASTS).map(toast => (
                     <Toast
                         key={toast.id}
                         id={toast.id}

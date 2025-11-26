@@ -1,0 +1,42 @@
+.liked-artists {
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(4, 358px);
+    row-gap: 24px;
+
+    @include full-screen {
+      grid-template-columns: repeat(2, 358px);
+    }
+
+    @include desktop {
+      grid-template-columns: repeat(1, 358px);
+    }
+
+    @include mobile {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: start;
+      row-gap: 24px;
+    }
+  }
+
+  &__item {
+    width: 358px;
+
+    @include desktop {
+      &:nth-child(5),
+      {
+        display: block;
+      }
+    }
+
+    @include mobile {
+      &:nth-child(4),
+      &:nth-child(3) {
+        display: block;
+      }
+    }
+
+  }
+}

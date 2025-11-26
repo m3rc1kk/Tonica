@@ -14,19 +14,73 @@
   &__item {
     width: 281px;
 
+    &-button {
+      height: 281px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition-duration: var(--transition-duration);
+      border-radius: var(--border-radius);
+
+      @include full-screen {
+        height: 230px;
+      }
+
+      @include desktop {
+        height: 180px;
+      }
+
+      @include mobile {
+        width: 160px;
+      }
+
+      @include hover {
+        border: var(--border-accent);
+      }
+    }
+
     @include desktop {
-      &:nth-child(5)
+      &:nth-child(5),
+      &:nth-child(4)
       {
         display: none;
       }
     }
 
     @include mobile {
-      &:nth-child(4),
       &:nth-child(3) {
         display: none;
       }
     }
+  }
 
+  &__create {
+    &-body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: var(--color-accent);
+      font-size: 20px;
+      height: 281px;
+      width: 281px;
+      transition-duration: var(--transition-duration);
+
+      @include full-screen {
+        height: 230px;
+      }
+
+      @include desktop {
+        height: 180px;
+      }
+
+      @include mobile {
+        width: 160px;
+      }
+
+      @include mobile {
+        font-size: 14px;
+      }
+    }
   }
 }

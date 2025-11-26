@@ -54,7 +54,6 @@ class ArtistViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-
 class AlbumViewSet(viewsets.ModelViewSet):
     queryset = Album.objects.all()
     permission_classes = [permissions.IsAuthenticated]
@@ -87,6 +86,7 @@ class AlbumViewSet(viewsets.ModelViewSet):
             return AlbumCreateSerializer
         return AlbumSerializer
 
+ 
 
 
 

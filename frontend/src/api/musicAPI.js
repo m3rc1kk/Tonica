@@ -3,7 +3,7 @@ import api from "./axios.js";
 export async function fetchTrendingArtists(limit=5) {
     try {
         const response = await api.get(`artists/?limit=${limit}`);
-        return response.data.results;
+        return response.data.results || response.data || [];
     } catch(error) {
         if (error.response) {
             throw new Error(error.response.data?.detail || "Failed to load artists");
@@ -27,7 +27,7 @@ export async function fetchArtistDetail(id) {
 export async function fetchChartTracks(limit=9) {
     try {
         const response = await api.get(`tracks/?limit=${limit}`);
-        return response.data.results;
+        return response.data.results || response.data || [];
     } catch (error) {
         if (error.response) {
             throw new Error(error.response.data?.detail || "Failed to load tracks");
@@ -39,7 +39,19 @@ export async function fetchChartTracks(limit=9) {
 export async function fetchNewReleases(limit=5) {
     try {
         const response = await api.get(`albums/?limit=${limit}`);
-        return response.data.results;
+        return response.data.results || response.data || [];
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load albums");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function fetchAllPublishedAlbums() {
+    try {
+        const response = await api.get(`albums/`);
+        return response.data.results || response.data || [];
     } catch (error) {
         if (error.response) {
             throw new Error(error.response.data?.detail || "Failed to load albums");
@@ -51,7 +63,7 @@ export async function fetchNewReleases(limit=5) {
 export async function fetchTrendTracks(limit=4) {
     try {
         const response = await api.get(`tracks/?limit=${limit}`);
-        return response.data.results;
+        return response.data.results || response.data || [];
     } catch (error) {
         if (error.response) {
             throw new Error(error.response.data?.detail || "Failed to load tracks");
@@ -63,7 +75,8 @@ export async function fetchTrendTracks(limit=4) {
 export async function fetchTrendAlbum(limit=1) {
     try {
         const response = await api.get(`albums/?limit=${limit}`);
-        return response.data.results;
+        const data = response.data.results || response.data || [];
+        return Array.isArray(data) ? data : [data];
     } catch (error) {
         if (error.response) {
             throw new Error(error.response.data?.detail || "Failed to load albums");
@@ -76,7 +89,7 @@ export async function fetchTrendAlbum(limit=1) {
 export async function fetchArtistAlbums(artistId, limit=5) {
     try {
         const response = await api.get(`albums/?artist_id=${artistId}&limit=${limit}`);
-        return response.data.results;
+        return response.data.results || response.data || [];
     } catch (error) {
         if (error.response) {
             throw new Error(error.response.data?.detail || "Failed to load albums");
@@ -88,7 +101,7 @@ export async function fetchArtistAlbums(artistId, limit=5) {
 export async function fetchArtistTracks(artistId, limit=9) {
     try {
         const response = await api.get(`tracks/?artist_id=${artistId}&limit=${limit}`);
-        return response.data.results;
+        return response.data.results || response.data || [];
     } catch (error) {
         if (error.response) {
             throw new Error(error.response.data?.detail || "Failed to load tracks");
@@ -139,10 +152,19 @@ export async function fetchAlbumDetail(albumId) {
     }
 }
 
-export async function fetchFavoriteTracks() {
+export async function fetchFavoriteTracks(limit=9) {
     try {
-        const response = await api.get('favorites/tracks/');
+        const response = await api.get(`favorites/tracks/?limit=${limit}`);
         return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to load favorite tracks");
+    }
+}
+
+export async function fetchAllFavoriteTracks() {
+    try {
+        const response = await api.get(`favorites/tracks/`);
+        return Array.isArray(response.data) ? response.data : [];
     } catch (error) {
         throw new Error(error.response?.data?.error || "Failed to load favorite tracks");
     }
@@ -166,10 +188,19 @@ export async function removeTrackFromFavorites(trackId) {
     }
 }
 
-export async function fetchFavoriteAlbums() {
+export async function fetchFavoriteAlbums(limit=5) {
     try {
-        const response = await api.get('favorites/albums/');
+        const response = await api.get(`favorites/albums/?limit=${limit}`);
         return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to load favorite albums");
+    }
+}
+
+export async function fetchAllFavoriteAlbums() {
+    try {
+        const response = await api.get(`favorites/albums/`);
+        return Array.isArray(response.data) ? response.data : [];
     } catch (error) {
         throw new Error(error.response?.data?.error || "Failed to load favorite albums");
     }
@@ -193,10 +224,19 @@ export async function removeAlbumFromFavorites(albumId) {
     }
 }
 
-export async function fetchFavoriteArtists() {
+export async function fetchFavoriteArtists(limit=4) {
     try {
-        const response = await api.get('favorites/artists/');
+        const response = await api.get(`favorites/artists/?limit=${limit}`);
         return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || "Failed to load favorite artists");
+    }
+}
+
+export async function fetchAllFavoriteArtists() {
+    try {
+        const response = await api.get(`favorites/artists/`);
+        return Array.isArray(response.data) ? response.data : [];
     } catch (error) {
         throw new Error(error.response?.data?.error || "Failed to load favorite artists");
     }
@@ -305,10 +345,26 @@ export async function unpinPlaylist(playlistId) {
 }
 
 
-export async function fetchPlaylists() {
+export async function fetchPlaylists(limit=4) {
     try {
-        const response = await api.get('playlists/');
-        return response.data.results || response.data;
+        const response = await api.get(`playlists/?limit=${limit}`);
+        const data = response.data.results || response.data;
+        const playlists = Array.isArray(data) ? data : [];
+        // Ограничиваем на клиенте, если бэкенд не обработал limit
+        return playlists.slice(0, limit);
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load playlists");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function fetchAllPlaylists() {
+    try {
+        const response = await api.get(`playlists/`);
+        const data = response.data.results || response.data;
+        return Array.isArray(data) ? data : [];
     } catch (error) {
         if (error.response) {
             throw new Error(error.response.data?.detail || "Failed to load playlists");
@@ -331,7 +387,14 @@ export async function fetchPlaylistDetail(playlistId) {
 
 export async function createPlaylist(data) {
     try {
-        const response = await api.post('playlists/', data);
+        // Если data - это FormData, используем multipart/form-data заголовок
+        const config = data instanceof FormData ? {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            }
+        } : {};
+        
+        const response = await api.post('playlists/', data, config);
         return response.data;
     } catch (error) {
         if (error.response) {
@@ -355,10 +418,30 @@ export async function createPlaylist(data) {
 
 export async function updatePlaylist(playlistId, data) {
     try {
-        const response = await api.patch(`playlists/${playlistId}/`, data);
+        // Если data - это FormData, используем multipart/form-data заголовок
+        const config = data instanceof FormData ? {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            }
+        } : {};
+        
+        const response = await api.patch(`playlists/${playlistId}/`, data, config);
         return response.data;
     } catch (error) {
         if (error.response) {
+            const errorData = error.response.data;
+            if (errorData.detail) {
+                throw new Error(errorData.detail);
+            } else if (errorData.non_field_errors) {
+                throw new Error(errorData.non_field_errors[0]);
+            } else {
+                const firstKey = Object.keys(errorData)[0];
+                if (Array.isArray(errorData[firstKey])) {
+                    throw new Error(errorData[firstKey][0]);
+                } else if (typeof errorData[firstKey] === "string") {
+                    throw new Error(errorData[firstKey]);
+                }
+            }
             throw new Error(error.response.data?.detail || "Failed to update playlist");
         }
         throw new Error("Network error");

@@ -13,6 +13,18 @@ export default function PlaylistPage() {
     const [playlist, setPlaylist] = useState(null);
     const [error, setError] = useState(null);
 
+    const handleTrackRemoved = (trackId) => {
+        if (playlist) {
+            setPlaylist({
+                ...playlist,
+                playlist_tracks: playlist.playlist_tracks?.filter(
+                    pt => pt.track.id !== trackId
+                ) || [],
+                tracks_count: (playlist.tracks_count || 1) - 1
+            });
+        }
+    };
+
     useEffect(() => {
         async function loadPlaylistDetail() {
             try {
@@ -50,11 +62,14 @@ export default function PlaylistPage() {
 
                 <div className="playlist-page__tracks section__block-last">
                     <ul className="playlist-page__tracks-list">
-                        {playlist.tracks?.map((track) => (
-                            <li className='playlist-page__tracks-item' key={track.id}>
+                        {playlist.playlist_tracks?.map((playlistTrack) => (
+                            <li className='playlist-page__tracks-item' key={playlistTrack.id}>
                                 <Track
-                                    {...track}
-                                    className={'playlist-page__track'} />
+                                    {...playlistTrack.track}
+                                    className={'playlist-page__track'}
+                                    playlistId={id}
+                                    onTrackRemoved={handleTrackRemoved}
+                                />
                             </li>
                         ))}
                     </ul>

@@ -85,7 +85,6 @@ class PinnedAlbumViewSet(viewsets.ViewSet):
         pinned = PinnedAlbum.objects.create(
             user=request.user,
             album=album,
-        
         )
         return Response(
             {'status': 'pinned'},

@@ -5,7 +5,8 @@ import favoriteFullIcon from "../../assets/images/artist-profile/favorite-full.s
 import pinIcon from '../../assets/images/artist-profile/pin.svg';
 import pinFullIcon from '../../assets/images/artist-profile/pin-full.svg';
 import settings from "../../assets/images/artist-profile/settings.svg";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     addArtistToFavorites,
     removeArtistFromFavorites,
@@ -17,6 +18,7 @@ import {
     unpinAlbum,
     pinPlaylist,
     unpinPlaylist,
+    deletePlaylist,
 } from "../../api/musicAPI.js";
 
 import { usePinned } from "../../context/PinnedContext.jsx";
@@ -41,8 +43,11 @@ export default function Card({
         type === 'artist' ? (author?.is_favorite || false) : (is_favorite || false)
     );
     const [isPinned, setIsPinned] = useState(false);
+    const [showPlaylistMenu, setShowPlaylistMenu] = useState(false);
     const { refreshPinned, pinnedArtists, pinnedAlbums, pinnedPlaylists } = usePinned();
-    const { showError } = useToast();
+    const { showError, showSuccess } = useToast();
+    const navigate = useNavigate();
+    const menuRef = useRef(null);
 
     useEffect(() => {
         if (type === 'artist' && author?.id) {
@@ -61,6 +66,22 @@ export default function Card({
             setFavorite(is_favorite || false);
         }
     }, [author?.is_favorite, is_favorite, type]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setShowPlaylistMenu(false);
+            }
+        };
+
+        if (showPlaylistMenu) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showPlaylistMenu]);
 
     const handleFavorite = async (e) => {
         e.preventDefault();
@@ -148,6 +169,43 @@ export default function Card({
         }
     };
 
+    const handleSettingsClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (type === 'playlist') {
+            setShowPlaylistMenu(!showPlaylistMenu);
+        }
+    };
+
+    const handleEditPlaylist = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (id) {
+            navigate(`/playlist/${id}/update`);
+        }
+        setShowPlaylistMenu(false);
+    };
+
+    const handleDeletePlaylist = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!id) return;
+
+        if (window.confirm('Are you sure you want to delete this playlist?')) {
+            try {
+                await deletePlaylist(id);
+                showSuccess('Playlist deleted successfully');
+                setShowPlaylistMenu(false);
+                navigate('/library');
+            } catch (error) {
+                console.error('Error deleting playlist:', error);
+                showError(error.message || 'Failed to delete playlist');
+            }
+        }
+    };
+
     return (
         <div className="card__body">
             <img src={image} width={300} height={300} loading='lazy' alt="" className="card__avatar"/>
@@ -202,9 +260,33 @@ export default function Card({
                             }
                         </ButtonLink>
                     )}
-                    <ButtonLink to={'/'} className="card__settings card__button">
-                        <img src={settings} width={52} height={52} loading='lazy' alt="" className="card__button-icon"/>
-                    </ButtonLink>
+                    <div className="card__settings-wrapper" ref={menuRef}>
+                        {type === 'playlist' ? (
+                            <ButtonLink onClick={handleSettingsClick} className="card__settings card__button">
+                                <img src={settings} width={52} height={52} loading='lazy' alt="" className="card__button-icon"/>
+                            </ButtonLink>
+                        ) : (
+                            <ButtonLink to={'/'} className="card__settings card__button">
+                                <img src={settings} width={52} height={52} loading='lazy' alt="" className="card__button-icon"/>
+                            </ButtonLink>
+                        )}
+                        {type === 'playlist' && showPlaylistMenu && (
+                            <div className="card__popup">
+                                <button
+                                    onClick={handleEditPlaylist}
+                                    className="card__popup-button"
+                                >
+                                    Edit playlist
+                                </button>
+                                <button
+                                    onClick={handleDeletePlaylist}
+                                    className="card__popup-button"
+                                >
+                                    Delete playlist
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

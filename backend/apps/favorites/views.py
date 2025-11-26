@@ -13,6 +13,7 @@ class FavoriteTrackViewSet(viewsets.ViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request):
+        limit = request.query_params.get('limit')
         favorites = FavoriteTrack.objects.filter(
             user=request.user
         ).select_related(
@@ -20,6 +21,14 @@ class FavoriteTrackViewSet(viewsets.ViewSet):
             'track__album',
             'track__album__artist'
         )
+
+        if limit:
+            try:
+                limit = int(limit)
+                favorites = favorites[:limit]
+            except ValueError:
+                pass
+
         tracks = [fav.track for fav in favorites]
         serializer = TrackSerializer(tracks, many=True, context={'request': request})
         return Response(serializer.data)
@@ -58,6 +67,7 @@ class FavoriteAlbumViewSet(viewsets.ViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request):
+        limit = request.query_params.get('limit')
         favorites = FavoriteAlbum.objects.filter(
             user=request.user
         ).select_related(
@@ -67,6 +77,14 @@ class FavoriteAlbumViewSet(viewsets.ViewSet):
             'album__tracks',
             'album__tracks__album__artist'
         )
+
+        if limit:
+            try:
+                limit = int(limit)
+                favorites = favorites[:limit]
+            except ValueError:
+                pass
+
         albums = [fav.album for fav in favorites]
         serializer = AlbumSerializer(albums, many=True, context={'request': request})
         return Response(serializer.data)
@@ -105,9 +123,18 @@ class FavoriteArtistViewSet(viewsets.ViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request):
+        limit = request.query_params.get('limit')
         favorites = FavoriteArtist.objects.filter(
             user=request.user
         ).select_related('artist')
+
+        if limit:
+            try:
+                limit = int(limit)
+                favorites = favorites[:limit]
+            except ValueError:
+                pass
+
         artists = [fav.artist for fav in favorites]
         serializer = ArtistSerializer(artists, many=True, context={'request': request})
         return Response(serializer.data)

@@ -13,6 +13,13 @@ export function PinnedProvider({ children }) {
     const [loading, setLoading] = useState(true);
 
     const loadPinned = async () => {
+        // Проверяем наличие токена перед загрузкой закрепленных элементов
+        const token = localStorage.getItem("access");
+        if (!token) {
+            setLoading(false);
+            return;
+        }
+
         try {
             const [artists, albums, playlists] = await Promise.all([
                 fetchPinnedArtists(),
@@ -23,7 +30,10 @@ export function PinnedProvider({ children }) {
             setPinnedAlbums(albums);
             setPinnedPlaylists(playlists);
         } catch (error) {
-            console.error('Error loading pinned items:', error);
+            // Игнорируем ошибки 401 (Unauthorized) - это нормально для неавторизованных пользователей
+            if (error.response?.status !== 401) {
+                console.error('Error loading pinned items:', error);
+            }
         } finally {
             setLoading(false);
         }

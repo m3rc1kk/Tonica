@@ -60,7 +60,7 @@ export default function Profile() {
                         <header className="profile__body-header">
                             <div className="profile__body-title">Your Profile</div>
 
-                            <ButtonLink to={'/'} className='profile__body-update'>
+                            <ButtonLink to={'/profile/update'} className='profile__body-update'>
                                 <img src={settingsIcon} width={24} height={24} loading='lazy' alt="Update" className="profile__update-icon"/>
                             </ButtonLink>
                         </header>

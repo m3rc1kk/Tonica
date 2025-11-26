@@ -211,4 +211,39 @@
   &__fullname {
     opacity: .4;
   }
+
+  &__settings {
+    &-wrapper {
+      position: relative;
+    }
+  }
+
+  &__popup {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: 8px;
+    background-color: var(--color-dark);
+    border-radius: var(--border-radius);
+    padding: 8px 0;
+    min-width: 160px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+
+    &-button {
+      width: 100%;
+      padding: 8px 16px;
+      background: transparent;
+      border: none;
+      color: var(--color-white);
+      text-align: left;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
 }

@@ -20,15 +20,15 @@ export default function Library() {
         const loadFavorites = async () => {
             try {
                 const [tracksData, albumsData, artistsData, playlistsData] = await Promise.all([
-                    fetchFavoriteTracks(),
-                    fetchFavoriteAlbums(),
-                    fetchFavoriteArtists(),
-                    fetchPlaylists()
+                    fetchFavoriteTracks(9),
+                    fetchFavoriteAlbums(5),
+                    fetchFavoriteArtists(4),
+                    fetchPlaylists(4)
                 ]);
                 setTracks(tracksData || []);
                 setAlbums(albumsData || []);
                 setArtists(artistsData || []);
-                setPlaylists(playlistsData || []);
+                setPlaylists(Array.isArray(playlistsData) ? playlistsData.slice(0, 4) : []);
             } catch (error) {
                 console.error('Error loading favorites:', error);
                 setTracks([]);
@@ -51,20 +51,20 @@ export default function Library() {
                     title='Library'
                 />
 
-                <SectionBlock className='favorites' title="Favorites">
+                <SectionBlock className='favorites' title="Favorites" link='/favorites/tracks/'>
                     <TrackList tracks={tracks} className='favorites__list' />
                 </SectionBlock>
 
-                <SectionBlock className='playlists' title='Playlists'>
-                    <PlaylistList playlists={playlists} className='playlists__list' />
+                <SectionBlock className='playlists' title='Playlists' link='/playlists/'>
+                    <PlaylistList playlists={playlists} className='playlists__list'/>
                 </SectionBlock>
 
-                <SectionBlock className='liked-albums' title='Liked Albums'>
-                    <AlbumList albums={albums} className='liked-albums__list' />
+                <SectionBlock className='liked-album' title='Liked Albums' link='/favorites/albums/'>
+                    <AlbumList albums={albums} className='liked-album__list'/>
                 </SectionBlock>
 
-                <SectionBlock className='liked-artists section__block-last' title='Liked Artists'>
-                    <ArtistList artists={artists} className='liked-artists__list' />
+                <SectionBlock className='liked-artist section__block-last' title='Liked Artists' link='/favorites/artists/'>
+                    <ArtistList artists={artists} className='liked-artist__list'/>
                 </SectionBlock>
             </div>
         </section>

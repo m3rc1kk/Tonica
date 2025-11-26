@@ -13,7 +13,7 @@ class ArtistSerializer(serializers.ModelSerializer):
 
 
     def get_is_favorite(self, obj):
-        request = self.context['request']
+        request = self.context.get('request')
         if request and request.user.is_authenticated:
             return FavoriteArtist.objects.filter(
                 user=request.user,
@@ -62,7 +62,7 @@ class TrackSerializer(serializers.ModelSerializer):
                             'album', 'duration']
 
     def get_is_favorite(self, obj):
-        request = self.context['request']
+        request = self.context.get('request')
         if request and request.user.is_authenticated:
             return FavoriteTrack.objects.filter(
                 user=request.user,
@@ -86,7 +86,7 @@ class AlbumSerializer(serializers.ModelSerializer):
         return obj.tracks.count()
 
     def get_is_favorite(self, obj):
-        request = self.context['request']
+        request = self.context.get('request')
         if request and request.user.is_authenticated:
             return FavoriteAlbum.objects.filter(
                 user=request.user,

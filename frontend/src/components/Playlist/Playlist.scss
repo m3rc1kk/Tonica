@@ -16,7 +16,7 @@
     height: 180px;
   }
 
-  &__favorite {
+  &__pin {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -30,7 +30,7 @@
   }
 
   @include hover {
-    .album__favorite {
+    .playlist__pin {
       opacity: 1;
     }
   }

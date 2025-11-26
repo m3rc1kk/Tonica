@@ -16,13 +16,15 @@
 
     @include desktop {
       &:nth-child(5),
+      &:nth-child(4),
       {
         display: none;
       }
     }
 
+
+
     @include mobile {
-      &:nth-child(4),
       &:nth-child(3) {
         display: none;
       }

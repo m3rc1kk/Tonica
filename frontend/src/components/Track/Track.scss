@@ -8,6 +8,14 @@
     justify-content: space-between;
   }
 
+  &__settings {
+    &-wrapper {
+      display: flex;
+      align-items: center;
+
+    }
+  }
+
   &__info {
     display: flex;
     align-items: center;
@@ -89,5 +97,88 @@
         opacity: 1;
       }
     }
+  }
+
+  &__settings-wrapper {
+    position: relative;
+  }
+
+  &__popup {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    background-color: var(--color-dark);
+    border-radius: var(--border-radius);
+    padding: 8px 0;
+    min-width: 160px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+
+    &-button {
+      width: 100%;
+      padding: 8px 16px;
+      background: transparent;
+      border: none;
+      color: var(--color-white);
+      text-align: left;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+
+  &__playlists-popup {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    background-color: var(--color-dark);
+    border-radius: var(--border-radius);
+    padding: 8px 0;
+    min-width: 200px;
+    max-width: 300px;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+  }
+
+  &__playlists-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__playlists-item {
+    margin: 0;
+  }
+
+  &__playlists-button {
+    width: 100%;
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    color: var(--color-white);
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  &__playlists-loading,
+  &__playlists-empty {
+    padding: 16px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
   }
 }
