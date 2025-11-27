@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.db.models import Count
 
+from apps.genres.models import Genre
+
 
 class Artist(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
@@ -125,6 +127,7 @@ class Track(models.Model):
     album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='tracks')
     title = models.CharField(max_length=50)
     duration = models.DurationField()
+    genres = models.ManyToManyField(Genre, related_name='tracks', blank=True)
     audio_file = models.FileField(upload_to='tracks/', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

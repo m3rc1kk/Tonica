@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions
 from rest_framework.exceptions import PermissionDenied
+from apps.genres.models import Genre
 
 from .models import ArtistApplication, Artist, Album, Track
 from .serializers import ArtistApplicationSerializer, ArtistSerializer, AlbumSerializer, AlbumCreateSerializer, \
@@ -99,7 +100,8 @@ class TrackViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         if self.action == 'list':
             artist_id = self.request.query_params.get('artist_id')
-            qs = super().get_queryset().select_related('album', 'album__artist')
+            genre_slug = self.request.query_params.get('genre')
+            qs = super().get_queryset().select_related('album', 'album__artist').prefetch_related('genres')
             if artist_id:
                 artist = get_object_or_404(Artist, pk=artist_id)
                 qs = qs.filter(album__artist=artist)
@@ -108,6 +110,11 @@ class TrackViewSet(viewsets.ModelViewSet):
                     qs = qs.filter(album__is_published=True)
             else:
                 qs = qs.filter(album__is_published=True)
+            
+            if genre_slug:
+                genre = get_object_or_404(Genre, slug=genre_slug)
+                qs = qs.filter(genres=genre)
+            
             return qs
 
         return super().get_queryset()

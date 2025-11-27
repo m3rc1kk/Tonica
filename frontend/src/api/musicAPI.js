@@ -157,12 +157,10 @@ export async function submitArtistApplication(data) {
             const data = error.response.data;
 
             if (data.detail) {
-                // DRF возвращает detail при PermissionDenied и некоторых ValidationError
                 message = data.detail;
             } else if (data.non_field_errors) {
                 message = data.non_field_errors[0];
             } else {
-                // любые поля
                 const firstKey = Object.keys(data)[0];
                 if (Array.isArray(data[firstKey])) {
                     message = data[firstKey][0];
@@ -386,7 +384,6 @@ export async function fetchPlaylists(limit=4) {
         const response = await api.get(`playlists/?limit=${limit}`);
         const data = response.data.results || response.data;
         const playlists = Array.isArray(data) ? data : [];
-        // Ограничиваем на клиенте, если бэкенд не обработал limit
         return playlists.slice(0, limit);
     } catch (error) {
         if (error.response) {
@@ -423,7 +420,6 @@ export async function fetchPlaylistDetail(playlistId) {
 
 export async function createPlaylist(data) {
     try {
-        // Если data - это FormData, используем multipart/form-data заголовок
         const config = data instanceof FormData ? {
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -454,7 +450,6 @@ export async function createPlaylist(data) {
 
 export async function updatePlaylist(playlistId, data) {
     try {
-        // Если data - это FormData, используем multipart/form-data заголовок
         const config = data instanceof FormData ? {
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -519,6 +514,42 @@ export async function removeTrackFromPlaylist(playlistId, trackId) {
     } catch (error) {
         if (error.response) {
             throw new Error(error.response.data?.error || error.response.data?.detail || "Failed to remove track from playlist");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function fetchTopGenres(limit=5) {
+    try {
+        const response = await api.get(`genres/popular/?limit=${limit}`);
+        return response.data || [];
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load genres");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function fetchGenreDetail(slug) {
+    try {
+        const response = await api.get(`genres/${slug}/`);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load genre");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function fetchGenreTracks(genreSlug, limit=50) {
+    try {
+        const response = await api.get(`tracks/?genre=${genreSlug}&limit=${limit}`);
+        return response.data.results || response.data || [];
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load genre tracks");
         }
         throw new Error("Network error");
     }

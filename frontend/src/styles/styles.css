@@ -3668,5 +3668,32 @@ h3 {
     transform: scale(1);
   }
 }
+.genre-tracks__list {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-auto-flow: row;
+  column-gap: 24px;
+  row-gap: 20px;
+}
+@media (max-width: 1280px) {
+  .genre-tracks__list .track__item:nth-child(7),
+  .genre-tracks__list .track__item:nth-child(8),
+  .genre-tracks__list .track__item:nth-child(9) {
+    display: block;
+  }
+}
+@media (max-width: 767px) {
+  .genre-tracks__list {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .genre-tracks__list .track__item:nth-child(5),
+  .genre-tracks__list .track__item:nth-child(6) {
+    display: block;
+  }
+}
+.genre-tracks__item {
+  max-width: 733px;
+  width: 100%;
+}
 
 /*# sourceMappingURL=styles.css.map */

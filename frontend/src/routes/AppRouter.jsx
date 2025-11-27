@@ -24,6 +24,7 @@ import PlaylistUpdate from "../pages/PlaylistUpdate/PlaylistUpdate.jsx";
 import ProfileUpdate from "../pages/Auth/ProfileUpdate/ProfileUpdate.jsx";
 import Search from "../pages/Search/Search.jsx";
 import BigPlayer from "../pages/BigPlayer/BigPlayer.jsx";
+import GenrePage from "../pages/GenrePage/GenrePage.jsx";
 
 export default function AppRouter() {
     return (
@@ -53,6 +54,7 @@ export default function AppRouter() {
                 <Route path="/playlist/:id/update" element={<PlaylistUpdate />} />
                 <Route path="/profile/update" element={<ProfileUpdate />} />
                 <Route path="/search" element={<Search />} />
+                <Route path="/genres/:slug" element={<GenrePage />} />
                 <Route path="/big-player/:id" element={<BigPlayer />} />
             </Routes>
         </>

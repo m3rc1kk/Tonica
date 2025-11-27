@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Artist, ArtistApplication, Track, Album
 from ..favorites.models import FavoriteTrack, FavoriteArtist, FavoriteAlbum
+from ..genres.models import Genre
+from ..genres.serializers import GenreSerializer
 
 
 class ArtistSerializer(serializers.ModelSerializer):
@@ -52,11 +54,12 @@ class SimpleAlbumSerializer(serializers.ModelSerializer):
 class TrackSerializer(serializers.ModelSerializer):
     album = SimpleAlbumSerializer(read_only=True)
     is_favorite = serializers.SerializerMethodField()
+    genres = GenreSerializer(many=True, read_only=True)
 
     class Meta:
         model = Track
         fields = ['id', 'title', 'album',
-                 'duration', 'audio_file', 'is_favorite',
+                 'duration', 'audio_file', 'is_favorite', 'genres',
                   'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at',
                             'album', 'duration']
@@ -95,9 +98,16 @@ class AlbumSerializer(serializers.ModelSerializer):
         return False
 
 class TrackCreateSerializer(serializers.ModelSerializer):
+    genres = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Genre.objects.all(),
+        required=True,
+        allow_empty=True
+    )
+
     class Meta:
         model = Track
-        fields = ['title', 'duration', 'audio_file']
+        fields = ['title', 'duration', 'audio_file', 'genres']
 
 class AlbumCreateSerializer(serializers.ModelSerializer):
     tracks = TrackCreateSerializer(many=True)
@@ -118,6 +128,9 @@ class AlbumCreateSerializer(serializers.ModelSerializer):
         album = Album.objects.create(artist=user.artist, **validated_data)
 
         for track_data in tracks_data:
-            Track.objects.create(album=album, **track_data)
+            genres_data = track_data.pop('genres', [])
+            track = Track.objects.create(album=album, **track_data)
+            if genres_data:
+                track.genres.set(genres_data)
 
         return album

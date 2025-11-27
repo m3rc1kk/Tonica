@@ -7,6 +7,8 @@ export default function GenreList({genres = [], className=''}) {
                 <li key={genre.id} className="genre__item">
                     <Genre
                         id={genre.id}
+                        title={genre.title}
+                        slug={genre.slug}
                     />
                 </li>
             ))}

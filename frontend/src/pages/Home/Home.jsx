@@ -10,7 +10,7 @@ import GenreList from "../../components/GenreList/GenreList.jsx";
 import ArtistList from "../../components/ArtistList/ArtistList.jsx";
 
 import { useEffect, useState } from "react";
-import {fetchTrendAlbum, fetchTrendTracks, fetchTrendingArtists, fetchChartTracks, fetchNewReleases} from "../../api/musicAPI.js";
+import {fetchTrendAlbum, fetchTrendTracks, fetchTrendingArtists, fetchChartTracks, fetchNewReleases, fetchTopGenres} from "../../api/musicAPI.js";
 
 export default function Home() {
 
@@ -26,6 +26,9 @@ export default function Home() {
     const [trendTracks, setTrendTracks] = useState([]);
     const [trendAlbum, setTrendAlbum] = useState([]);
     const [trendError, setTrendError] = useState(null);
+
+    const [genres, setGenres] = useState([]);
+    const [genresError, setGenresError] = useState(null);
 
 
     useEffect(() => {
@@ -89,19 +92,26 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
+        async function loadGenres() {
+            try {
+                const data = await fetchTopGenres(5);
+                setGenres(data);
+            } catch(error) {
+                console.error('Error loading genres:', error);
+                setGenresError(error.message);
+                setGenres([]);
+            }
+        }
+        loadGenres();
+    }, [])
+
+    useEffect(() => {
         if (tracksError) console.error('Home tracks error:', tracksError);
         if (artistError) console.error('Home artists error:', artistError);
         if (albumsError) console.error('Home albums error:', albumsError);
         if (trendError) console.error('Home trends error:', trendError);
-    }, [tracksError, artistError, albumsError, trendError]);
-
-    const genres = [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-        { id: 5 },
-    ];
+        if (genresError) console.error('Home genres error:', genresError);
+    }, [tracksError, artistError, albumsError, trendError, genresError]);
 
 
     return (
@@ -139,7 +149,7 @@ export default function Home() {
                     <AlbumList albums={albums} className='new-releases__list' />
                 </SectionBlock>
 
-                <SectionBlock className='genres' title='Genres'>
+                <SectionBlock className='genres' title='Genres' isLink={false}>
                     <GenreList genres={genres} className='genres__list' />
                 </SectionBlock>
 
