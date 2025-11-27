@@ -8,6 +8,8 @@ import ResetPasswordConfirm from "../pages/Auth/ResetPassword/ResetPasswordConfi
 import Home from "../pages/Home/Home.jsx";
 import Profile from "../pages/Profile/Profile.jsx";
 import ArtistProfile from "../pages/ArtistProfile/ArtistProfile.jsx";
+import ArtistTracks from "../pages/ArtistTracks/ArtistTracks.jsx";
+import ArtistAlbums from "../pages/ArtistAlbums/ArtistAlbums.jsx";
 import ArtistApplicationForm from "../pages/ApplicationApply/ApplicationApply.jsx";
 import AlbumPage from "../pages/AlbumPage/AlbumPage.jsx";
 import Library from "../pages/Library/Library.jsx";
@@ -20,6 +22,8 @@ import PlaylistPage from "../pages/PlaylistPage/PlaylistPage.jsx";
 import PlaylistCreate from "../pages/PlaylistCreate/PlaylistCreate.jsx";
 import PlaylistUpdate from "../pages/PlaylistUpdate/PlaylistUpdate.jsx";
 import ProfileUpdate from "../pages/Auth/ProfileUpdate/ProfileUpdate.jsx";
+import Search from "../pages/Search/Search.jsx";
+import BigPlayer from "../pages/BigPlayer/BigPlayer.jsx";
 
 export default function AppRouter() {
     return (
@@ -40,12 +44,16 @@ export default function AppRouter() {
                 <Route path="/playlists" element={<AllPlaylists />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/artist/:id" element={<ArtistProfile />} />
+                <Route path="/artist/:id/tracks" element={<ArtistTracks />} />
+                <Route path="/artist/:id/albums" element={<ArtistAlbums />} />
                 <Route path="/application/apply/" element={<ArtistApplicationForm />} />
                 <Route path="/album/:id" element={<AlbumPage />} />
                 <Route path="/playlist/create" element={<PlaylistCreate />} />
                 <Route path="/playlist/:id" element={<PlaylistPage />} />
                 <Route path="/playlist/:id/update" element={<PlaylistUpdate />} />
                 <Route path="/profile/update" element={<ProfileUpdate />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/big-player/:id" element={<BigPlayer />} />
             </Routes>
         </>
     );

@@ -1,0 +1,40 @@
+.artist-albums {
+  &__item {
+    @include desktop {
+      &:nth-child(5),
+      &:nth-child(4)
+      {
+        display: block;
+      }
+    }
+
+    @include mobile {
+      &:nth-child(3) {
+        display: block;
+      }
+    }
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(5, 281px);
+    row-gap: 24px;
+
+    @include full-screen {
+      grid-template-columns: repeat(3, 281px);
+    }
+
+    @include desktop {
+      grid-template-columns: repeat(2, 281px);
+    }
+
+    @include mobile {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: start;
+      row-gap: 24px;
+    }
+  }
+}
+

@@ -79,11 +79,11 @@ export default function ArtistProfile() {
                     author={artist}
                     fullName={fullName}
                 />
-                <SectionBlock className='tracks' title='Tracks'>
+                <SectionBlock className='tracks' title='Tracks' link={`/artist/${id}/tracks`}>
                     <TrackList tracks={tracks} className='charts__list' />
                 </SectionBlock>
 
-                <SectionBlock className='albums' title='Albums'>
+                <SectionBlock className='albums' title='Albums' link={`/artist/${id}/albums`}>
                     <AlbumList albums={albums} className='new-releases__list section__block-last' />
                 </SectionBlock>
 

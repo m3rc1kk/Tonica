@@ -98,6 +98,18 @@ export async function fetchArtistAlbums(artistId, limit=5) {
     }
 }
 
+export async function fetchTrackDetail(trackId) {
+    try {
+        const response = await api.get(`tracks/${trackId}/`);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load track");
+        }
+        throw new Error("Network error");
+    }
+}
+
 export async function fetchArtistTracks(artistId, limit=9) {
     try {
         const response = await api.get(`tracks/?artist_id=${artistId}&limit=${limit}`);
@@ -105,6 +117,30 @@ export async function fetchArtistTracks(artistId, limit=9) {
     } catch (error) {
         if (error.response) {
             throw new Error(error.response.data?.detail || "Failed to load tracks");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function fetchAllArtistTracks(artistId) {
+    try {
+        const response = await api.get(`tracks/?artist_id=${artistId}`);
+        return response.data.results || response.data || [];
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load tracks");
+        }
+        throw new Error("Network error");
+    }
+}
+
+export async function fetchAllArtistAlbums(artistId) {
+    try {
+        const response = await api.get(`albums/?artist_id=${artistId}`);
+        return response.data.results || response.data || [];
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.detail || "Failed to load albums");
         }
         throw new Error("Network error");
     }
