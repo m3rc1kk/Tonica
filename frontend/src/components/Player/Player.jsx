@@ -6,7 +6,6 @@ import prev from '../../assets/images/player/prev.svg'
 import next from '../../assets/images/player/next.svg'
 import settings from '../../assets/images/player/settings.svg'
 import volumeIcon from '../../assets/images/player/volume.svg'
-import text from '../../assets/images/player/text.svg'
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { addTrackToFavorites, removeTrackFromFavorites, fetchPlaylists, addTrackToPlaylist } from '../../api/musicAPI'
@@ -23,7 +22,17 @@ export default function Player() {
     const [showPlaylistsList, setShowPlaylistsList] = useState(false);
     const [playlists, setPlaylists] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [isNarrowScreen, setIsNarrowScreen] = useState(window.innerWidth < 1920);
     const popupRef = useRef(null);
+
+    useEffect(() => {
+        const checkScreenWidth = () => {
+            setIsNarrowScreen(window.innerWidth < 1920);
+        };
+        
+        window.addEventListener('resize', checkScreenWidth);
+        return () => window.removeEventListener('resize', checkScreenWidth);
+    }, []);
 
     const handleFavorite = async (e) => {
         e.preventDefault();
@@ -161,14 +170,28 @@ export default function Player() {
                                         ? currentTrack.artists
                                         : (currentTrack.album?.artist ? [currentTrack.album.artist] : [])
                                     
-                                    return artists.map((artist, index) => (
-                                        <span key={artist.id}>
-                                            {index > 0 && <span className="player__track-artist-separator">, </span>}
-                                            <ButtonLink to={`/artist/${artist.id}`} className="player__track-artist">
-                                                {artist.stage_name}
-                                            </ButtonLink>
-                                        </span>
-                                    ))
+                                    const maxArtists = isNarrowScreen ? 1 : artists.length;
+                                    const displayedArtists = artists.slice(0, maxArtists);
+                                    const remainingCount = artists.length - maxArtists;
+                                    
+                                    return (
+                                        <>
+                                            {displayedArtists.map((artist, index) => (
+                                                <span key={artist.id}>
+                                                    {index > 0 && <span className="player__track-artist-separator">, </span>}
+                                                    <ButtonLink to={`/artist/${artist.id}`} className="player__track-artist">
+                                                        {artist.stage_name}
+                                                    </ButtonLink>
+                                                </span>
+                                            ))}
+                                            {remainingCount > 0 && (
+                                                <span className="player__track-artist-more">
+                                                    <span className="player__track-artist-separator">, </span>
+                                                    <span className="player__track-artist-more-text">+{remainingCount}</span>
+                                                </span>
+                                            )}
+                                        </>
+                                    );
                                 })()}
                             </div>
                         </div>
@@ -236,10 +259,6 @@ export default function Player() {
 
 
                 <div className="player__settings">
-                    <ButtonLink className="player__settings-button">
-                        <img src={text} alt="" className="player__settings-button-icon"/>
-                    </ButtonLink>
-
                     <div className="player__settings-wrapper" ref={popupRef}>
                         <ButtonLink onClick={handleSettingsClick} className="player__settings-button">
                             <img src={settings} alt="" className="player__settings-button-icon"/>

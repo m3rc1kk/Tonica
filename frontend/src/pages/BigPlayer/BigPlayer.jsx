@@ -6,8 +6,7 @@ import prev from '../../assets/images/player/prev.svg'
 import next from '../../assets/images/player/next.svg'
 import settings from '../../assets/images/player/settings.svg'
 import volumeIcon from '../../assets/images/player/volume.svg'
-import text from '../../assets/images/player/text.svg'
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { addTrackToFavorites, removeTrackFromFavorites, fetchTrackDetail, fetchPlaylists, addTrackToPlaylist } from '../../api/musicAPI'
 import { useToast } from '../../context/ToastContext.jsx'
@@ -196,11 +195,12 @@ export default function BigPlayer() {
                         <h3 className="big-player__track-title title--accent">{currentTrack.title}</h3>
                         <div className={`big-player__track-artists ${artists.length > 1 ? 'big-player__track-artists--multiple' : ''}`}>
                             {artists.map((artist, index) => (
-                                <span key={artist.id}>
+                                <React.Fragment key={artist.id}>
+                                    {index > 0 && <span className="big-player__track-artist-separator">, </span>}
                                     <ButtonLink to={`/artist/${artist.id}`} className="big-player__track-artist">
                                         {artist.stage_name}
                                     </ButtonLink>
-                                </span>
+                                </React.Fragment>
                             ))}
                         </div>
                     </div>
@@ -214,9 +214,7 @@ export default function BigPlayer() {
                                 <img src={favoriteIcon} width={52} height={52} loading='lazy' alt="" className="big-player__track-favorite-icon"/>
                             }
                         </ButtonLink>
-                        <ButtonLink className="big-player__settings-button">
-                            <img src={text} width={52} height={52} loading='lazy' alt="" className="big-player__settings-button-icon"/>
-                        </ButtonLink>
+                        <div className="big-player__track-placeholder" style={{ width: '52px', height: '52px' }}></div>
                     </div>
 
                     <div className="big-player__control">

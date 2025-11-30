@@ -73,6 +73,13 @@
       &-separator {
         opacity: .4;
       }
+
+      &-more {
+        &-text {
+          opacity: .4;
+          font-weight: 500;
+        }
+      }
     }
 
     &-title {

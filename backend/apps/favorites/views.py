@@ -5,8 +5,12 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from ..favorites.models import FavoriteTrack, FavoriteAlbum, FavoriteArtist
-from ..main.models import Track, Album, Artist
-from ..main.serializers import TrackSerializer, AlbumSerializer, ArtistSerializer
+from apps.main.models import Track
+from apps.main.serializers import TrackSerializer
+from apps.albums.models import Album
+from apps.albums.serializers import AlbumSerializer
+from apps.artists.models import Artist
+from apps.artists.serializers import ArtistSerializer
 
 
 class FavoriteTrackViewSet(viewsets.ViewSet):

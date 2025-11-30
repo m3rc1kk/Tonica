@@ -1,7 +1,7 @@
 from .models import Playlist, PlaylistTrack
 from rest_framework import serializers
 
-from ..main.serializers import TrackSerializer
+from apps.main.serializers import TrackSerializer
 
 
 class PlaylistTrackSerializer(serializers.ModelSerializer):

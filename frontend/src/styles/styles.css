@@ -2197,6 +2197,10 @@ h3 {
 .player__track-artist-separator {
   opacity: 0.4;
 }
+.player__track-artist-more-text {
+  opacity: 0.4;
+  font-weight: 500;
+}
 .player__track-title {
   font-weight: 600;
 }

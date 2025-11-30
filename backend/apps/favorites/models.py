@@ -1,7 +1,9 @@
 from django.conf import settings
 from django.db import models
 
-from ..main.models import Track, Album, Artist
+from apps.main.models import Track
+from apps.albums.models import Album
+from apps.artists.models import Artist
 
 
 class FavoriteTrack(models.Model):

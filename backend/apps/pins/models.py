@@ -1,7 +1,9 @@
 from django.db import models
 from django.conf import settings
-from ..main.models import Artist, Album
 from django.core.exceptions import ValidationError
+
+from apps.artists.models import Artist
+from apps.albums.models import Album
 
 from ..playlists.models import Playlist
 

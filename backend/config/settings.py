@@ -40,6 +40,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'apps.accounts.apps.AccountsConfig',
+    'apps.artists.apps.ArtistsConfig',
+    'apps.albums.apps.AlbumsConfig',
     'apps.main.apps.MainConfig',
     'apps.favorites.apps.FavoritesConfig',
     'apps.pins.apps.PinsConfig',

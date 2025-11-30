@@ -3,8 +3,10 @@ from rest_framework import viewsets, status
 from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from ..main.models import Artist, Album
-from ..main.serializers import ArtistSerializer, AlbumSerializer
+from apps.artists.models import Artist
+from apps.artists.serializers import ArtistSerializer
+from apps.albums.models import Album
+from apps.albums.serializers import AlbumSerializer
 from .models import PinnedArtist, PinnedAlbum, PinnedPlaylist
 from ..playlists.models import Playlist
 from ..playlists.serializers import PlaylistSerializer
