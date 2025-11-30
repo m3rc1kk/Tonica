@@ -196,11 +196,11 @@ export default function Track({
         }
     }
 
-    const trackCover = album?.cover
+    const trackCover = album?.cover;
     
     const trackArtists = (artists && artists.length > 0) 
         ? artists 
-        : (album?.artist ? [album.artist] : [])
+        : (album?.artist ? [album.artist] : []);
 
     const maxArtists = isMobile ? 1 : 2;
     const displayedArtists = trackArtists.slice(0, maxArtists);

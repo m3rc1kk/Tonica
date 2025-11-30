@@ -27,7 +27,6 @@ export function PlayerProvider({ children }) {
 
 
     const playTrack = (track, tracks = null, startIndex = 0) => {
-        // Если передан массив треков, устанавливаем очередь
         if (tracks && Array.isArray(tracks) && tracks.length > 0) {
             setQueue(tracks);
             const index = tracks.findIndex(t => t.id === track.id);
@@ -40,7 +39,6 @@ export function PlayerProvider({ children }) {
             return;
         }
 
-        // Обычное воспроизведение одного трека
         if (currentTrack?.id !== track.id) {
             playRegisteredRef.current = false;
             setCurrentTrack(track);
@@ -160,7 +158,6 @@ export function PlayerProvider({ children }) {
         };
 
         const handleEnded = () => {
-            // Автоматически переключаемся на следующий трек при завершении
             if (queue.length > 0 && currentQueueIndex >= 0 && currentQueueIndex < queue.length - 1) {
                 const nextIndex = currentQueueIndex + 1;
                 setCurrentQueueIndex(nextIndex);

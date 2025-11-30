@@ -13,6 +13,8 @@ import {
 } from "../../api/musicAPI.js";
 import { usePinned } from "../../context/PinnedContext.jsx";
 import { useToast } from "../../context/ToastContext.jsx";
+import { usePlayer } from "../../context/PlayerContext.jsx";
+import { fetchAlbumDetail } from "../../api/musicAPI.js";
 
 
 
@@ -24,6 +26,7 @@ export default function Album({
     const [isPinned, setIsPinned] = useState(false);
     const { refreshPinned, pinnedAlbums } = usePinned();
     const { showError } = useToast();
+    const { playFromQueue } = usePlayer();
 
     useEffect(() => {
         setFavorite(album?.is_favorite || false);
@@ -77,6 +80,24 @@ export default function Album({
         }
     };
 
+    const handlePlay = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!album?.id) return;
+
+        try {
+            const albumData = await fetchAlbumDetail(album.id);
+            const tracks = albumData.tracks || [];
+            if (tracks.length > 0) {
+                playFromQueue(tracks, 0);
+            }
+        } catch (error) {
+            console.error('Error loading album:', error);
+            showError(error.message || 'Failed to load album');
+        }
+    };
+
 
     
     return (
@@ -103,7 +124,7 @@ export default function Album({
                     )}
 
                 </div>
-                <ButtonLink to={`/`} className="album__button"><img src={play} width={42} height={42} loading='lazy' alt="" className="album__button-icon"/></ButtonLink>
+                <ButtonLink onClick={handlePlay} className="album__button"><img src={play} width={42} height={42} loading='lazy' alt="" className="album__button-icon"/></ButtonLink>
             </div>
         </div>
     )

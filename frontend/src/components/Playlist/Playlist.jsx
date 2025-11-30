@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import {
     pinPlaylist,
     unpinPlaylist,
+    fetchPlaylistDetail,
 } from "../../api/musicAPI.js";
 import { usePinned } from "../../context/PinnedContext.jsx";
 import { useToast } from "../../context/ToastContext.jsx";
+import { usePlayer } from "../../context/PlayerContext.jsx";
 import pinIcon from '../../assets/images/artist-profile/pin.svg';
 import pinFullIcon from '../../assets/images/artist-profile/pin-full.svg';
 
@@ -16,6 +18,7 @@ export default function Playlist({
     const [isPinned, setIsPinned] = useState(false);
     const { refreshPinned, pinnedPlaylists } = usePinned();
     const { showError } = useToast();
+    const { playFromQueue } = usePlayer();
 
     useEffect(() => {
         setIsPinned(pinnedPlaylists.some(p => p.id === playlist?.id));
@@ -46,6 +49,24 @@ export default function Playlist({
         backgroundImage: `url(${playlist.cover})`,
     }
 
+    const handlePlay = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!playlist?.id) return;
+
+        try {
+            const playlistData = await fetchPlaylistDetail(playlist.id);
+            const tracks = playlistData.playlist_tracks?.map(pt => pt.track) || [];
+            if (tracks.length > 0) {
+                playFromQueue(tracks, 0);
+            }
+        } catch (error) {
+            console.error('Error loading playlist:', error);
+            showError(error.message || 'Failed to load playlist');
+        }
+    };
+
     return (
         <div className="playlist" style={bgStyle}>
             <ButtonLink onClick={handlePin} className="playlist__pin">
@@ -59,7 +80,7 @@ export default function Playlist({
                     <ButtonLink to={`/playlist/${playlist.id}`} className="playlist__title">{playlist.title}</ButtonLink>
                     <span className="playlist__tracks-count">{playlist.tracks_count} tracks</span>
                 </div>
-                <ButtonLink to={`/`} className="album__button"><img src={play} width={42} height={42} loading='lazy' alt="" className="album__button-icon"/></ButtonLink>
+                <ButtonLink onClick={handlePlay} className="album__button"><img src={play} width={42} height={42} loading='lazy' alt="" className="album__button-icon"/></ButtonLink>
             </div>
         </div>
     )

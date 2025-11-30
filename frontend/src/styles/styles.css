@@ -1441,6 +1441,10 @@ h3 {
   opacity: 0.4;
   font-weight: 500;
 }
+.track__author-more-text {
+  opacity: 0.4;
+  font-weight: 500;
+}
 .track__control {
   display: flex;
   align-items: center;

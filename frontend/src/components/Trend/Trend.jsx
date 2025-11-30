@@ -5,7 +5,8 @@ import favoriteFullIcon from '../../assets/images/trend/favorite-full.svg'
 import play from '../../assets/images/trend/play.svg'
 import {usePlayer} from "../../context/PlayerContext.jsx";
 import { useState, useEffect } from "react";
-import {addTrackToFavorites, removeTrackFromFavorites, addAlbumToFavorites, removeAlbumFromFavorites} from "../../api/musicAPI.js";
+import {addTrackToFavorites, removeTrackFromFavorites, addAlbumToFavorites, removeAlbumFromFavorites, fetchAlbumDetail} from "../../api/musicAPI.js";
+import { useToast } from "../../context/ToastContext.jsx";
 
 
 
@@ -19,11 +20,14 @@ export default function Trend({
     artist,
     audio_file,
     is_favorite,
-    plays_count_30_days, 
+    plays_count_30_days,
+    queueTracks = null,
+    queueStartIndex = 0
 }) {
 
-    const { currentTrack, setCurrentTrack, isPlaying, playTrack } = usePlayer();
+    const { currentTrack, setCurrentTrack, isPlaying, playTrack, playFromQueue } = usePlayer();
     const [favorite, setFavorite] = useState(is_favorite || false);
+    const { showError } = useToast();
 
     useEffect(() => {
         setFavorite(is_favorite || false);
@@ -114,7 +118,34 @@ export default function Trend({
                     </p>
                 </div>
                 <ButtonLink
-                    onClick={() => !isAlbum && playTrack({ id, title, album, artists, audio_file, is_favorite })}
+                    onClick={async (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        if (isAlbum) {
+                            try {
+                                const albumData = await fetchAlbumDetail(id);
+                                const tracks = albumData.tracks || [];
+                                if (tracks.length > 0) {
+                                    playFromQueue(tracks, 0);
+                                }
+                            } catch (error) {
+                                console.error('Error loading album:', error);
+                                showError(error.message || 'Failed to load album');
+                            }
+                        } else {
+                            if (queueTracks && queueTracks.length > 0) {
+                                const trackIndex = queueTracks.findIndex(t => t.id === id);
+                                if (trackIndex >= 0) {
+                                    playFromQueue(queueTracks, trackIndex);
+                                } else {
+                                    playTrack({ id, title, album, artists, audio_file, is_favorite }, queueTracks, queueStartIndex);
+                                }
+                            } else {
+                                playTrack({ id, title, album, artists, audio_file, is_favorite });
+                            }
+                        }
+                    }}
                     className="trend__button"><img src={play} width={32} height={32} loading='lazy' alt="" className="trend__button-icon"/> Play</ButtonLink>
                 <ButtonLink onClick={handleFavorite} className="trend__favorite">
                     {favorite ?

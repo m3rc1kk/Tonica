@@ -28,7 +28,7 @@ import { fetchPlaylistDetail, fetchAlbumDetail } from "../../api/musicAPI.js";
 
 
 export default function Card({
-    type = 'artist', // artist | playlist | album
+    type = 'artist',
     albumType,
     image,
     title,

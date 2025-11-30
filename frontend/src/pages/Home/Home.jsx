@@ -141,9 +141,9 @@ export default function Home() {
                 />
                 <div className="home__trend">
                     <ul className="home__trend-list">
-                        {trendTracks && trendTracks.map((trend) => (
+                        {trendTracks && trendTracks.map((trend, index) => (
                             <li key={trend.id} className="home__trend-item">
-                                <Trend {...trend}/>
+                                <Trend {...trend} queueTracks={trendTracks} queueStartIndex={index}/>
                             </li>
                         ))}
 
