@@ -14,6 +14,7 @@ import ArtistApplicationForm from "../pages/ApplicationApply/ApplicationApply.js
 import AlbumPage from "../pages/AlbumPage/AlbumPage.jsx";
 import Library from "../pages/Library/Library.jsx";
 import NewReleases from "../pages/NewReleases/NewReleases.jsx";
+import Charts from "../pages/Charts/Charts.jsx";
 import FavoriteAlbums from "../pages/FavoriteAlbums/FavoriteAlbums.jsx";
 import FavoriteTracks from "../pages/FavoriteTracks/FavoriteTracks.jsx";
 import FavoriteArtists from "../pages/FavoriteArtists/FavoriteArtists.jsx";
@@ -25,6 +26,7 @@ import ProfileUpdate from "../pages/Auth/ProfileUpdate/ProfileUpdate.jsx";
 import Search from "../pages/Search/Search.jsx";
 import BigPlayer from "../pages/BigPlayer/BigPlayer.jsx";
 import GenrePage from "../pages/GenrePage/GenrePage.jsx";
+import SearchResults from "../pages/SearchResults/SearchResults.jsx";
 
 export default function AppRouter() {
     return (
@@ -39,6 +41,7 @@ export default function AppRouter() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/library" element={<Library />} />
                 <Route path="/new-releases" element={<NewReleases />} />
+                <Route path="/charts" element={<Charts />} />
                 <Route path="/favorites/albums" element={<FavoriteAlbums />} />
                 <Route path="/favorites/tracks" element={<FavoriteTracks />} />
                 <Route path="/favorites/artists" element={<FavoriteArtists />} />
@@ -54,6 +57,7 @@ export default function AppRouter() {
                 <Route path="/playlist/:id/update" element={<PlaylistUpdate />} />
                 <Route path="/profile/update" element={<ProfileUpdate />} />
                 <Route path="/search" element={<Search />} />
+                <Route path="/search/results" element={<SearchResults />} />
                 <Route path="/genres/:slug" element={<GenrePage />} />
                 <Route path="/big-player/:id" element={<BigPlayer />} />
             </Routes>

@@ -16,7 +16,22 @@ export default function NewReleases() {
             try {
                 setLoading(true);
                 const data = await fetchAllPublishedAlbums();
-                setAlbums(Array.isArray(data) ? data : []);
+                
+                const twoWeeksAgo = new Date();
+                twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+                twoWeeksAgo.setHours(0, 0, 0, 0);
+                
+                const today = new Date();
+                today.setHours(23, 59, 59, 999);
+                
+                const filteredAlbums = Array.isArray(data) ? data.filter(album => {
+                    if (!album.release_date) return false;
+                    
+                    const releaseDate = new Date(album.release_date);
+                    return releaseDate >= twoWeeksAgo && releaseDate <= today;
+                }) : [];
+                
+                setAlbums(filteredAlbums);
                 setError(null);
             } catch (err) {
                 console.error('Error loading albums:', err);

@@ -16,7 +16,7 @@ import favoriteIcon from "../../assets/images/player/favorite.svg";
 
 export default function Player() {
     const navigate = useNavigate();
-    const { currentTrack, setCurrentTrack, isPlaying, playTrack, progress, duration, seekTo, changeVolume, volume } = usePlayer();
+    const { currentTrack, setCurrentTrack, isPlaying, playTrack, progress, duration, seekTo, changeVolume, volume, nextTrack, prevTrack, hasNextTrack, hasPrevTrack } = usePlayer();
     const { showSuccess, showError } = useToast();
     const [showVolumeControl, setShowVolumeControl] = useState(false);
     const [showAddToPlaylistMenu, setShowAddToPlaylistMenu] = useState(false);
@@ -65,7 +65,6 @@ export default function Player() {
     }, [showAddToPlaylistMenu, showPlaylistsList]);
 
     useEffect(() => {
-        // Закрываем список плейлистов только если закрыт и первый попап
         if (!showAddToPlaylistMenu && !showPlaylistsList) {
             setShowPlaylistsList(false);
         }
@@ -98,7 +97,6 @@ export default function Player() {
         try {
             const playlistsData = await fetchPlaylists(100);
             setPlaylists(Array.isArray(playlistsData) ? playlistsData : []);
-            // Показываем список плейлистов, первый попап закроется автоматически через стили (не показываем его когда открыт список)
             setShowPlaylistsList(true);
         } catch (error) {
             console.error('Error fetching playlists:', error);
@@ -157,9 +155,22 @@ export default function Player() {
                         </ButtonLink>
                         <div className="player__track-info">
                             <h3 className="player__track-title">{currentTrack.title}</h3>
-                            <ButtonLink to={`/artist/${currentTrack.album.artist.id}`} className="player__track-artist">
-                                {currentTrack.album.artist.stage_name}
-                            </ButtonLink>
+                            <div className="player__track-artists">
+                                {(() => {
+                                    const artists = (currentTrack.artists && currentTrack.artists.length > 0)
+                                        ? currentTrack.artists
+                                        : (currentTrack.album?.artist ? [currentTrack.album.artist] : [])
+                                    
+                                    return artists.map((artist, index) => (
+                                        <span key={artist.id}>
+                                            {index > 0 && <span className="player__track-artist-separator">, </span>}
+                                            <ButtonLink to={`/artist/${artist.id}`} className="player__track-artist">
+                                                {artist.stage_name}
+                                            </ButtonLink>
+                                        </span>
+                                    ))
+                                })()}
+                            </div>
                         </div>
                     </div>
                     <ButtonLink className="player__track-favorite" onClick={handleFavorite}>
@@ -174,7 +185,14 @@ export default function Player() {
                     <span className="player__timing-now player__timing">{formatTime(progress)}</span>
 
                     <div className="player__control-buttons">
-                        <ButtonLink className="player__control-button player__control-prev">
+                        <ButtonLink 
+                            onClick={(e) => {
+                                e.preventDefault();
+                                prevTrack();
+                            }}
+                            className={`player__control-button player__control-prev ${!hasPrevTrack() ? 'player__control-button--disabled' : ''}`}
+                            disabled={!hasPrevTrack()}
+                        >
                             <img src={prev} loading='lazy' width={36} height={36} alt="" className="player__control-icon"/>
                         </ButtonLink>
 
@@ -186,7 +204,14 @@ export default function Player() {
                             )}
                         </ButtonLink>
 
-                        <ButtonLink className="player__control-next player__control-button">
+                        <ButtonLink 
+                            onClick={(e) => {
+                                e.preventDefault();
+                                nextTrack();
+                            }}
+                            className={`player__control-next player__control-button ${!hasNextTrack() ? 'player__control-button--disabled' : ''}`}
+                            disabled={!hasNextTrack()}
+                        >
                             <img src={next} loading='lazy' width={36} height={36} alt="" className="player__control-icon"/>
                         </ButtonLink>
                     </div>

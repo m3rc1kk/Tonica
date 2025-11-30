@@ -56,11 +56,14 @@ export default function AlbumPage() {
 
                 <div className="album-page__tracks section__block-last">
                     <ul className="album-page__tracks-list">
-                        {album.tracks.map((track) => (
+                        {album.tracks.map((track, index) => (
                             <li className='album-page__tracks-item' key={track.id}>
                                 <Track
                                     {...track}
-                                    className={'album-page__track'} />
+                                    className={'album-page__track'}
+                                    queueTracks={album.tracks}
+                                    queueStartIndex={index}
+                                />
                             </li>
                         ))}
                     </ul>

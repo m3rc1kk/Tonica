@@ -81,6 +81,39 @@
       }
     }
 
+    &-artists {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0;
+
+      &--multiple {
+        .big-player__track-artist {
+          font-size: 48px;
+
+          @include tablet {
+            font-size: 32px;
+          }
+
+          @include mobile {
+            font-size: 18px;
+          }
+        }
+
+        .big-player__track-artist-separator {
+          font-size: 48px;
+
+          @include tablet {
+            font-size: 32px;
+          }
+
+          @include mobile {
+            font-size: 18px;
+          }
+        }
+      }
+    }
+
     &-artist {
       font-size: 64px;
       opacity: .4;
@@ -98,6 +131,20 @@
       @include hover {
         color: var(--color-white);
         opacity: 1;
+      }
+
+      &-separator {
+        font-size: 64px;
+        opacity: .4;
+        font-weight: 500;
+
+        @include tablet {
+          font-size: 40px;
+        }
+
+        @include mobile {
+          font-size: 20px;
+        }
       }
     }
 

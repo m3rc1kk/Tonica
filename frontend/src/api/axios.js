@@ -28,13 +28,10 @@ api.interceptors.response.use(
             const refreshToken = localStorage.getItem("refresh");
             const accessToken = localStorage.getItem("access");
 
-            // Если нет ни access, ни refresh токена - пользователь не авторизован
-            // Просто возвращаем ошибку без редиректа
             if (!accessToken && !refreshToken) {
                 return Promise.reject(error);
             }
 
-            // Если есть refresh токен, пытаемся обновить access токен
             if (refreshToken) {
                 try {
                     const res = await axios.post(
@@ -49,8 +46,6 @@ api.interceptors.response.use(
 
                     return api(originalRequest);
                 } catch (refreshError) {
-                    // Токен истек или невалиден - делаем редирект только если был access токен
-                    // (значит пользователь был авторизован, но токен истек)
                     if (accessToken) {
                         logoutAndRedirect();
                     }
@@ -58,7 +53,6 @@ api.interceptors.response.use(
                 }
             }
 
-            // Если был access токен, но нет refresh токена - делаем редирект
             if (accessToken) {
                 logoutAndRedirect();
             }

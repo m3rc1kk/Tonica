@@ -50,29 +50,6 @@ export default function ArtistProfile() {
             <Sidebar />
             <div className="artist-profile__inner section__inner">
                 <HeaderSmall />
-                {/*<div className="artist-profile__body">*/}
-                {/*    <img src={artist.avatar || avatar} width={300} height={300} loading='lazy' alt="" className="artist-profile__avatar"/>*/}
-                {/*    <div className="artist-profile__info">*/}
-                {/*        <span className="artist-profile__fullname ">{fullName}</span>*/}
-                {/*        <h1 className="artist-profile__stage-name title--accent">{ artist.stage_name }</h1>*/}
-                {/*        <span className="artist-profile__listeners"><span className="artist-profile__listeners--accent">22.542.342</span>  listeners <span className="artist-profile__listeners--hidden">per month</span> </span>*/}
-                {/*        <div className="artist-profile__buttons">*/}
-                {/*            <ButtonLink to={'/'} className="artist-profile__play artist-profile__button">*/}
-                {/*                <img src={play} width={52} height={52} loading='lazy' alt="" className="artist-profile__button-icon artist-profile__button-icon--play"/>*/}
-                {/*            </ButtonLink>*/}
-                {/*            <ButtonLink to={'/'} className="artist-profile__favorite artist-profile__button">*/}
-                {/*                <img src={favorite} width={52} height={52} loading='lazy' alt="" className="artist-profile__button-icon"/>*/}
-                {/*            </ButtonLink>*/}
-                {/*            <ButtonLink to={'/'} className="artist-profile__pin artist-profile__button">*/}
-                {/*                <img src={pin} width={52} height={52} loading='lazy' alt="" className="artist-profile__button-icon"/>*/}
-                {/*            </ButtonLink>*/}
-                {/*            <ButtonLink to={'/'} className="artist-profile__settings artist-profile__button">*/}
-                {/*                <img src={settings} width={52} height={52} loading='lazy' alt="" className="artist-profile__button-icon"/>*/}
-                {/*            </ButtonLink>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-
                 <Card
                     type="artist"
                     image={artist.avatar || avatar}

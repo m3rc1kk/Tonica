@@ -1,5 +1,3 @@
-// src/pages/PlaylistPage/PlaylistPage.jsx
-
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import HeaderSmall from "../../components/HeaderSmall/HeaderSmall.jsx";
 import Card from "../../components/Card/Card.jsx";
@@ -62,13 +60,15 @@ export default function PlaylistPage() {
 
                 <div className="playlist-page__tracks section__block-last">
                     <ul className="playlist-page__tracks-list">
-                        {playlist.playlist_tracks?.map((playlistTrack) => (
+                        {playlist.playlist_tracks?.map((playlistTrack, index) => (
                             <li className='playlist-page__tracks-item' key={playlistTrack.id}>
                                 <Track
                                     {...playlistTrack.track}
                                     className={'playlist-page__track'}
                                     playlistId={id}
                                     onTrackRemoved={handleTrackRemoved}
+                                    queueTracks={playlist.playlist_tracks?.map(pt => pt.track) || []}
+                                    queueStartIndex={index}
                                 />
                             </li>
                         ))}

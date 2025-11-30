@@ -15,14 +15,17 @@ export default function Track({
     chartPosition=null,
     title,
     album,
+    artists,
     audio_file,
     is_favorite,
     className='',
     playlistId=null,
-    onTrackRemoved=null
+    onTrackRemoved=null,
+    queueTracks=null,
+    queueStartIndex=0
 }) {
 
-    const { currentTrack, setCurrentTrack, isPlaying, playTrack } = usePlayer();
+    const { currentTrack, setCurrentTrack, isPlaying, playTrack, playFromQueue } = usePlayer();
     const { openTrackId, openTrackSettings, closeTrackSettings, isTrackOpen } = useTrackSettings();
     const { showSuccess, showError } = useToast();
     const [favorite, setFavorite] = useState(is_favorite || false);
@@ -30,10 +33,23 @@ export default function Track({
     const [showPlaylistsList, setShowPlaylistsList] = useState(false);
     const [playlists, setPlaylists] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     const popupRef = useRef(null);
 
     const isThisTrackOpen = isTrackOpen(id);
 
+    useEffect(() => {
+        const checkTablet = () => {
+            setIsMobile(window.innerWidth <= 1023);
+        };
+        
+        checkTablet();
+        window.addEventListener('resize', checkTablet);
+        
+        return () => {
+            window.removeEventListener('resize', checkTablet);
+        };
+    }, []);
 
     useEffect(() => {
         setFavorite(is_favorite || false);
@@ -125,7 +141,6 @@ export default function Track({
             console.error('Error adding track to playlist:', error);
             const errorMessage = error.message || '';
             
-            // Проверяем, если трек уже есть в плейлисте
             if (errorMessage.toLowerCase().includes('already exists') || 
                 errorMessage.toLowerCase().includes('already') ||
                 errorMessage.toLowerCase().includes('уже существует')) {
@@ -182,14 +197,32 @@ export default function Track({
     }
 
     const trackCover = album?.cover
-    const trackAuthor = album?.artist.stage_name
+    
+    const trackArtists = (artists && artists.length > 0) 
+        ? artists 
+        : (album?.artist ? [album.artist] : [])
+
+    const maxArtists = isMobile ? 1 : 2;
+    const displayedArtists = trackArtists.slice(0, maxArtists);
+    const remainingCount = trackArtists.length - maxArtists;
 
     return (
         <div className={`track ${className}`}>
             <div className="track__inner">
                 <div className="track__info">
                     <ButtonLink
-                        onClick={() => playTrack({ id, title, album, audio_file, is_favorite })}
+                        onClick={() => {
+                            if (queueTracks && queueTracks.length > 0) {
+                                const trackIndex = queueTracks.findIndex(t => t.id === id);
+                                if (trackIndex >= 0) {
+                                    playFromQueue(queueTracks, trackIndex);
+                                } else {
+                                    playTrack({ id, title, album, artists, audio_file, is_favorite }, queueTracks, queueStartIndex);
+                                }
+                            } else {
+                                playTrack({ id, title, album, artists, audio_file, is_favorite });
+                            }
+                        }}
                         className="track__image-link button__link">
                         <img src={trackCover} height={44} width={44} loading='lazy' alt="" className="track__image"/>
                     </ButtonLink>
@@ -197,10 +230,25 @@ export default function Track({
                         <h3 className="track__title">
                             {title}
                             {chartPosition !== null && (
-                                <span className="track__chart">{chartPosition} place in charts</span>
+                                <span className="track__chart">{chartPosition} in charts</span>
                             )}
                         </h3>
-                        <ButtonLink to={`/artist/${album?.artist.id}`} className="track__author">{trackAuthor}</ButtonLink>
+                        <div className="track__authors">
+                            {displayedArtists.map((artist, index) => (
+                                <span key={artist.id}>
+                                    {index > 0 && <span className="track__author-separator">, </span>}
+                                    <ButtonLink to={`/artist/${artist.id}`} className="track__author">
+                                        {artist.stage_name}
+                                    </ButtonLink>
+                                </span>
+                            ))}
+                            {remainingCount > 0 && (
+                                <span className="track__author-more">
+                                    <span className="track__author-separator">, </span>
+                                    <span className="track__author-more-text">+{remainingCount}</span>
+                                </span>
+                            )}
+                        </div>
                     </div>
                 </div>
                 <div className="track__control">

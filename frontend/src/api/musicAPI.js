@@ -2,7 +2,7 @@ import api from "./axios.js";
 
 export async function fetchTrendingArtists(limit=5) {
     try {
-        const response = await api.get(`artists/?limit=${limit}`);
+        const response = await api.get(`artists/trending/?limit=${limit}`);
         return response.data.results || response.data || [];
     } catch(error) {
         if (error.response) {
@@ -26,11 +26,11 @@ export async function fetchArtistDetail(id) {
 
 export async function fetchChartTracks(limit=9) {
     try {
-        const response = await api.get(`tracks/?limit=${limit}`);
-        return response.data.results || response.data || [];
+        const response = await api.get(`tracks/charts/?limit=${limit}`);
+        return response.data || [];
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.detail || "Failed to load tracks");
+            throw new Error(error.response.data?.detail || "Failed to load chart tracks");
         }
         throw new Error("Network error");
     }
@@ -62,7 +62,7 @@ export async function fetchAllPublishedAlbums() {
 
 export async function fetchTrendTracks(limit=4) {
     try {
-        const response = await api.get(`tracks/?limit=${limit}`);
+        const response = await api.get(`tracks/trending/?limit=${limit}`);
         return response.data.results || response.data || [];
     } catch (error) {
         if (error.response) {
@@ -74,7 +74,7 @@ export async function fetchTrendTracks(limit=4) {
 
 export async function fetchTrendAlbum(limit=1) {
     try {
-        const response = await api.get(`albums/?limit=${limit}`);
+        const response = await api.get(`albums/trending/?limit=${limit}`);
         const data = response.data.results || response.data || [];
         return Array.isArray(data) ? data : [data];
     } catch (error) {
@@ -552,6 +552,16 @@ export async function fetchGenreTracks(genreSlug, limit=50) {
             throw new Error(error.response.data?.detail || "Failed to load genre tracks");
         }
         throw new Error("Network error");
+    }
+}
+
+export async function registerTrackPlay(trackId) {
+    try {
+        const response = await api.post(`tracks/${trackId}/play/`);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to register track play:', error.response?.data || error.message);
+        return null;
     }
 }
 

@@ -163,6 +163,9 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',
         'rest_framework.parsers.FormParser',
     ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'rest_framework.filters.SearchFilter',
+    ],
 
     #'DEFAULT_THROTTLE_CLASSES': [
     #    'rest_framework.throttling.UserRateThrottle',

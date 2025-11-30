@@ -14,10 +14,12 @@ export default function Trend({
     isAlbum = false,
     title,
     album,
+    artists,
     cover,
     artist,
     audio_file,
     is_favorite,
+    plays_count_30_days, 
 }) {
 
     const { currentTrack, setCurrentTrack, isPlaying, playTrack } = usePlayer();
@@ -41,7 +43,6 @@ export default function Trend({
 
         try {
             if (isAlbum) {
-                // Лайк для альбома
                 if (favorite) {
                     await removeAlbumFromFavorites(id);
                     setFavorite(false);
@@ -50,7 +51,6 @@ export default function Trend({
                     setFavorite(true);
                 }
             } else {
-                // Лайк для трека
                 if (favorite) {
                     await removeTrackFromFavorites(id);
                     setFavorite(false);
@@ -70,9 +70,13 @@ export default function Trend({
         }
     };
 
-    const artistId = album?.artist?.id
-    const artistName = isAlbum ? artist?.stage_name : album?.artist.stage_name
-    const artistAvatar = isAlbum ? artist?.avatar : album?.artist.avatar
+    const trackArtists = !isAlbum 
+        ? ((artists && artists.length > 0) ? artists : (album?.artist ? [album.artist] : []))
+        : (artist ? [artist] : [])
+    
+    const firstArtist = trackArtists[0]
+    const artistId = firstArtist?.id
+    const artistAvatar = firstArtist?.avatar
     const cov = isAlbum ? cover : album?.cover
 
     return (
@@ -80,8 +84,21 @@ export default function Trend({
             <div className={`trend__inner ${isAlbum ? "trend__inner--album" : ""}`}>
             <div className={`trend__body ${isAlbum ? "trend__body--album" : ""}`}>
                 <div className="trend__author">
-                    <img src={artistAvatar || avatar} width={24} height={24} loading='lazy' alt="" className="trend__author-avatar"/>
-                    <ButtonLink to={`/artist/${artistId}`} className={`trend__author-name ${isAlbum ? "trend__author-name--album" : ""}`}>{artistName}</ButtonLink>
+                    {firstArtist && (
+                        <img src={artistAvatar || avatar} width={24} height={24} loading='lazy' alt="" className="trend__author-avatar"/>
+                    )}
+                    <div className={`trend__author-names ${isAlbum ? "trend__author-names--album" : ""}`}>
+                        <span className="trend__author-names-inner">
+                            {trackArtists.map((artistItem, index) => (
+                                <span key={artistItem.id}>
+                                    {index > 0 && <span className="trend__author-separator">, </span>}
+                                    <ButtonLink to={`/artist/${artistItem.id}`} className={`trend__author-name ${isAlbum ? "trend__author-name--album" : ""}`}>
+                                        {artistItem.stage_name}
+                                    </ButtonLink>
+                                </span>
+                            ))}
+                        </span>
+                    </div>
                 </div>
                 {isAlbum ?
                     <ButtonLink to={`/album/${id}`} className={`trend__title title--accent ${isAlbum ? "trend__title--album" : ""}`}>{title}</ButtonLink> :
@@ -89,10 +106,15 @@ export default function Trend({
                 }
 
                 <div className={`trend__monthly-listeners ${isAlbum ? "trend__monthly-listeners--album" : ""}`}>
-                    <p>564.034 monthly listeners </p>
+                    <p>
+                        {plays_count_30_days !== undefined && plays_count_30_days !== null
+                            ? `${plays_count_30_days.toLocaleString('en-US')} plays per month`
+                            : '0 plays per month'
+                        }
+                    </p>
                 </div>
                 <ButtonLink
-                    onClick={() => !isAlbum && playTrack({ id, title, album, audio_file, is_favorite })}
+                    onClick={() => !isAlbum && playTrack({ id, title, album, artists, audio_file, is_favorite })}
                     className="trend__button"><img src={play} width={32} height={32} loading='lazy' alt="" className="trend__button-icon"/> Play</ButtonLink>
                 <ButtonLink onClick={handleFavorite} className="trend__favorite">
                     {favorite ?

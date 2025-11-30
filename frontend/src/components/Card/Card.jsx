@@ -23,6 +23,8 @@ import {
 
 import { usePinned } from "../../context/PinnedContext.jsx";
 import { useToast } from "../../context/ToastContext.jsx";
+import { usePlayer } from "../../context/PlayerContext.jsx";
+import { fetchPlaylistDetail, fetchAlbumDetail } from "../../api/musicAPI.js";
 
 
 export default function Card({
@@ -46,6 +48,7 @@ export default function Card({
     const [showPlaylistMenu, setShowPlaylistMenu] = useState(false);
     const { refreshPinned, pinnedArtists, pinnedAlbums, pinnedPlaylists } = usePinned();
     const { showError, showSuccess } = useToast();
+    const { playFromQueue } = usePlayer();
     const navigate = useNavigate();
     const menuRef = useRef(null);
 
@@ -133,7 +136,6 @@ export default function Card({
                 refreshPinned();
             } catch (error) {
                 console.error('Error toggling pin:', error);
-                // Показываем красивое уведомление вместо alert
                 showError(error.message || 'Не удалось закрепить артиста');
             }
         } else if (type === 'album') {
@@ -206,6 +208,37 @@ export default function Card({
         }
     };
 
+    const handlePlay = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (type === 'playlist') {
+            if (!id) return;
+            try {
+                const playlistData = await fetchPlaylistDetail(id);
+                const tracks = playlistData.playlist_tracks?.map(pt => pt.track) || [];
+                if (tracks.length > 0) {
+                    playFromQueue(tracks, 0);
+                }
+            } catch (error) {
+                console.error('Error loading playlist:', error);
+                showError(error.message || 'Failed to load playlist');
+            }
+        } else if (type === 'album') {
+            if (!id) return;
+            try {
+                const albumData = await fetchAlbumDetail(id);
+                const tracks = albumData.tracks || [];
+                if (tracks.length > 0) {
+                    playFromQueue(tracks, 0);
+                }
+            } catch (error) {
+                console.error('Error loading album:', error);
+                showError(error.message || 'Failed to load album');
+            }
+        }
+    };
+
     return (
         <div className="card__body">
             <img src={image} width={300} height={300} loading='lazy' alt="" className="card__avatar"/>
@@ -228,7 +261,14 @@ export default function Card({
                 }
 
                 { type === 'artist' ?
-                    <span className="card__listeners"><span className="card__listeners--accent">22.542.342</span>  listeners <span className="card__listeners--hidden">per month</span> </span> :
+                    <span className="card__listeners">
+                        <span className="card__listeners--accent">
+                            {author?.plays_count_30_days !== undefined && author?.plays_count_30_days !== null
+                                ? author.plays_count_30_days.toLocaleString('en-US')
+                                : '0'
+                            }
+                        </span> listeners <span className="card__listeners--hidden">per month</span>
+                    </span> :
                     <div className="card__album-info">
                         <span className="card__release-date">{new Date(releaseDate).toLocaleDateString('en-US', {
                             year: 'numeric',
@@ -240,7 +280,7 @@ export default function Card({
                 }
 
                 <div className="card__buttons">
-                    <ButtonLink to={'/'} className="card__play card__button">
+                    <ButtonLink onClick={handlePlay} className="card__play card__button">
                         <img src={play} width={52} height={52} loading='lazy' alt="" className="card__button-icon card__button-icon--play"/>
                     </ButtonLink>
                     {(type === 'artist' || type === 'album') && (

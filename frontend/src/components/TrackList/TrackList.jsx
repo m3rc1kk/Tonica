@@ -7,6 +7,7 @@ export default function TrackList({tracks = [], className='', classNameItem=''})
                     <li key={track.id} className={`track__item ${classNameItem}`}>
                         <Track
                             {...track}
+                            chartPosition={track.chart_position || null}
                         />
                     </li>
                 ))}

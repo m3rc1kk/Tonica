@@ -6,7 +6,6 @@ export default function HeaderSmall() {
     const navigate = useNavigate();
 
     const handleBack = () => {
-        // Вернуться на предыдущую страницу
         navigate(-1);
     }
 

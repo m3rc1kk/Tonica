@@ -18,7 +18,7 @@ import HeaderSmall from "../../components/HeaderSmall/HeaderSmall.jsx";
 export default function BigPlayer() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { currentTrack, setCurrentTrack, isPlaying, playTrack, progress, duration, seekTo, changeVolume, volume } = usePlayer();
+    const { currentTrack, setCurrentTrack, isPlaying, playTrack, progress, duration, seekTo, changeVolume, volume, nextTrack, prevTrack, hasNextTrack, hasPrevTrack } = usePlayer();
     const { showSuccess, showError } = useToast();
     const [showVolumeControl, setShowVolumeControl] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -92,7 +92,6 @@ export default function BigPlayer() {
     }, [showAddToPlaylistMenu, showPlaylistsList]);
 
     useEffect(() => {
-        // Закрываем список плейлистов только если закрыт и первый попап
         if (!showAddToPlaylistMenu && !showPlaylistsList) {
             setShowPlaylistsList(false);
         }
@@ -125,7 +124,6 @@ export default function BigPlayer() {
         try {
             const playlistsData = await fetchPlaylists(100);
             setPlaylists(Array.isArray(playlistsData) ? playlistsData : []);
-            // Показываем список плейлистов, первый попап закроется автоматически через стили (не показываем его когда открыт список)
             setShowPlaylistsList(true);
         } catch (error) {
             console.error('Error fetching playlists:', error);
@@ -183,6 +181,10 @@ export default function BigPlayer() {
         return `${minutes}:${seconds}`;
     };
 
+    const artists = (currentTrack.artists && currentTrack.artists.length > 0)
+        ? currentTrack.artists
+        : (currentTrack.album?.artist ? [currentTrack.album.artist] : [])
+
     return (
         <div className="big-player-wrapper container">
             <HeaderSmall />
@@ -192,9 +194,15 @@ export default function BigPlayer() {
                     <img src={currentTrack.album.cover} width={400} height={400} loading='lazy' alt="" className="big-player__track-image"/>
                     <div className="big-player__track-info">
                         <h3 className="big-player__track-title title--accent">{currentTrack.title}</h3>
-                        <ButtonLink to={`/artist/${currentTrack.album.artist.id}`} className="big-player__track-artist">
-                            {currentTrack.album.artist.stage_name}
-                        </ButtonLink>
+                        <div className={`big-player__track-artists ${artists.length > 1 ? 'big-player__track-artists--multiple' : ''}`}>
+                            {artists.map((artist, index) => (
+                                <span key={artist.id}>
+                                    <ButtonLink to={`/artist/${artist.id}`} className="big-player__track-artist">
+                                        {artist.stage_name}
+                                    </ButtonLink>
+                                </span>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
@@ -214,7 +222,14 @@ export default function BigPlayer() {
                     <div className="big-player__control">
                         <span className="big-player__timing-now big-player__timing">{formatTime(progress)}</span>
                         <div className="big-player__control-buttons">
-                            <ButtonLink className="big-player__control-button big-player__control-prev">
+                            <ButtonLink 
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    prevTrack();
+                                }}
+                                className={`big-player__control-button big-player__control-prev ${!hasPrevTrack() ? 'big-player__control-button--disabled' : ''}`}
+                                disabled={!hasPrevTrack()}
+                            >
                                 <img src={prev} loading='lazy' width={52} height={52} alt="" className="big-player__control-icon"/>
                             </ButtonLink>
 
@@ -226,7 +241,14 @@ export default function BigPlayer() {
                                 )}
                             </ButtonLink>
 
-                            <ButtonLink className="big-player__control-next big-player__control-button">
+                            <ButtonLink 
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    nextTrack();
+                                }}
+                                className={`big-player__control-next big-player__control-button ${!hasNextTrack() ? 'big-player__control-button--disabled' : ''}`}
+                                disabled={!hasNextTrack()}
+                            >
                                 <img src={next} loading='lazy' width={52} height={52} alt="" className="big-player__control-icon"/>
                             </ButtonLink>
                         </div>

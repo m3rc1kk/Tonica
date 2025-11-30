@@ -89,20 +89,58 @@
     display: flex;
     align-items: center;
     column-gap: 8px;
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
 
     &-avatar {
       border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    &-names {
+      display: inline-flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 0;
+      min-width: 0;
+      flex: 1;
+      overflow: hidden;
+      max-width: 100%;
+
+      @include mobile {
+        font-size: 14px;
+      }
+
+      &-inner {
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
+      }
     }
 
     &-name {
       font-size: 16px;
       font-weight: 500;
       opacity: .4;
+      white-space: nowrap;
 
       @include hover {
         opacity: 1;
         color: var(--color-white);
       }
+
+      @include mobile {
+        font-size: 14px;
+      }
+    }
+
+    &-separator {
+      font-size: 16px;
+      font-weight: 500;
+      opacity: .4;
 
       @include mobile {
         font-size: 14px;
@@ -114,6 +152,11 @@
     font-size: 32px;
     font-weight: 600;
     padding-block: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    display: block;
 
     @include hover {
       text-shadow: 0 0 10px rgba(170, 255, 124, 1);
@@ -125,6 +168,14 @@
 
     &--album {
       padding-block: 0;
+    }
+
+    .button__link {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+      width: 100%;
     }
   }
 

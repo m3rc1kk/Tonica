@@ -12,15 +12,12 @@ export default function App() {
 
   useEffect(() => {
     if (isBigPlayerOpen) {
-      // Начинаем анимацию исчезновения
       setIsPlayerExiting(true);
-      // Удаляем из DOM после завершения анимации
       const timer = setTimeout(() => {
         setShouldRenderPlayer(false);
       }, 300);
       return () => clearTimeout(timer);
     } else {
-      // Показываем плеер с анимацией появления
       setShouldRenderPlayer(true);
       setIsPlayerExiting(false);
     }

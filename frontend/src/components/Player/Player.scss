@@ -55,12 +55,23 @@
       }
     }
 
+    &-artists {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0;
+    }
+
     &-artist {
       opacity: .4;
 
       @include hover {
         color: var(--color-white);
         opacity: 1;
+      }
+
+      &-separator {
+        opacity: .4;
       }
     }
 

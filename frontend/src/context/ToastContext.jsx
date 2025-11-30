@@ -27,7 +27,6 @@ export function ToastProvider({ children }) {
         const id = Date.now() + Math.random();
 
         setToasts(prev => {
-            // Если уже достигнут максимум, удаляем самый старый (первый)
             const newToasts = prev.length >= MAX_TOASTS 
                 ? [...prev.slice(1), { id, message, type }]
                 : [...prev, { id, message, type }];

@@ -82,7 +82,22 @@ export default function Home() {
         async function loadNewReleases() {
             try {
                 const data = await fetchNewReleases(5);
-                setAlbums(data);
+                
+                const twoWeeksAgo = new Date();
+                twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+                twoWeeksAgo.setHours(0, 0, 0, 0);
+                
+                const today = new Date();
+                today.setHours(23, 59, 59, 999);
+                
+                const filteredAlbums = Array.isArray(data) ? data.filter(album => {
+                    if (!album.release_date) return false;
+                    
+                    const releaseDate = new Date(album.release_date);
+                    return releaseDate >= twoWeeksAgo && releaseDate <= today;
+                }) : [];
+                
+                setAlbums(filteredAlbums);
             } catch(error) {
                 console.error('Error loading albums:', error);
                 setAlbumsError(error.message);
@@ -141,8 +156,8 @@ export default function Home() {
                     </ul>
                 </div>
 
-                <SectionBlock className='charts' title='Charts'>
-                    <TrackList tracks={tracks} className='charts__list' />
+                <SectionBlock className='charts' title='Charts' link={'/charts'}>
+                    <TrackList tracks={tracks} className='charts' />
                 </SectionBlock>
 
                 <SectionBlock className='new-releases' title='New Releases' link={'/new-releases'}>

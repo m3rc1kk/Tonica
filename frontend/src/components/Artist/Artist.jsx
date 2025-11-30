@@ -20,6 +20,7 @@ export default function Artist({
     stage_name,
     avatar,
     is_favorite,
+    plays_count_30_days,
                                })  {
 
     const [favorite, setFavorite] = useState(is_favorite || false);
@@ -98,7 +99,14 @@ export default function Artist({
             <div className="artist__inner">
                 <div className="artist__info">
                     <ButtonLink to={`/artist/${id}`} className="artist__name">{stage_name}</ButtonLink>
-                    <span className="artist__listeners"><span className="artist__listeners--accent">+1.123.272</span> plays in the last month</span>
+                    <span className="artist__listeners">
+                        <span className="artist__listeners--accent">
+                            {plays_count_30_days !== undefined && plays_count_30_days !== null
+                                ? `+${plays_count_30_days.toLocaleString('en-US')}`
+                                : '+0'
+                            }
+                        </span> plays in the last month
+                    </span>
                 </div>
             </div>
         </div>
