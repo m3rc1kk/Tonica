@@ -47,6 +47,7 @@ LOCAL_APPS = [
     'apps.pins.apps.PinsConfig',
     'apps.playlists.apps.PlaylistsConfig',
     'apps.genres.apps.GenresConfig',
+    'apps.submissions.apps.SubmissionsConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
