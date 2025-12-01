@@ -10,7 +10,7 @@ import GenreList from "../../components/GenreList/GenreList.jsx";
 import ArtistList from "../../components/ArtistList/ArtistList.jsx";
 
 import { useEffect, useState } from "react";
-import {fetchTrendAlbum, fetchTrendTracks, fetchTrendingArtists, fetchChartTracks, fetchNewReleases, fetchTopGenres} from "../../api/musicAPI.js";
+import {fetchTrendAlbum, fetchTrendTracks, fetchTrendingArtists, fetchChartTracks, fetchAllPublishedAlbums, fetchTopGenres} from "../../api/musicAPI.js";
 
 export default function Home() {
 
@@ -81,26 +81,67 @@ export default function Home() {
     useEffect(() => {
         async function loadNewReleases() {
             try {
-                const data = await fetchNewReleases(5);
+                const data = await fetchAllPublishedAlbums();
+                console.log('All albums loaded:', data?.length || 0);
                 
-                const twoWeeksAgo = new Date();
-                twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
-                twoWeeksAgo.setHours(0, 0, 0, 0);
+                if (!Array.isArray(data) || data.length === 0) {
+                    console.log('No albums data');
+                    setAlbums([]);
+                    return;
+                }
                 
+
                 const today = new Date();
-                today.setHours(23, 59, 59, 999);
+                const todayStr = today.toISOString().split('T')[0];
+
+                const twoWeeksAgo = new Date(today);
+                twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+                const twoWeeksAgoStr = twoWeeksAgo.toISOString().split('T')[0];
                 
-                const filteredAlbums = Array.isArray(data) ? data.filter(album => {
-                    if (!album.release_date) return false;
+                console.log('Date range:', {
+                    twoWeeksAgo: twoWeeksAgoStr,
+                    today: todayStr
+                });
+                
+                const filteredAlbums = data.filter(album => {
+                    if (!album.release_date) {
+                        return false;
+                    }
                     
-                    const releaseDate = new Date(album.release_date);
-                    return releaseDate >= twoWeeksAgo && releaseDate <= today;
-                }) : [];
+
+                    const releaseDateStr = album.release_date.split('T')[0];
+
+                    const isInRange = releaseDateStr >= twoWeeksAgoStr && releaseDateStr <= todayStr;
+                    
+                    if (isInRange) {
+                        console.log('Album in range:', {
+                            id: album.id,
+                            title: album.title,
+                            release_date: releaseDateStr
+                        });
+                    }
+                    
+                    return isInRange;
+                });
                 
-                setAlbums(filteredAlbums);
+                console.log('Filtered albums:', filteredAlbums.length);
+
+                const sortedAlbums = filteredAlbums.sort((a, b) => {
+                    const dateA = a.release_date.split('T')[0];
+                    const dateB = b.release_date.split('T')[0];
+                    return dateB.localeCompare(dateA); // Сравниваем строки
+                }).slice(0, 5);
+                
+                console.log('Final albums to display:', sortedAlbums.length);
+                if (sortedAlbums.length > 0) {
+                    console.log('Albums:', sortedAlbums.map(a => ({ id: a.id, title: a.title, date: a.release_date.split('T')[0] })));
+                }
+                
+                setAlbums(sortedAlbums);
             } catch(error) {
                 console.error('Error loading albums:', error);
                 setAlbumsError(error.message);
+                setAlbums([]);
             }
         }
         loadNewReleases();
@@ -161,7 +202,7 @@ export default function Home() {
                 </SectionBlock>
 
                 <SectionBlock className='new-releases' title='New Releases' link={'/new-releases'}>
-                    <AlbumList albums={albums} className='new-releases__list' />
+                    <AlbumList albums={albums} className='new-release__list' />
                 </SectionBlock>
 
                 <SectionBlock className='genres' title='Genres' isLink={false}>
