@@ -26,7 +26,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
                 'Image size should be less than 5MB'
             )
 
-        valid_extensions = ['.jpeg', 'png', 'jpg', 'webp']
+        valid_extensions = ['jpeg', 'png', 'jpg', 'webp']
         ext = value.name.split('.')[-1].lower()
         if ext not in valid_extensions:
             raise serializers.ValidationError(

@@ -14,6 +14,7 @@ urlpatterns = [
     path('api/v1/pins/', include('apps.pins.urls')),
     path('api/v1/', include('apps.playlists.urls')),
     path('api/v1/', include('apps.genres.urls')),
+    path('social-auth/', include('social_django.urls', namespace='social')),
 ]
 
 if settings.DEBUG:

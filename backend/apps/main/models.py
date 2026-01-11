@@ -56,6 +56,8 @@ class Track(models.Model):
 
         return recent_plays - previous_plays
 
+
+
 class TrackPlay(models.Model):
     track = models.ForeignKey(Track, on_delete=models.CASCADE, related_name='plays')
     user = models.ForeignKey(

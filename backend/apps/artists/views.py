@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from django.db.models import Q, Count, Case, When, IntegerField, F
-
+from django.core.cache import cache
 from .models import Artist, ArtistApplication
 from .serializers import ArtistSerializer, ArtistApplicationSerializer
 
@@ -61,6 +61,13 @@ class ArtistViewSet(viewsets.ReadOnlyModelViewSet):
         thirty_days_ago = now - timedelta(days=30)
         sixty_days_ago = now - timedelta(days=60)
 
+        cache_version = cache.get('artists:trending:version', 1)
+        cache_key = f'artists:trending:limit:{limit}:v{cache_version}'
+
+        cached_data = cache.get(cache_key)
+        if cached_data is not None:
+            return Response(cached_data)
+
         artists = Artist.objects.annotate(
             recent_plays_album=Count(
                 'albums__tracks__plays',
@@ -100,7 +107,11 @@ class ArtistViewSet(viewsets.ReadOnlyModelViewSet):
         ).order_by('-growth')[:limit]
 
         serializer = self.get_serializer(artists, many=True, context={'request': request})
-        return Response(serializer.data)
+        data = serializer.data
+        
+        cache.set(cache_key, data, timeout=60 * 15)
+        
+        return Response(data)
 
 
 

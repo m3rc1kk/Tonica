@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.utils import timezone
+from django.core.cache import cache
 
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
@@ -102,6 +103,14 @@ class TrackViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], url_path='trending')
     def trending(self, request):
         limit = int(request.query_params.get('limit', 4))
+       
+        cache_version = cache.get('tracks:trending:version', 1)
+        cache_key = f'tracks:trending:limit:{limit}:v{cache_version}'
+
+        cached_data = cache.get(cache_key)
+        if cached_data is not None:
+            return Response(cached_data)
+        
         now = timezone.now()
         thirty_days_ago = now - timedelta(days=30)
         sixty_days_ago = now - timedelta(days=60)
@@ -126,11 +135,23 @@ class TrackViewSet(viewsets.ModelViewSet):
         ).order_by('-growth')[:limit]
 
         serializer = self.get_serializer(tracks, many=True, context={'request': request})
-        return Response(serializer.data)
+        data = serializer.data
+        
+        cache.set(cache_key, data, timeout=60 * 15)
+        
+        return Response(data)
 
     @action(detail=False, methods=['get'], url_path='charts')
     def charts(self, request):
         limit = int(request.query_params.get('limit', 30))
+        
+        cache_version = cache.get('tracks:charts:version', 1)
+        cache_key = f'tracks:charts:limit:{limit}:v{cache_version}'
+        
+        cached_data = cache.get(cache_key)
+        if cached_data is not None:
+            return Response(cached_data)
+        
         now = timezone.now()
         thirty_days_ago = now - timedelta(days=30)
 
@@ -152,4 +173,6 @@ class TrackViewSet(viewsets.ModelViewSet):
             track_data['chart_position'] = index
             chart_data.append(track_data)
 
+        cache.set(cache_key, chart_data, timeout=60 * 10)
+        
         return Response(chart_data)

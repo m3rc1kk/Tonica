@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from django.db.models import Q, Count, Case, When, IntegerField, F
-
+from django.core.cache import cache
 from .models import Album
 from .serializers import AlbumSerializer, AlbumCreateSerializer
 from apps.artists.models import Artist
@@ -57,6 +57,13 @@ class AlbumViewSet(viewsets.ModelViewSet):
         thirty_days_ago = now - timedelta(days=30)
         sixty_days_ago = now - timedelta(days=60)
 
+        cache_version = cache.get('albums:trending:version', 1)
+        cache_key = f'albums:trending:limit:{limit}:v{cache_version}'
+
+        cached_data = cache.get(cache_key)
+        if cached_data is not None:
+            return Response(cached_data)
+
         albums = Album.objects.filter(is_published=True).select_related(
             'artist'
         ).prefetch_related('tracks').annotate(
@@ -80,6 +87,8 @@ class AlbumViewSet(viewsets.ModelViewSet):
         ).order_by('-growth')[:limit]
 
         serializer = self.get_serializer(albums, many=True, context={'request': request})
-        return Response(serializer.data)
+        data = serializer.data
 
+        cache.set(cache_key, data, timeout=60 * 15)
 
+        return Response(data)

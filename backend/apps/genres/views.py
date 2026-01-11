@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
+from django.core.cache import cache
 from apps.genres.models import Genre
 from apps.genres.serializers import GenreSerializer
 
@@ -16,9 +16,20 @@ class GenreViewSet(viewsets.ReadOnlyModelViewSet):
     @action(detail=False, methods=['get'])
     def popular(self, request):
         limit = int(request.query_params.get('limit', 5))
+
+        cache_version = cache.get('genres:popular:version', 1)
+        cache_key = f'genres:popular:limit:{limit}:v{cache_version}'
+
+        cached_data = cache.get(cache_key)
+        if cached_data is not None:
+            return Response(cached_data)
+
         genres = Genre.objects.annotate(
             tracks_count=Count('tracks')
         ).filter(tracks_count__gt=0).order_by('-tracks_count')[:limit]
         serializer = self.get_serializer(genres, many=True)
-        return Response(serializer.data)
+        data = serializer.data
+        
+        cache.set(cache_key, data, timeout=60 * 60 * 24)
+        return Response(data)
 
